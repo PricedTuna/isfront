@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { Container, Box, TextField, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router';
+import { useAuth } from '../../common/context/AuthContext';
 
 function LoginForm() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const navigate = useNavigate();
+  const {login} = useAuth();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    login();
     console.log('Email:', email);
     console.log('Password:', password);
-    navigate("/autos")
+    navigate("/home")
   };
 
   return (

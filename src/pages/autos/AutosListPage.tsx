@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import AutoList from "../../components/AutosList";
 import { Auto } from "../../dtos/autos/AutoDto";
 import { useNavigate, useOutletContext } from "react-router";
@@ -14,18 +14,29 @@ const AutosListPage = () => {
   };
 
   const handleDelete = async (id: number) => {
-    console.log(id); // !
     await _autoService.delete(id);
   };
 
   return (
-    <>
+    <Box
+      mt={4}
+      gap={2}
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Typography variant="h4" component="h1" gutterBottom>
+        Listado de autos
+      </Typography>
       {autos == undefined ? (
-        <Typography>Hola!</Typography>
+        <Typography textAlign="center" variant="h5">
+          No hay acceso a la base de datos...
+        </Typography>
       ) : (
         <AutoList autos={autos} onDelete={handleDelete} onEdit={handleEdit} />
       )}
-    </>
+    </Box>
   );
 };
 

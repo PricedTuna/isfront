@@ -4,9 +4,14 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import AppRouter from "./router/AppRouter";
+import { AuthProvider } from "./common/context/AuthContext";
 
 function App() {
-  return <AppRouter />;
+  return (
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
+  );
 }
 
 export default App;
