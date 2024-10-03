@@ -22,7 +22,7 @@ function AutosPage() {
     };
 
     fetchAutos();
-  }, []);
+  });
 
   return (
     <Box>

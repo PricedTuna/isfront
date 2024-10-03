@@ -18,15 +18,8 @@ const AutosListPage = () => {
   };
 
   return (
-    <Box
-      mt={4}
-      gap={2}
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Typography variant="h4" component="h1" gutterBottom>
+    <Box mt={4} gap={2}>
+      <Typography variant="h4" component="h1" textAlign="center">
         Listado de autos
       </Typography>
       {autos == undefined ? (

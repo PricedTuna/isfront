@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Container, Box, TextField, Button, Typography } from "@mui/material";
 import { CreateAutoDto } from "../../dtos/autos/CreateAutoDto";
 import { AutoService } from "../../services/AutoService";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Auto } from "../../dtos/autos/AutoDto";
 
 function AutoCreatePage() {
   const location = useLocation(); // Recupera la ubicación actual
   const initialValues = location.state as Auto; // Cast a CreateAutoDto
+  const naviagte = useNavigate();
 
   const autoService = new AutoService();
 
@@ -34,6 +35,7 @@ function AutoCreatePage() {
     } else {
       await autoService.create(formValues);
     }
+    naviagte("/autos");
   };
 
   return (
