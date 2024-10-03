@@ -9,20 +9,20 @@ function AutosPage() {
   const _autoService = new AutoService();
   const location = useLocation(); // Obtener la ubicación actual
 
-  useEffect(() => {
-    const fetchAutos = async () => {
-      try {
-        const response = await _autoService.getAll();
-        if (Array.isArray(response)) {
-          setAutos(response);
-        }
-      } catch (error) {
-        console.error("Error fetching autos:", error);
+  const fetchAutos = async () => {
+    try {
+      const response = await _autoService.getAll();
+      if (Array.isArray(response)) {
+        setAutos(response);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching autos:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchAutos();
-  });
+  }, []);
 
   return (
     <Box>
