@@ -30,7 +30,8 @@ function AutoCreatePage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(initialValues.idAuto){
+    if(initialValues != null){
+      console.log("HARA UPDATE")
       await autoService.update(initialValues.idAuto, formValues);
     } else {
       await autoService.create(formValues);

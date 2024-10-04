@@ -2,7 +2,7 @@ import { Auto } from "../dtos/autos/AutoDto";
 import { CreateAutoDto } from "../dtos/autos/CreateAutoDto";
 import { getHttpClient } from "./HttpClient"
 
-const _autosClient = getHttpClient("/autos");
+const _autosClient = getHttpClient("/auto");
 
 export class AutoService {
   public getAll = async () => {
@@ -29,7 +29,7 @@ export class AutoService {
 
   public update = async (idAuto: number, createAutoDto: CreateAutoDto) => {
     try {
-      const response = await _autosClient.put(`/${idAuto}`, createAutoDto);
+      const response = await _autosClient.patch(`/${idAuto}`, createAutoDto);
       console.log(response);
       return response.data;
     } catch (error) {

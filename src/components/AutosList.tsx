@@ -1,5 +1,12 @@
-import { Box, List, ListItem, ListItemText, Button, Typography } from '@mui/material';
-import { Auto } from '../dtos/autos/AutoDto';
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  Button,
+  Typography,
+} from "@mui/material";
+import { Auto } from "../dtos/autos/AutoDto";
 
 type AutoListProps = {
   autos: Auto[];
@@ -8,33 +15,47 @@ type AutoListProps = {
 };
 
 const AutoList = ({ autos, onEdit, onDelete }: AutoListProps) => {
-
+  console.log(JSON.stringify(autos.length, null, 2));
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>
-        Lista de Autos
-      </Typography>
+      
+      {
+        autos.length > 0
+          ? (
+            <Box display="flex" flexDirection="row" justifyContent="space-between">
+        <Typography variant="h4" gutterBottom>
+          Listado de autos
+        </Typography>
+        {/* <Button onClick={handleReload} variant="contained" size="small">Reload</Button> */}
+      </Box>
+          )
+        : <Typography>No se han encontrado Autos</Typography>
+      }
+
       <List>
         {autos.map((auto) => (
-          <ListItem key={auto.idAuto} secondaryAction={
-            <>
-              <Button 
-                variant="outlined" 
-                color="primary" 
-                onClick={() => onEdit(auto)} // Pasamos el objeto auto
-                sx={{ marginRight: 1 }}
-              >
-                Editar
-              </Button>
-              <Button 
-                variant="outlined" 
-                color="error" 
-                onClick={() => onDelete(auto.idAuto)}
-              >
-                Eliminar
-              </Button>
-            </>
-          }>
+          <ListItem
+            key={auto.idAuto}
+            secondaryAction={
+              <>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => onEdit(auto)} // Pasamos el objeto auto
+                  sx={{ marginRight: 1 }}
+                >
+                  Editar
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={() => onDelete(auto.idAuto)}
+                >
+                  Eliminar
+                </Button>
+              </>
+            }
+          >
             <ListItemText primary={auto.nombreModelo} />
           </ListItem>
         ))}

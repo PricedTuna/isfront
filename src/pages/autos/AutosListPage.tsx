@@ -19,9 +19,6 @@ const AutosListPage = () => {
 
   return (
     <Box mt={4} gap={2}>
-      <Typography variant="h4" component="h1" textAlign="center">
-        Listado de autos
-      </Typography>
       {autos == undefined ? (
         <Typography textAlign="center" variant="h5">
           No hay acceso a la base de datos...

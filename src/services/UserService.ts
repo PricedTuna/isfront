@@ -2,11 +2,9 @@ import { GetLoginUserDto } from "../dtos/usuarios/GetLoginUserDto";
 import { SendLoginUsuarioDto } from "../dtos/usuarios/SendLoginUsuarioDto";
 import { getHttpClient } from "./HttpClient";
 
-// TODO: CAMBIAR ESTE URL!
-const _userClient = getHttpClient("/usuarios");
+const _userClient = getHttpClient("/usuario");
 
 export class UserService {
-  // TODO: CHECKIAR QUE ONDA
   public login = async (data: SendLoginUsuarioDto) => {
     try {
       const response = await _userClient.post<GetLoginUserDto>("/login", data);
