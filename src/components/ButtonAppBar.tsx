@@ -49,8 +49,18 @@ export default function ButtonAppBar() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton component={Link} to="/autos">
+              <ListItemButton component={Link} to="/admin/autos">
                 <ListItemText primary="Autos" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton component={Link} to="/admin/home">
+                <ListItemText primary="admin home" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton component={Link} to="/admin">
+                <ListItemText primary="admin" />
               </ListItemButton>
             </ListItem>
             {/* Agrega más elementos de la lista aquí si es necesario */}

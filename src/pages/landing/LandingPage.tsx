@@ -13,7 +13,7 @@ function LandingPage() {
       flexDirection="column"
       gap={2}
     >
-      <Typography variant="h1" mb={4} p={0}>
+      <Typography variant="h1" mb={4} p={0} textAlign={"center"} >
         Sistema de Recursos humanos
       </Typography>
       <Link to="login">

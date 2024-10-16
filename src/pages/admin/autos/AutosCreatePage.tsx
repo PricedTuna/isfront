@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Container, Box, TextField, Button, Typography } from "@mui/material";
-import { CreateAutoDto } from "../../dtos/autos/CreateAutoDto";
-import { AutoService } from "../../services/AutoService";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Auto } from "../../dtos/autos/AutoDto";
+import { Auto } from "../../../dtos/autos/AutoDto";
+import { AutoService } from "../../../services/AutoService";
+import { CreateAutoDto } from "../../../dtos/autos/CreateAutoDto";
+import useGetAutos from "./hooks/use-get-autos";
 
 function AutoCreatePage() {
   const location = useLocation(); // Recupera la ubicación actual
   const initialValues = location.state as Auto; // Cast a CreateAutoDto
   const naviagte = useNavigate();
+  const { fetchAutos } = useGetAutos();
 
   const autoService = new AutoService();
 
@@ -30,13 +32,14 @@ function AutoCreatePage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if(initialValues != null){
-      console.log("HARA UPDATE")
       await autoService.update(initialValues.idAuto, formValues);
     } else {
       await autoService.create(formValues);
     }
-    naviagte("/autos");
+    fetchAutos();
+    naviagte("/admin/autos");
   };
 
   return (

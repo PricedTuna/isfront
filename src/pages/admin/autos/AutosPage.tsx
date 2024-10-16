@@ -1,28 +1,8 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { AutoService } from "../../services/AutoService";
-import { Auto } from "../../dtos/autos/AutoDto";
 
 function AutosPage() {
-  const [autos, setAutos] = useState<Auto[]>();
-  const _autoService = new AutoService();
-  const location = useLocation(); // Obtener la ubicación actual
-
-  const fetchAutos = async () => {
-    try {
-      const response = await _autoService.getAll();
-      if (Array.isArray(response)) {
-        setAutos(response);
-      }
-    } catch (error) {
-      console.error("Error fetching autos:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchAutos();
-  }, []);
+  const location = useLocation(); // Obtener la ubicación actuals
 
   return (
     <Box>
@@ -35,7 +15,7 @@ function AutosPage() {
             <Button
               variant={
                 location.pathname === "/autos/crear" ? "contained" : "outlined"
-              } // Cambiar a "contained" si la ruta está activa
+              }
             >
               Dar de alta Auto
             </Button>
@@ -46,7 +26,7 @@ function AutosPage() {
             <Button
               variant={
                 location.pathname === "/autos" ? "contained" : "outlined"
-              } // Cambiar a "contained" si la ruta está activa
+              }
             >
               Listar autos
             </Button>
@@ -54,7 +34,7 @@ function AutosPage() {
         </Box>
       </Box>
       <Box>
-        <Outlet context={{ autos }} />
+        <Outlet />
       </Box>
     </Box>
   );

@@ -18,19 +18,15 @@ const AutoList = ({ autos, onEdit, onDelete }: AutoListProps) => {
   console.log(JSON.stringify(autos.length, null, 2));
   return (
     <Box>
-      
-      {
-        autos.length > 0
-          ? (
-            <Box display="flex" flexDirection="row" justifyContent="space-between">
-        <Typography variant="h4" gutterBottom>
-          Listado de autos
-        </Typography>
-        {/* <Button onClick={handleReload} variant="contained" size="small">Reload</Button> */}
-      </Box>
-          )
-        : <Typography>No se han encontrado Autos</Typography>
-      }
+      {autos.length > 0 ? (
+        <Box display="flex" flexDirection="row" justifyContent="space-between">
+          <Typography variant="h4" gutterBottom>
+            Listado de autos
+          </Typography>
+        </Box>
+      ) : (
+        <Typography>Aún no hay autos agregados</Typography>
+      )}
 
       <List>
         {autos.map((auto) => (

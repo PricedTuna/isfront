@@ -3,7 +3,6 @@ import { Container, Box, TextField, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../common/context/AuthContext";
 import { UserService } from "../../services/UserService";
-import { GetLoginUserDto } from "../../dtos/usuarios/GetLoginUserDto";
 
 function LoginForm() {
   const [email, setEmail] = useState<string>("");
@@ -21,7 +20,11 @@ function LoginForm() {
     const userFound = (await _userService.login({
       email: email,
       password: password,
-    })) as GetLoginUserDto;
+    }));
+
+    console.log("*****") // !
+    console.log(userFound); // !
+    console.log("*****")  // !
 
     if (userFound) {
       login();
