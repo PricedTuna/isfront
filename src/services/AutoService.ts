@@ -1,3 +1,4 @@
+import { Wrapper } from "../common/wrappers/Wrapper";
 import { Auto } from "../dtos/autos/AutoDto";
 import { CreateAutoDto } from "../dtos/autos/CreateAutoDto";
 import { getHttpClient } from "./HttpClient"
@@ -7,9 +8,9 @@ const _autosClient = getHttpClient("/auto");
 export class AutoService {
   public getAll = async () => {
     try {
-      const response = await _autosClient.get<Auto[]>("");
+      const response = await _autosClient.get<Wrapper<Auto>>("");
       console.log(response);
-      return response.data;
+      return response.data.result;
     } catch (error) {
       console.log(error);
       return {message: "hubo un error pai"}
@@ -19,7 +20,6 @@ export class AutoService {
   public create = async (createAutoDto: CreateAutoDto) => {
     try {
       const response = await _autosClient.post("", createAutoDto);
-      console.log(response);
       return response.data;
     } catch (error) {
       console.log(error);

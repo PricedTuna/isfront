@@ -1,13 +1,14 @@
+import { SingleWrapper } from "../common/wrappers/SingleWrapper";
 import { GetLoginUserDto } from "../dtos/usuarios/GetLoginUserDto";
 import { SendLoginUsuarioDto } from "../dtos/usuarios/SendLoginUsuarioDto";
 import { getHttpClient } from "./HttpClient";
 
-const _userClient = getHttpClient("/usuario");
+const _userClient = getHttpClient("/auth");
 
-export class UserService {
+export class AuthService {
   public login = async (data: SendLoginUsuarioDto) => {
-    const response = await _userClient.post<GetLoginUserDto>("/login", data);
-    return response.data;
+    const response = await _userClient.post<SingleWrapper<GetLoginUserDto>>("/login", data);
+    return response.data.result;
   }
 
   public getAll = async () => {

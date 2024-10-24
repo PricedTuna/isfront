@@ -1,5 +1,4 @@
-import { Box, Typography } from "@mui/material";
-import { Outlet } from "react-router";
+import { Box, Button, Typography } from "@mui/material";
 
 function AdminPage() {
   return (
@@ -7,13 +6,11 @@ function AdminPage() {
       <Typography textAlign="center" py={2} variant="h2">
         Admin panel
       </Typography>
-      {Outlet !== null && Outlet !== undefined ? (
-        <Outlet />  
-      ) : (
-        <Box>
-          <Typography>Aqui se muestra info del panel :p</Typography>
-        </Box>
-      )}
+      <Box display='flex' justifyContent='center' alignItems='center' marginTop={5} >
+        <Button onClick={() => {console.log("Agregar usuario")}} variant="outlined">
+          Agregar un usuario
+        </Button>
+      </Box>
     </Box>
   );
 }

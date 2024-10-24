@@ -2,12 +2,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginForm from "../pages/login/LoginFormPage";
 import LandingPage from "../pages/landing/LandingPage";
 import ProtectedRoute from "./protected/ProtectedRoute";
-import MainLayout from "../layout/MainLayout";
-import HomePage from "../pages/home/HomePage";
-import AutosPage from "../pages/admin/autos/AutosPage";
-import AutosListPage from "../pages/admin/autos/AutosListPage";
-import AutoCreatePage from "../pages/admin/autos/AutosCreatePage";
-import AdminPage from "../pages/admin/AdminPage";
+import AdminProtectedRoute from "./protected/AdminProtectedRoute";
+import { PublicRouter } from "./PublicRouter";
+import { AdminRouter } from "./AdminRouter";
 
 const router = createBrowserRouter([
   {
@@ -21,55 +18,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <ProtectedRoute />,
-    errorElement: <ProtectedRoute />,
-    children: [
-      {
-        path: "/",
-        element: <MainLayout />,
-        children: [
-          {
-            path: "admin", // Ruta relativa
-            element: <AdminPage />,
-            children: [
-              {
-                path: "home", // Ruta relativa
-                element: <HomePage />,
-              },
-              {
-                path: "autos", // Ruta relativa
-                element: <AutosPage />,
-                errorElement: <AutosPage />,
-                children: [
-                  {
-                    path: "", // Ruta relativa para la lista de autos
-                    element: <AutosListPage />,
-                    errorElement: <AutosListPage />,
-                  },
-                  {
-                    path: "crear", // Ruta relativa para crear autos
-                    element: <AutoCreatePage />,
-                    errorElement: <AutoCreatePage />,
-                  },
-                  {
-                    path: "editar", // Ruta relativa para editar autos
-                    element: <AutoCreatePage />,
-                    errorElement: <AutoCreatePage />,
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            path: "home", // Ruta relativa
-            element: <HomePage />,
-          },
-        ],
-      },
-    ],
+    element: <ProtectedRoute />, // Rutas protegidas para usuarios autenticados
+    children: PublicRouter,
+  },
+  {
+    path: "/",
+    element: <AdminProtectedRoute />, // Rutas protegidas para administradores
+    children: AdminRouter,
   },
 ]);
-
 
 function AppRouter() {
   return <RouterProvider router={router} />;

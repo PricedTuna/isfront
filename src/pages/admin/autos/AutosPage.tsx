@@ -14,7 +14,7 @@ function AutosPage() {
           <Link to="crear">
             <Button
               variant={
-                location.pathname === "/autos/crear" ? "contained" : "outlined"
+                location.pathname === "/admin/autos/crear" ? "contained" : "outlined"
               }
             >
               Dar de alta Auto
@@ -25,7 +25,7 @@ function AutosPage() {
           <Link to="">
             <Button
               variant={
-                location.pathname === "/autos" ? "contained" : "outlined"
+                location.pathname === "/admin/autos" ? "contained" : "outlined"
               }
             >
               Listar autos

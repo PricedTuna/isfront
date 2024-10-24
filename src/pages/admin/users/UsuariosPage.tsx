@@ -1,12 +1,12 @@
 import { Box, List, Typography } from '@mui/material'
 import { useEffect, useState } from 'react';
 import UsuariosList from '../../../components/UsuariosList';
-import { UserService } from '../../../services/UserService';
 import { GetLoginUserDto } from '../../../dtos/usuarios/GetLoginUserDto';
+import { AuthService } from '../../../services/AuthService';
 
 function UsuariosPage() {
   const [usuarios, setUsuarios] = useState<GetLoginUserDto[]>();
-  const userService = new UserService();
+  const userService = new AuthService();
 
   useEffect(() => {
     const fetchAutos = async () => {

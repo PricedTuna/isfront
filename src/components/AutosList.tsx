@@ -10,7 +10,7 @@ import { Auto } from "../dtos/autos/AutoDto";
 
 type AutoListProps = {
   autos: Auto[];
-  onEdit: (auto: Auto) => void; // Cambiamos el tipo para recibir un objeto Auto
+  onEdit: (auto: Auto) => void;
   onDelete: (id: number) => void;
 };
 
@@ -19,25 +19,31 @@ const AutoList = ({ autos, onEdit, onDelete }: AutoListProps) => {
   return (
     <Box>
       {autos.length > 0 ? (
-        <Box display="flex" flexDirection="row" justifyContent="space-between">
-          <Typography variant="h4" gutterBottom>
+        <Box>
+          <Typography variant="h4" textAlign="center">
             Listado de autos
           </Typography>
         </Box>
       ) : (
-        <Typography>Aún no hay autos agregados</Typography>
+        <Typography textAlign="center">Aún no hay autos agregados</Typography>
       )}
 
-      <List>
+      <List
+        sx={{
+          maxWidth: "80%", // Ancho máximo del 80%
+          margin: "0 auto", // Centramos horizontalmente el elemento
+          bgcolor: "background.paper", // Color de fondo si lo deseas
+        }}
+      >
         {autos.map((auto) => (
           <ListItem
             key={auto.idAuto}
             secondaryAction={
-              <>
+              <Box>
                 <Button
                   variant="outlined"
                   color="primary"
-                  onClick={() => onEdit(auto)} // Pasamos el objeto auto
+                  onClick={() => onEdit(auto)}
                   sx={{ marginRight: 1 }}
                 >
                   Editar
@@ -49,10 +55,12 @@ const AutoList = ({ autos, onEdit, onDelete }: AutoListProps) => {
                 >
                   Eliminar
                 </Button>
-              </>
+              </Box>
             }
           >
-            <ListItemText primary={auto.nombreModelo} />
+            <Box>
+              <ListItemText primary={auto.nombreModelo} />
+            </Box>
           </ListItem>
         ))}
       </List>

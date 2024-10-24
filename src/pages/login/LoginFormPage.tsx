@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Container, Box, TextField, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../common/context/AuthContext";
-import { UserService } from "../../services/UserService";
+import { AuthService } from "../../services/AuthService";
 
 function LoginForm() {
   const [email, setEmail] = useState<string>("");
@@ -13,22 +13,23 @@ function LoginForm() {
 
   const navigate = useNavigate();
   const { login } = useAuth();
-  const _userService = new UserService();
+  const _userService = new AuthService();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const userFound = (await _userService.login({
+    const userFound = await _userService.login({
       email: email,
       password: password,
-    }));
+    });
 
-    console.log("*****") // !
-    console.log(userFound); // !
-    console.log("*****")  // !
-
-    if (userFound) {
-      login();
-      navigate("/home");
+    if (userFound !== null) {
+      login(userFound.isAdmin);
+      
+      if (userFound.isAdmin) {
+        navigate("/admin");
+      } else {
+        navigate("/home");
+      }
     } else {
       console.error("USER NOT FOUND");
       setEmailError(true);
@@ -73,7 +74,7 @@ function LoginForm() {
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
-              setPasswordError  (false);
+              setPasswordError(false);
             }}
             required
           />

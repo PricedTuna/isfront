@@ -30,11 +30,7 @@ export default function ButtonAppBar() {
       </IconButton>
 
       {/* Drawer que se abre desde el lateral izquierdo */}
-      <Drawer
-        anchor="left"
-        open={open}
-        onClose={toggleDrawer(false)}
-      >
+      <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
         <Box
           sx={{ width: 250 }}
           role="presentation"

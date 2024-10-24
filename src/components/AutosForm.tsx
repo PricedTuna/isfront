@@ -37,8 +37,7 @@ function AutosForm({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(formValues);
-    const response = await autoService.create(formValues);
-    console.log(response);
+    await autoService.create(formValues);
   };
 
   return (

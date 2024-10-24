@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Auto } from '../../../../dtos/autos/AutoDto'
 import { AutoService } from '../../../../services/AutoService';
 
@@ -16,10 +16,6 @@ function useGetAutos() {
       console.error("Error fetching autos:", error);
     }
   };
-
-  // useEffect(() => {
-  //   fetchAutos();
-  // }, []);
 
   return {autos, fetchAutos}
 }
