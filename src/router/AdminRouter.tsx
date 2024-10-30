@@ -12,29 +12,27 @@ export const AdminRouter = [
     children: [
       {
         path: "admin",
-        element: <AdminPage />,
+        element: <AdminPage />
+      },
+      {
+        path: "admin/autos",
+        element: <AutosPage />,
+        errorElement: <AutosPage />,
         children: [
           {
-            path: "autos",
-            element: <AutosPage />,
-            errorElement: <AutosPage />,
-            children: [
-              {
-                path: "",
-                element: <AutosListPage />,
-                errorElement: <AutosListPage />,
-              },
-              {
-                path: "crear",
-                element: <AutoCreatePage />,
-                errorElement: <AutoCreatePage />,
-              },
-              {
-                path: "editar",
-                element: <AutoCreatePage />,
-                errorElement: <AutoCreatePage />,
-              },
-            ],
+            path: "",
+            element: <AutosListPage />,
+            errorElement: <AutosListPage />,
+          },
+          {
+            path: "crear",
+            element: <AutoCreatePage />,
+            errorElement: <AutoCreatePage />,
+          },
+          {
+            path: "editar",
+            element: <AutoCreatePage />,
+            errorElement: <AutoCreatePage />,
           },
         ],
       },
