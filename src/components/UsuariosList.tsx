@@ -1,4 +1,4 @@
-import { UserDto } from '../dtos/usuarios/User';
+import { UserDto } from '../dtos/user/User';
 import { Box, Button, List, ListItem, ListItemText, Typography } from '@mui/material';
 
 type UserListProps = {

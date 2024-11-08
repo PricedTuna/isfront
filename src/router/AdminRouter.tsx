@@ -3,6 +3,9 @@ import AutosListPage from "../pages/admin/autos/AutosListPage";
 import AutoCreatePage from "../pages/admin/autos/AutosCreatePage";
 import AdminPage from "../pages/admin/AdminPage";
 import MainLayout from "../layout/MainLayout";
+import UsersAdminPage from "../pages/admin/users/UsersAdminPage";
+
+const baseUrl: string = 'admin'
 
 // Rutas para administradores
 export const AdminRouter = [
@@ -15,9 +18,9 @@ export const AdminRouter = [
         element: <AdminPage />
       },
       {
-        path: "admin/autos",
+        path: `${baseUrl}/autos`,
         element: <AutosPage />,
-        errorElement: <AutosPage />,
+        errorElement: <AutosPage />, // todo: refactor name (add admin)
         children: [
           {
             path: "",
@@ -36,6 +39,10 @@ export const AdminRouter = [
           },
         ],
       },
+      {
+        path: `${baseUrl}/users`,
+        element: <UsersAdminPage />,
+      }
     ],
   },
 ];

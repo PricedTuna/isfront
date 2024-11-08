@@ -50,11 +50,6 @@ export default function ButtonAppBar() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton component={Link} to="/admin/home">
-                <ListItemText primary="admin home" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
               <ListItemButton component={Link} to="/admin">
                 <ListItemText primary="admin" />
               </ListItemButton>
