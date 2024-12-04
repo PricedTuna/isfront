@@ -1,5 +1,5 @@
 export interface SingleWrapper<T>{
-  responseCode: number
+  statusCode: number
   result: T | null
   message: string
 }

@@ -1,5 +1,5 @@
 export interface Wrapper<T>{
-  responseCode: number
+  statusCode: number
   result: T[] | null
   message: string
 }
