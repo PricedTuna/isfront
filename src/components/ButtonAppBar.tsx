@@ -54,6 +54,11 @@ export default function ButtonAppBar() {
                 <ListItemText primary="admin" />
               </ListItemButton>
             </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton component={Link} to="/admin/nacionalidades">
+                <ListItemText primary="nacionalidades" />
+              </ListItemButton>
+            </ListItem>
             {/* Agrega más elementos de la lista aquí si es necesario */}
           </List>
         </Box>

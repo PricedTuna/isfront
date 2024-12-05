@@ -4,6 +4,7 @@ import AutoCreatePage from "../pages/admin/autos/AutosCreatePage";
 import AdminPage from "../pages/admin/AdminPage";
 import MainLayout from "../layout/MainLayout";
 import UsersAdminPage from "../pages/admin/users/UsersAdminPage";
+import NacionalidadesPage from "../pages/catalogs/nacionalidadesPage";
 
 const baseUrl: string = 'admin'
 
@@ -42,6 +43,10 @@ export const AdminRouter = [
       {
         path: `${baseUrl}/users`,
         element: <UsersAdminPage />,
+      },
+      {
+        path: `${baseUrl}/nacionalidades`,
+        element: <NacionalidadesPage />
       }
     ],
   },
