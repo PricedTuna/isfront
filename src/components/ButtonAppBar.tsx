@@ -9,6 +9,15 @@ import ListItemText from "@mui/material/ListItemText";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+// Son los objetos del menu lateral
+const menuItems = [
+  { text: "Home", path: "/home" },
+  { text: "Autos", path: "/admin/autos" },
+  { text: "Administrador", path: "/admin" },
+  { text: "Nacionalidades", path: "/admin/nacionalidades" },
+  {text:"Ciudades", path: "/admin/ciudades"}
+];
+
 export default function ButtonAppBar() {
   const [open, setOpen] = useState(false);
 
@@ -29,7 +38,7 @@ export default function ButtonAppBar() {
         <MenuIcon />
       </IconButton>
 
-      {/* Drawer que se abre desde el lateral izquierdo */}
+      {/*Drawer que se abre desde el lateral izquierdo*/} 
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
         <Box
           sx={{ width: 250 }}
@@ -37,29 +46,15 @@ export default function ButtonAppBar() {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-          {/* Lista de enlaces en la barra lateral */}
+          {/* Lista Dinamica*/}
           <List>
-            <ListItem disablePadding>
-              <ListItemButton component={Link} to="/home">
-                <ListItemText primary="Home" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component={Link} to="/admin/autos">
-                <ListItemText primary="Autos" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component={Link} to="/admin">
-                <ListItemText primary="admin" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component={Link} to="/admin/nacionalidades">
-                <ListItemText primary="nacionalidades" />
-              </ListItemButton>
-            </ListItem>
-            {/* Agrega más elementos de la lista aquí si es necesario */}
+            {menuItems.map((item, index) => (
+              <ListItem key={index} disablePadding>
+                <ListItemButton component={Link} to={item.path}>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
           </List>
         </Box>
       </Drawer>

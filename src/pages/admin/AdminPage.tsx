@@ -5,7 +5,9 @@ function AdminPage() {
 
   const navigate = useNavigate();
 
+
   return (
+    
     <Box p={2}>
       <Typography textAlign="center" py={2} variant="h2">
         Admin panel
@@ -16,6 +18,7 @@ function AdminPage() {
         </Button>
       </Box>
     </Box>
+    
   );
 }
 
