@@ -1,10 +1,12 @@
 import React from 'react'
+import { Typography } from '@mui/material'
 
 function NacionalidadesForm() {
   return (
-    <div>
-      Formulario
-    </div>
+    <Typography variant="h2" textAlign="center">
+      Form
+    </Typography>
+    
   )
 }
 

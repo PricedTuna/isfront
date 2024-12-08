@@ -1,3 +1,4 @@
+import { BorderAll } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -14,10 +15,10 @@ function LandingPage() {
       gap={2}
     >
       <Typography variant="h1" mb={4} p={0} textAlign={"center"} >
-        Sistema de Recursos humanos
+        Recursos Humanos
       </Typography>
       <Link to="login">
-        <Button variant="outlined" size="large">
+        <Button variant="contained" size="large">
           <Typography variant="h6">Iniciar sesión</Typography>
         </Button>
       </Link>

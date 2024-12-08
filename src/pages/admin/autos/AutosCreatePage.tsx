@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { Container, Box, TextField, Button, Typography } from "@mui/material";
+import { Container, Box, TextField, Button, Typography,useMediaQuery } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Auto } from "../../../dtos/autos/AutoDto";
 import { AutoService } from "../../../services/AutoService";
 import { CreateAutoDto } from "../../../dtos/autos/CreateAutoDto";
 import useGetAutos from "./hooks/use-get-autos";
+import { showSuccessAlert,showErrorAlert } from "../../../utils/AlertUtils";
+
+
 
 function AutoCreatePage() {
   const location = useLocation(); // Recupera la ubicación actual
   const initialValues = location.state as Auto; // Cast a CreateAutoDto
-  const naviagte = useNavigate();
+  const navigate = useNavigate();
   const { fetchAutos } = useGetAutos();
-
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const autoService = new AutoService();
 
   const [formValues, setFormValues] = useState<CreateAutoDto>({
@@ -32,14 +35,20 @@ function AutoCreatePage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if(initialValues != null){
-      await autoService.update(initialValues.idAuto, formValues);
-    } else {
-      await autoService.create(formValues);
+    try {
+      if (initialValues != null) {
+        await autoService.update(initialValues.idAuto, formValues);
+        await showSuccessAlert("El auto fue actualizado correctamente.", prefersDarkMode);
+      } else {
+        await autoService.create(formValues);
+        await showSuccessAlert("El auto fue registrado correctamente.", prefersDarkMode);
+      }
+      fetchAutos();
+      navigate("/admin/autos");
+    } catch (error) {
+      await showErrorAlert("Hubo un problema al procesar la solicitud. Inténtalo de nuevo.", prefersDarkMode);
+      console.error("Error en el registro/actualización:", error);
     }
-    fetchAutos();
-    naviagte("/admin/autos");
   };
 
   return (
@@ -51,12 +60,12 @@ function AutoCreatePage() {
         alignItems="center"
         minHeight="100vh"
       >
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography variant="h4" component="h1" gutterBottom fontFamily={"Oswald"}>
           Registro de Auto
         </Typography>
         <Box component="form" onSubmit={handleSubmit} width="100%">
           <TextField
-            label="Nombre Modelo"
+            label="Modelo"
             name="nombreModelo"
             variant="outlined"
             fullWidth

@@ -1,13 +1,15 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography} from "@mui/material";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 function AutosPage() {
   const location = useLocation(); // Obtener la ubicación actuals
 
+
   return (
+   
     <Box>
-      <Typography variant="h3" textAlign="center">
-        Autos admin panel
+      <Typography variant="h3" textAlign="center" fontFamily={"Oswald"}>
+        Administracion de Autos 
       </Typography>
       <Box display="flex" justifyContent="center" gap={3} mt={4}>
         <Box>
@@ -37,6 +39,7 @@ function AutosPage() {
         <Outlet />
       </Box>
     </Box>
+   
   );
 }
 

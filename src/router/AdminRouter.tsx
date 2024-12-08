@@ -5,6 +5,12 @@ import AdminPage from "../pages/admin/AdminPage";
 import MainLayout from "../layout/MainLayout";
 import UsersAdminPage from "../pages/admin/users/UsersAdminPage";
 import NacionalidadesPage from "../pages/catalogs/nacionalidadesPage";
+import CiudadesPage from "../pages/catalogs/ciudadesPage";
+import TiposContratoPage from "../pages/catalogs/tiposContratoPage";
+import TiposAsistenciaPage from "../pages/catalogs/TiposAsistenciaPage";
+import TiposEmpleadosPage from "../pages/catalogs/TiposEmpleadosPage";
+import TiposLicenciaPage from "../pages/catalogs/TiposLicenciaPage";
+import TiposPermisosPage from "../pages/catalogs/TiposPermisosPage";
 
 const baseUrl: string = 'admin'
 
@@ -47,7 +53,32 @@ export const AdminRouter = [
       {
         path: `${baseUrl}/nacionalidades`,
         element: <NacionalidadesPage />
+      },
+      {
+        path: `${baseUrl}/ciudades`,
+        element: <CiudadesPage/>
+      },
+      {
+        path:`${baseUrl}/tiposcontrato`,
+        element: <TiposContratoPage/>
+      },
+      {
+        path:`${baseUrl}/tiposasistencias`,
+        element: <TiposAsistenciaPage/>
+      },
+      {
+        path:`${baseUrl}/tiposempleados`,
+        element: <TiposEmpleadosPage/>
+      },
+      {
+        path:`${baseUrl}/tiposlicencia`,
+        element: <TiposLicenciaPage/>
+      },
+      {
+        path:`${baseUrl}/tipospermisos`,
+        element: <TiposPermisosPage/>
       }
+
     ],
   },
 ];
