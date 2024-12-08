@@ -59,11 +59,12 @@ function LoginForm() {
         
         
       >
-        <Typography variant="h4" component="h1" gutterBottom fontFamily={"Roboto"} fontSize={50}>
+        <Typography variant="h4" component="h1" gutterBottom fontFamily={"Oswald"} fontSize={50}>
           Iniciar Sesión
         </Typography>
         <Box component="form" onSubmit={handleSubmit} width="100%">
-          <TextField
+          <TextField  
+            
             error={isEmailError}
             label="Correo electrónico"
             variant="filled"
@@ -79,6 +80,7 @@ function LoginForm() {
           />
           <TextField
             error={isPasswordError}
+            
             label="Contraseña"
             variant="filled"
             fullWidth

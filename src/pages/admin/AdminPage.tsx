@@ -9,7 +9,7 @@ function AdminPage() {
   return (
     
     <Box p={2}>
-      <Typography textAlign="center" py={2} variant="h2">
+      <Typography textAlign="center" py={2} variant="h2" fontFamily={"Bebas Neue"} fontSize={150}>
         Admin panel
       </Typography>
       <Box display='flex' justifyContent='center' alignItems='center' marginTop={5} >

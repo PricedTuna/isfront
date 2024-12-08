@@ -8,8 +8,8 @@ function AutosPage() {
   return (
    
     <Box>
-      <Typography variant="h3" textAlign="center">
-        Autos admin panel
+      <Typography variant="h3" textAlign="center" fontFamily={"Oswald"}>
+        Administracion de Autos 
       </Typography>
       <Box display="flex" justifyContent="center" gap={3} mt={4}>
         <Box>

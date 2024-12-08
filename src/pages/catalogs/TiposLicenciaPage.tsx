@@ -1,19 +1,18 @@
-
-import CiudadesForm from './components/ciudadesForm'
 import { Box,Typography } from '@mui/material';
+import TiposLicenciaForm from './components/TiposLicenciaForm';
 
 
-function CiudadesPage() {
+function TiposLicenciaPage() {
   return (
     <Box>
       <Typography variant="h3" textAlign="center" fontSize={50} fontFamily={"Oswald"}>
-        Ciudades admin Panel
+        Tipos de Licencia admin Panel
       </Typography>
-      <CiudadesForm/>
+      <TiposLicenciaForm/>
     </Box>  
 
     
   )
 }
 
-export default CiudadesPage
+export default TiposLicenciaPage

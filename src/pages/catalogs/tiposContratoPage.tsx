@@ -1,19 +1,18 @@
-
-import CiudadesForm from './components/ciudadesForm'
 import { Box,Typography } from '@mui/material';
+import TiposContratoForm from './components/tiposContratosForm';
 
 
-function CiudadesPage() {
+function TiposContratoPage() {
   return (
     <Box>
       <Typography variant="h3" textAlign="center" fontSize={50} fontFamily={"Oswald"}>
-        Ciudades admin Panel
+        Tipos de contrato admin Panel
       </Typography>
-      <CiudadesForm/>
+      <TiposContratoForm/>
     </Box>  
 
     
   )
 }
 
-export default CiudadesPage
+export default TiposContratoPage

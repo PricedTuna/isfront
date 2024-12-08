@@ -39,7 +39,7 @@ function App() {
             }),
       },
       typography: {
-        fontFamily: "Roboto, Arial, sans-serif",
+        fontFamily: "Roboto, Arial, sans-serif, Rubik",
       },
     });
   }, [prefersDarkMode]);

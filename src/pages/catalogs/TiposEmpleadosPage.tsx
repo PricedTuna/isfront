@@ -1,19 +1,19 @@
-
-import CiudadesForm from './components/ciudadesForm'
 import { Box,Typography } from '@mui/material';
 
+import TiposEmpleadosForm from './components/TiposEmpleadoForm';
 
-function CiudadesPage() {
+
+function TiposEmpleadosPage() {
   return (
     <Box>
       <Typography variant="h3" textAlign="center" fontSize={50} fontFamily={"Oswald"}>
-        Ciudades admin Panel
+        Tipos de Empleados admin Panel
       </Typography>
-      <CiudadesForm/>
+      <TiposEmpleadosForm/>
     </Box>  
 
     
   )
 }
 
-export default CiudadesPage
+export default TiposEmpleadosPage
