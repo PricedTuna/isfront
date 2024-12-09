@@ -7,8 +7,8 @@ const _authClient = getHttpClient("/auth");
 
 export class AuthService {
   public login = async (data: SendLoginUsuarioDto) => {
-    const response = await _authClient.post<SingleWrapper<GetLoginUserDto>>("/login", data);
-    return response.data.result;
+    const {data: {result}} = await _authClient.post<SingleWrapper<GetLoginUserDto>>("/login", data);
+    return result;
   }
 
   public getAll = async () => {

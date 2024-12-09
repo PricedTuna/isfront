@@ -3,6 +3,7 @@ import { Container, Box, TextField, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../common/context/AuthContext";
 import { AuthService } from "../../services/AuthService";
+import { loginUserDto } from "../../dtos/auth/GetLoginUserDto";
 
 function LoginForm() {
   const [email, setEmail] = useState<string>("");
@@ -17,21 +18,30 @@ function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
+    const defaultUser: loginUserDto = {
+      idUsuario: 1,
+      nombreUsuario: "adminUser",
+      correo: "admin@admin.com",
+      isAdmin: true,
+      createdate: "2024-12-03T05:51:01.000Z",
+      updatedate: "2024-12-03T05:51:01.000Z"
+    }
     // !
     if(email === 'admin@mail.com' && password === 'admin'){
-      login(true);
+      login(defaultUser);
       navigate("/admin");
     }
     // !
 
     e.preventDefault();
-    const userFound = await _userService.login({
+    const loginResponse = await _userService.login({
       email: email,
       password: password,
     });
 
-    if (userFound !== null) {
-      login(userFound.isAdmin);
+    if (loginResponse !== null) {
+      const {accessToken: _, user: userFound} = loginResponse
+      login(userFound);
       
       if (userFound.isAdmin) {
         navigate("/admin");

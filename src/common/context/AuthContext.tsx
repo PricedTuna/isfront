@@ -1,10 +1,12 @@
-import { createContext, useState, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
+import { loginUserDto } from "../../dtos/auth/GetLoginUserDto";
 
 // Definimos el tipo de los valores del contexto
 interface AuthContextType {
   isAuthenticated: boolean;
+  user: loginUserDto | undefined;
   isAdmin: boolean;
-  login: (isAdmin: boolean) => void;
+  login: (user: loginUserDto) => void;
   logout: () => void;
 }
 
@@ -14,20 +16,25 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // Proveedor del contexto
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [user, setUser] = useState<loginUserDto>();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
-  const login = (isAdmin: boolean) => {
+  const login = (user: loginUserDto) => {
     setIsAuthenticated(true);
-    setIsAdmin(isAdmin);
+    setIsAdmin(user.isAdmin);
+    setUser(user);
   };
 
   const logout = () => {
     setIsAuthenticated(false);
     setIsAdmin(false);
+    setUser(undefined);
   };
 
   return (
-    <AuthContext.Provider value={{ isAdmin, isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAdmin, isAuthenticated, user, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
