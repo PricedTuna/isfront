@@ -1,32 +1,19 @@
 import { useEffect } from 'react'
 import { useAuth } from '../../common/context/AuthContext'
 import { Outlet, useNavigate } from 'react-router';
-import LoginForm from '../../pages/login/LoginFormPage';
 
 function ProtectedRoute() {
-
-  const AuthContext = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  if(AuthContext == undefined) {
-    return <LoginForm />
-  }
-
-  const {isAuthenticated} = AuthContext;
-
   useEffect(() => {
-    
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
       navigate("/login");
     }
+  }, [isAuthenticated]);
 
-  }, [])
-
-  return (
-    <Outlet />
-  )
-  
-
+  return isAuthenticated ? <Outlet /> : null;
 }
+
 
 export default ProtectedRoute

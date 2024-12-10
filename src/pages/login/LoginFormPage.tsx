@@ -3,7 +3,6 @@ import { Container, Box, TextField, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../common/context/AuthContext";
 import { AuthService } from "../../services/AuthService";
-import { loginUserDto } from "../../dtos/auth/GetLoginUserDto";
 
 function LoginForm() {
   const [email, setEmail] = useState<string>("");
@@ -17,30 +16,20 @@ function LoginForm() {
   const _userService = new AuthService();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-
-    const defaultUser: loginUserDto = {
-      idUsuario: 1,
-      nombreUsuario: "adminUser",
-      correo: "admin@admin.com",
-      isAdmin: true,
-      createdate: "2024-12-03T05:51:01.000Z",
-      updatedate: "2024-12-03T05:51:01.000Z"
-    }
-    // !
-    if(email === 'admin@mail.com' && password === 'admin'){
-      login(defaultUser);
-      navigate("/admin");
-    }
-    // !
-
     e.preventDefault();
     const loginResponse = await _userService.login({
       email: email,
       password: password,
     });
-
+  
     if (loginResponse !== null) {
-      const {accessToken: _, user: userFound} = loginResponse
+      const { accessToken, user: userFound } = loginResponse;
+      
+      // Guardar en localStorage
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("user", JSON.stringify(userFound));
+  
+      // Actualizar el contexto
       login(userFound);
       
       if (userFound.isAdmin) {
@@ -54,6 +43,7 @@ function LoginForm() {
       setPasswordError(true);
     }
   };
+  
 
   return (
     <Container maxWidth="xs">
