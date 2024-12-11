@@ -14,7 +14,7 @@ const AutosListPage = () => {
 
   useEffect(() => {
     fetchAutos();
-  }, [])
+  }, [fetchAutos])
 
   const handleEdit = (auto: Auto) => {
     navigate("/admin/autos/crear", { state: auto }); // Navega a la página de creación y pasa el auto como estado
