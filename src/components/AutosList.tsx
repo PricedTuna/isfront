@@ -20,7 +20,7 @@ const AutoList = ({ autos, onEdit, onDelete }: AutoListProps) => {
     <Box>
       {autos.length > 0 ? (
         <Box>
-          <Typography variant="h4" textAlign="center">
+          <Typography variant="h4" textAlign="center" fontFamily={"Rubik"} fontSize={30}>
             Listado de autos
           </Typography>
         </Box>

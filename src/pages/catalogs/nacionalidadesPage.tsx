@@ -1,12 +1,17 @@
-import React from 'react'
-import NacionalidadesForm from './components/nacionalidadesForm'
 
+import { Box, Typography } from '@mui/material'
+import NacionalidadesForm from './components/nacionalidadesForm';
 function NacionalidadesPage() {
   return (
-    <div>
-      Nacionalidades Page
-      <NacionalidadesForm />
-    </div>
+    <Box>
+      <Typography variant="h3" textAlign="center" fontFamily={"Oswald"}>
+        Nacionalidades admin Panel
+      </Typography>
+      <NacionalidadesForm/>
+    </Box>
+
+    
+    
   )
 }
 

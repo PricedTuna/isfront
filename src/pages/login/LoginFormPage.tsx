@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, Box, TextField, Button, Typography } from "@mui/material";
+import { Container, Box, TextField, Button, Typography} from "@mui/material";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../common/context/AuthContext";
 import { AuthService } from "../../services/AuthService";
@@ -14,6 +14,8 @@ function LoginForm() {
   const navigate = useNavigate();
   const { login } = useAuth();
   const _userService = new AuthService();
+  //Tonos para boton 
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,6 +48,7 @@ function LoginForm() {
   
 
   return (
+    
     <Container maxWidth="xs">
       <Box
         display="flex"
@@ -53,15 +56,18 @@ function LoginForm() {
         justifyContent="center"
         alignItems="center"
         minHeight="100vh"
+        
+        
       >
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography variant="h4" component="h1" gutterBottom fontFamily={"Oswald"} fontSize={50}>
           Iniciar Sesión
         </Typography>
         <Box component="form" onSubmit={handleSubmit} width="100%">
-          <TextField
+          <TextField  
+            
             error={isEmailError}
             label="Correo electrónico"
-            variant="outlined"
+            variant="filled"
             fullWidth
             margin="normal"
             type="email"
@@ -74,8 +80,9 @@ function LoginForm() {
           />
           <TextField
             error={isPasswordError}
+            
             label="Contraseña"
-            variant="outlined"
+            variant="filled"
             fullWidth
             margin="normal"
             type="password"
@@ -98,6 +105,7 @@ function LoginForm() {
         </Box>
       </Box>
     </Container>
+    
   );
 }
 
