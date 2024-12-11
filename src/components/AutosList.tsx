@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   List,
@@ -5,6 +6,7 @@ import {
   ListItemText,
   Button,
   Typography,
+  TextField,
 } from "@mui/material";
 import { Auto } from "../dtos/autos/AutoDto";
 
@@ -15,55 +17,85 @@ type AutoListProps = {
 };
 
 const AutoList = ({ autos, onEdit, onDelete }: AutoListProps) => {
-  console.log(JSON.stringify(autos.length, null, 2));
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para la busqueda
+
+  // Filtro para buscar por cualquier dato menos por fecha
+  const filteredAutos = autos.filter((auto) => {
+    return (
+      auto.nombreModelo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      auto.yearModelo.toString().includes(searchTerm) ||
+      auto.numeroPlacas.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      auto.numeroSerie.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      auto.numeroPoliza.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+
   return (
     <Box>
-      {autos.length > 0 ? (
-        <Box>
-          <Typography variant="h4" textAlign="center" fontFamily={"Rubik"} fontSize={30}>
-            Listado de autos
-          </Typography>
-        </Box>
-      ) : (
-        <Typography textAlign="center">Aún no hay autos agregados</Typography>
-      )}
-
-      <List
-        sx={{
-          maxWidth: "80%", // Ancho máximo del 80%
-          margin: "0 auto", // Centramos horizontalmente el elemento
-          bgcolor: "background.paper", // Color de fondo si lo deseas
-        }}
+      <Typography
+        variant="h4"
+        textAlign="center"
+        fontFamily={"Rubik"}
+        fontSize={30}
+        marginBottom={2}
       >
-        {autos.map((auto) => (
-          <ListItem
-            key={auto.idAuto}
-            secondaryAction={
+        Listado de Autos
+      </Typography>
+
+      {/* Field para buscar */}
+      <Box textAlign="center" marginBottom={3}>
+        <TextField
+          label="Buscar autos"
+          variant="outlined"
+          fullWidth
+          sx={{ maxWidth: "80%", margin: "0 auto" }}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </Box>
+
+      {filteredAutos.length > 0 ? (
+        <List
+          sx={{
+            maxWidth: "80%", 
+            margin: "0 auto",
+            bgcolor: "background.paper", 
+          }}
+        >
+          {filteredAutos.map((auto) => (
+            <ListItem
+              key={auto.idAuto}
+              secondaryAction={
+                <Box>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => onEdit(auto)}
+                    sx={{ marginRight: 1 }}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => onDelete(auto.idAuto)}
+                  >
+                    Eliminar
+                  </Button>
+                </Box>
+              }
+            >
               <Box>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => onEdit(auto)}
-                  sx={{ marginRight: 1 }}
-                >
-                  Editar
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={() => onDelete(auto.idAuto)}
-                >
-                  Eliminar
-                </Button>
+                <ListItemText primary={auto.nombreModelo} />
               </Box>
-            }
-          >
-            <Box>
-              <ListItemText primary={auto.nombreModelo} />
-            </Box>
-          </ListItem>
-        ))}
-      </List>
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <Typography textAlign="center" color="text.secondary">
+          No se encontraron autos.
+        </Typography>
+      )}
     </Box>
   );
 };

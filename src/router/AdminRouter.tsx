@@ -1,9 +1,9 @@
 import AutosPage from "../pages/admin/autos/AutosPage";
 import AutosListPage from "../pages/admin/autos/AutosListPage";
 import AutoCreatePage from "../pages/admin/autos/AutosCreatePage";
-import AdminPage from "../pages/admin/AdminPage";
+import AdminPage from '../pages/admin/AdminPage';
 import MainLayout from "../layout/MainLayout";
-import UsersAdminPage from "../pages/admin/users/UsersAdminPage";
+import UsersAdminPage from '../pages/admin/users/UsersAdminPage';
 import NacionalidadesPage from "../pages/catalogs/nacionalidadesPage";
 import CiudadesPage from "../pages/catalogs/ciudadesPage";
 import TiposContratoPage from "../pages/catalogs/tiposContratoPage";
@@ -11,6 +11,8 @@ import TiposAsistenciaPage from "../pages/catalogs/TiposAsistenciaPage";
 import TiposEmpleadosPage from "../pages/catalogs/TiposEmpleadosPage";
 import TiposLicenciaPage from "../pages/catalogs/TiposLicenciaPage";
 import TiposPermisosPage from "../pages/catalogs/TiposPermisosPage";
+import UsersCreatePage from '../pages/admin/users/UsersCreatePage';
+import HomePage from "../pages/home/HomePage";
 
 const baseUrl: string = 'admin'
 
@@ -22,7 +24,7 @@ export const AdminRouter = [
     children: [
       {
         path: "admin",
-        element: <AdminPage />
+        element: <HomePage/>
       },
       {
         path: `${baseUrl}/autos`,
@@ -48,7 +50,25 @@ export const AdminRouter = [
       },
       {
         path: `${baseUrl}/users`,
-        element: <UsersAdminPage />,
+        element:<AdminPage/>,
+        errorElement: <AdminPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <UsersAdminPage/>,
+            errorElement: <UsersAdminPage/>,
+          },
+          {
+            path: "crear",
+            element: <UsersCreatePage/>,
+            errorElement: <UsersCreatePage/>,
+          },
+          {
+            path: "editar",
+            element: <UsersCreatePage/>,
+            errorElement: <UsersCreatePage/>,
+          },
+        ],
       },
       {
         path: `${baseUrl}/nacionalidades`,
