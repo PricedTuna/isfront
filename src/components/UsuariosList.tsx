@@ -10,7 +10,7 @@ type UserListProps = {
 function UsuariosList({onDelete, onEdit, users}: UserListProps) {
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom fontFamily={"Oswald"} fontSize={50}>
         Lista de Usuarios
       </Typography>
       <List>

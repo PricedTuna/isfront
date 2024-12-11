@@ -16,7 +16,7 @@ import { useAuth } from "../common/context/AuthContext";
 const menuItems = [
   { text: "Home", path: "/home" },
   { text: "Autos", path: "/admin/autos" },
-  { text: "Administrador", path: "/admin" },
+  { text: "Administrador", path: "/admin/users" },
   {
     text: "Catálogos",
     subItems: [
