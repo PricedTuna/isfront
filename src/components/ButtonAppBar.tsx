@@ -10,6 +10,7 @@ import Collapse from "@mui/material/Collapse";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { useAuth } from "../common/context/AuthContext";
 
 // Menu con su submenu
 const menuItems = [
@@ -34,6 +35,7 @@ const menuItems = [
 export default function ButtonAppBar() {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const { logout } = useAuth();
 
   const toggleDrawer = (open: boolean) => () => {
     setOpen(open);
@@ -46,6 +48,10 @@ export default function ButtonAppBar() {
   const stopPropagation = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
+
+  const handleLogout = () => {
+    logout()
+  }
 
   return (
     <Box sx={{ flexGrow: 4 }}>
@@ -112,6 +118,15 @@ export default function ButtonAppBar() {
                 )}
               </div>
             ))}
+            <ListItem disablePadding>
+              <ListItemButton
+                component={Link}
+                to={'/login'}
+                onClick={handleLogout}
+              >
+                <ListItemText primary={`Cerrar sesión`} />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       </Drawer>

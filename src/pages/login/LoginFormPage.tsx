@@ -18,22 +18,21 @@ function LoginForm() {
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-
-    // !
-    if(email === 'admin@mail.com' && password === 'admin'){
-      login(true);
-      navigate("/admin");
-    }
-    // !
-
     e.preventDefault();
-    const userFound = await _userService.login({
+    const loginResponse = await _userService.login({
       email: email,
       password: password,
     });
-
-    if (userFound !== null) {
-      login(userFound.isAdmin);
+  
+    if (loginResponse !== null) {
+      const { accessToken, user: userFound } = loginResponse;
+      
+      // Guardar en localStorage
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("user", JSON.stringify(userFound));
+  
+      // Actualizar el contexto
+      login(userFound);
       
       if (userFound.isAdmin) {
         navigate("/admin");
@@ -46,6 +45,7 @@ function LoginForm() {
       setPasswordError(true);
     }
   };
+  
 
   return (
     
