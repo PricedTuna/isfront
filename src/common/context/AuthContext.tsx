@@ -1,10 +1,4 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { loginUserDto } from "../../dtos/auth/GetLoginUserDto";
 
 // Definimos el tipo de los valores del contexto
@@ -26,8 +20,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   const isTokenExpired = (token: string) => {
-    const payload = JSON.parse(atob(token.split(".")[1])); // Decodificar JWT
-    return payload.exp * 1000 < Date.now(); // Verificar expiración
+    try {
+      const payloadBase64 = token.split(".")[1];
+      if (!payloadBase64) {
+        console.error("El token no tiene un payload válido");
+        return true;
+      }
+      const payload = JSON.parse(atob(payloadBase64)); // Decodificar JWT
+      return payload.exp * 1000 < Date.now(); // Verificar expiración
+    } catch (error) {
+      console.error("Error al decodificar el token:", error);
+      return true; // Considerar el token como expirado si ocurre un error
+    }
   };
 
   useEffect(() => {
@@ -42,6 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(parsedUser);
       } else {
         // Si el token expiró, limpiar la sesión
+        console.warn("El token ha expirado. Se limpiará la sesión.");
         localStorage.removeItem("accessToken");
         localStorage.removeItem("user");
       }
@@ -52,6 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthenticated(true);
     setIsAdmin(user.isAdmin);
     setUser(user);
+    localStorage.setItem("user", JSON.stringify(user));
   };
 
   const logout = () => {
