@@ -25,13 +25,13 @@ function UsersAdminPage() {
 
   return (
     <Box p={2}>
-      <Typography textAlign="center" py={2} variant="h2">
-        Admin panel
+      <Typography textAlign="center" py={2} variant="h2" fontFamily={"Oswald"} fontSize={80}>
+        Listar Usuarios
       </Typography>
       <Box>
         <List>
           {usuarios == undefined ? (
-            <Typography>No se han encontrado ningun usuario</Typography>
+            <Typography fontFamily={"Rubik"} fontSize={20} textAlign="center">No se han encontrado ningun usuario</Typography>
           ) : (
             <UsuariosList
               onDelete={() => console.log("delete user")}
