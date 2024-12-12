@@ -3,8 +3,8 @@ import { SesionTrabajoService } from '../../../services/SesionTrabajoService'
 function useFinalizarSesionTrabajo() {
   const sesionTrabajoService = new SesionTrabajoService()
 
-  const finalizarSesionTrabajo = (id: number) => {
-    sesionTrabajoService.finalizarSesionTrabajo(id)
+  const finalizarSesionTrabajo = async (id: number) => {
+    await sesionTrabajoService.finalizarSesionTrabajo(id)
   }
 
   return {finalizarSesionTrabajo}

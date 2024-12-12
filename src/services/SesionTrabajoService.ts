@@ -16,6 +16,11 @@ export class SesionTrabajoService {
     return result;
   }
 
+  async getSesionTrabajoByToken(token:string) {
+    const {data: {result}} = await _sesionTrabajoClient.get<SingleWrapper<GetSesionTrabajoDto>>(`/token/${token}`)
+    return result
+  }
+
   async createSesionTrabajo(createSesionTrabajoDto: CreateSesionTrabajoDto) {
     const {
       data: { result },
