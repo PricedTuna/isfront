@@ -1,5 +1,5 @@
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import { Container, Box, TextField, Button, Typography} from "@mui/material";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../common/context/AuthContext";
 import { AuthService } from "../../services/AuthService";
@@ -14,26 +14,25 @@ function LoginForm() {
   const navigate = useNavigate();
   const { login } = useAuth();
   const _userService = new AuthService();
-  //Tonos para boton 
-
+  //Tonos para boton
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const loginResponse = await _userService.login({
-      email: email,
+      correo: email,
       password: password,
     });
-  
+
     if (loginResponse !== null) {
       const { accessToken, user: userFound } = loginResponse;
-      
+
       // Guardar en localStorage
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("user", JSON.stringify(userFound));
-  
+
       // Actualizar el contexto
       login(userFound);
-      
+
       if (userFound.isAdmin) {
         navigate("/admin");
       } else {
@@ -45,10 +44,8 @@ function LoginForm() {
       setPasswordError(true);
     }
   };
-  
 
   return (
-    
     <Container maxWidth="xs">
       <Box
         display="flex"
@@ -56,15 +53,18 @@ function LoginForm() {
         justifyContent="center"
         alignItems="center"
         minHeight="100vh"
-        
-        
       >
-        <Typography variant="h4" component="h1" gutterBottom fontFamily={"Oswald"} fontSize={50}>
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          fontFamily={"Oswald"}
+          fontSize={50}
+        >
           Iniciar Sesión
         </Typography>
         <Box component="form" onSubmit={handleSubmit} width="100%">
-          <TextField  
-            
+          <TextField
             error={isEmailError}
             label="Correo electrónico"
             variant="filled"
@@ -80,7 +80,6 @@ function LoginForm() {
           />
           <TextField
             error={isPasswordError}
-            
             label="Contraseña"
             variant="filled"
             fullWidth
@@ -105,7 +104,6 @@ function LoginForm() {
         </Box>
       </Box>
     </Container>
-    
   );
 }
 
