@@ -15,21 +15,15 @@ function HomePage() {
     fetchEmpleado(user.idEmpleado ?? 1);
     fetchAsistencias(user.idUsuario)
   }, [user]);
-
-  return !empleado || !asistencias ? (
-    <Box>
-      <Typography textAlign="center" py={2} variant="h2" fontFamily={"Oswald"}>
-        Loading component
-      </Typography>
-    </Box>
-  ) : (
+    
+  return (
     <Box p={2}>
       <Typography textAlign="center" py={2} variant="h2" fontFamily={"Oswald"}>
-        {`Hola ${empleado.nombreEmpleado}`}
+        {`Hola ${empleado?.nombreEmpleado}`}
       </Typography>
       <Box>
         <Typography textAlign="center" py={2} variant="h4" fontFamily={"Rubik"}>
-          total de asistencias: {asistencias.length}
+          total de asistencias: {asistencias?.length}
         </Typography>
       </Box>
     </Box>

@@ -11,4 +11,9 @@ export class AsistenciasService {
     return result
   }
 
+  async getAsistenciasBySesionTrabajo(id: number) {
+    const {data: {result}} = await _authClient.get<Wrapper<GetAsistenciaDto>>(`/bySesionTrabajo/${id}`)
+    return result
+  }
+
 }

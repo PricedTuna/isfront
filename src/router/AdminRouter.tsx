@@ -1,18 +1,18 @@
-import AutosPage from "../pages/admin/autos/AutosPage";
-import AutosListPage from "../pages/admin/autos/AutosListPage";
-import AutoCreatePage from "../pages/admin/autos/AutosCreatePage";
-import AdminPage from '../pages/admin/AdminPage';
 import MainLayout from "../layout/MainLayout";
+import AdminPage from '../pages/admin/AdminPage';
+import AutoCreatePage from "../pages/admin/autos/AutosCreatePage";
+import AutosListPage from "../pages/admin/autos/AutosListPage";
+import AutosPage from "../pages/admin/autos/AutosPage";
+import SesionTrabajoPage from "../pages/admin/sesionesTrabajo/SesionTrabajoPage";
 import UsersAdminPage from '../pages/admin/users/UsersAdminPage';
-import NacionalidadesPage from "../pages/catalogs/nacionalidadesPage";
+import UsersCreatePage from '../pages/admin/users/UsersCreatePage';
 import CiudadesPage from "../pages/catalogs/ciudadesPage";
-import TiposContratoPage from "../pages/catalogs/tiposContratoPage";
+import NacionalidadesPage from "../pages/catalogs/nacionalidadesPage";
 import TiposAsistenciaPage from "../pages/catalogs/TiposAsistenciaPage";
+import TiposContratoPage from "../pages/catalogs/tiposContratoPage";
 import TiposEmpleadosPage from "../pages/catalogs/TiposEmpleadosPage";
 import TiposLicenciaPage from "../pages/catalogs/TiposLicenciaPage";
 import TiposPermisosPage from "../pages/catalogs/TiposPermisosPage";
-import UsersCreatePage from '../pages/admin/users/UsersCreatePage';
-import HomePage from "../pages/home/HomePage";
 
 const baseUrl: string = 'admin'
 
@@ -24,7 +24,11 @@ export const AdminRouter = [
     children: [
       {
         path: "admin",
-        element: <HomePage/>
+        element: <AdminPage/>
+      },
+      {
+        path: `${baseUrl}/sesionTrabajo/:id`,
+        element: <SesionTrabajoPage />
       },
       {
         path: `${baseUrl}/autos`,

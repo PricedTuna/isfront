@@ -3,7 +3,7 @@ export interface GetAsistenciaDto {
   idEmpleado:       number;
   idTipoAsistencia: number;
   asistenciaInicio: Date;
-  asistenciaFin:    Date;
+  asistenciaFin:    Date | null;
   diaAsistencia:    Date;
   createDate:       Date;
   updateDate:       Date;
