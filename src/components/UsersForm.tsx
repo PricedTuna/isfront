@@ -1,118 +1,59 @@
-import { Container, Box, TextField, Button, Typography, FormControlLabel, Checkbox } from "@mui/material";
 import { useState } from "react";
+import { FormControlLabel, Checkbox } from "@mui/material";
+import GenericForm from "./Form";
+import { showSuccessAlert, showErrorAlert } from "../utils/AlertUtils";
+import { useMediaQuery } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-function UsersForm() {
+interface UserFormValues {
+  nombreUser: string;
+  correoUser: string;
+  passwordUser: string;
+  numeroEmpleado: string;
+}
+
+export default function UsersForm() {
   const [isAdmin, setIsAdmin] = useState(false);
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const navigate = useNavigate();
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsAdmin(event.target.checked);
+  const handleSubmit = async (values: UserFormValues) => {
+    try {
+      // Aquí puedes integrar la lógica para registrar o actualizar usuarios.
+      console.log({ ...values, isAdmin }); // Incluye el estado del checkbox en los valores enviados
+
+      // Simula un éxito
+      await showSuccessAlert("El usuario fue registrado correctamente.", prefersDarkMode);
+      navigate("/admin/users");
+    } catch (error) {
+      // Manejo de errores
+      await showErrorAlert("Hubo un problema al procesar la solicitud. Inténtalo de nuevo.", prefersDarkMode);
+      console.error("Error en el registro de usuario:", error);
+    }
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="80vh"
-      >
-        <Typography variant="h4" component="h1" gutterBottom fontFamily="Oswald" fontSize={50}>
-          Registro de Usuarios
-        </Typography>
-        <Box component="form" width="100%">
-          <TextField
-            label="Nombre del Usuario"
-            name="nombreUser"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            required
-            InputProps={{
-              style: { fontSize: "1.5rem", fontFamily:"Rubik" },
-            }}
-            InputLabelProps={{
-              style: { fontSize: "1.5rem", fontFamily:"Rubik" },
-            }}
-          />
-          <TextField
-            label="Correo"
-            name="correoUser"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            required
-            InputProps={{
-              style: { fontSize: "1.5rem", fontFamily:"Rubik" },
-            }}
-            InputLabelProps={{
-              style: { fontSize: "1.5rem", fontFamily:"Rubik" },
-            }}
-          />
-          <TextField
-            label="Contraseña"
-            name="passwordUser"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            required
-            type="password"
-            InputProps={{
-              style: { fontSize: "1.5rem", fontFamily:"Rubik" },
-            }}
-            InputLabelProps={{
-              style: { fontSize: "1.5rem", fontFamily:"Rubik" },
-            }}
-          />
-          <TextField
-            label="Número de empleado"
-            name="numeroEmpleado"
-            variant="outlined"
-            fullWidth
-            margin="dense"
-            required
-            
-            InputProps={{
-              style: { fontSize: "1.5rem", fontFamily:"Rubik" },
-            }}
-            InputLabelProps={{
-              style: { fontSize: "1.5rem", fontFamily:"Rubik" },
-            }}
-          />
-
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={isAdmin}
-                  onChange={handleCheckboxChange}
-                  color="primary"
-                  size="large"
-                />
-              }
-              label="Es Administrador"
-              componentsProps={{
-                typography: {
-                  style: {
-                    fontSize: "1.5rem", // Cambia el tamaño de la fuente
-                    fontFamily: "Rubik", // Cambia la familia de la fuente
-                  },
-                },
-              }}
+    <GenericForm<UserFormValues>
+      title="Registro de Usuario"
+      fields={[
+        { name: "nombreUser", label: "Nombre del Usuario", required: true },
+        { name: "correoUser", label: "Correo", type: "email", required: true },
+        { name: "passwordUser", label: "Contraseña", type: "password", required: true },
+        { name: "numeroEmpleado", label: "Número de Empleado", required: true },
+      ]}
+      onSubmit={handleSubmit}
+      additionalComponents={
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isAdmin}
+              onChange={(e) => setIsAdmin(e.target.checked)}
+              color="primary"
             />
-
-                    <Button
-            type="submit"ss
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ marginTop: 2, fontSize: "1.5rem",fontFamily:"Rubik" }} // Cambia el tamaño del texto del botón
-          >
-            Registrar Usuario
-          </Button>
-        </Box>
-      </Box>
-    </Container>
+          }
+          label="Es Administrador"
+        />
+      }
+    />
   );
 }
-
-export default UsersForm;

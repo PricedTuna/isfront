@@ -1,155 +1,98 @@
-import { useState } from "react";
-import { Container, Box, TextField, Button, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
+import GenericForm from "./Form";
 import { AutoService } from "../services/AutoService";
-import { CreateAutoDto } from "../dtos/autos/CreateAutoDto";
-
-interface AutosFormProps extends Partial<CreateAutoDto> {}
-
-function AutosForm({
-  fechaCompra = "",
-  nombreModelo = "",
-  numeroPlacas = "",
-  numeroPoliza = "",
-  numeroSerie = "",
-  ordenRegistro = "",
-  vencimientoPoliza = "",
-  yearModelo = ""
-}: AutosFormProps ) {
-
-  const autoService = new AutoService()
-
-  const [formValues, setFormValues] = useState<CreateAutoDto>({
-    nombreModelo,
-    yearModelo,
-    ordenRegistro,
-    fechaCompra,
-    numeroPlacas,
-    numeroSerie,
-    numeroPoliza,
-    vencimientoPoliza,
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(formValues);
-    await autoService.create(formValues);
-  };
-
-  return (
-    <Container maxWidth="sm">
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="100vh"
-      >
-        <Typography variant="h4" component="h1" gutterBottom>
-          Registro de Auto
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} width="100%">
-          <TextField
-            label="Nombre Modelo"
-            name="nombreModelo"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formValues.nombreModelo}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            label="Año Modelo"
-            name="yearModelo"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formValues.yearModelo}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            label="Orden Registro"
-            name="ordenRegistro"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formValues.ordenRegistro}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            label="Fecha de Compra"
-            name="fechaCompra"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            type="date"
-            InputLabelProps={{ shrink: true }}
-            value={formValues.fechaCompra}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            label="Número de Placas"
-            name="numeroPlacas"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formValues.numeroPlacas}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            label="Número de Serie"
-            name="numeroSerie"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formValues.numeroSerie}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            label="Número de Póliza"
-            name="numeroPoliza"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={formValues.numeroPoliza}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            label="Vencimiento Póliza"
-            name="vencimientoPoliza"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            type="date"
-            InputLabelProps={{ shrink: true }}
-            value={formValues.vencimientoPoliza}
-            onChange={handleChange}
-            required
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ marginTop: 2 }}
-          >
-            Registrar Auto
-          </Button>
-        </Box>
-      </Box>
-    </Container>
-  );
+import { showSuccessAlert, showErrorAlert } from "../utils/AlertUtils";
+import { useMediaQuery } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Auto } from "../dtos/autos/AutoDto"; // DTO del auto
+interface AutoFormValues {
+  nombreModelo: string;
+  yearModelo: string;
+  ordenRegistro: string;
+  fechaCompra: string;
+  numeroPlacas: string;
+  numeroSerie: string;
+  numeroPoliza: string;
+  vencimientoPoliza: string;
 }
 
-export default AutosForm;
+export default function AutosForm() {
+  const autoService = new AutoService();
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [formValues, setFormValues] = useState<AutoFormValues>({
+    nombreModelo: "",
+    yearModelo: "",
+    ordenRegistro: "",
+    fechaCompra: "",
+    numeroPlacas: "",
+    numeroSerie: "",
+    numeroPoliza: "",
+    vencimientoPoliza: "",
+  });
+
+  const [loading, setLoading] = useState(true); 
+
+  const initialValues = location.state as Auto | null;
+
+  useEffect(() => {
+
+    if (initialValues) {
+      setFormValues({
+        nombreModelo: initialValues.nombreModelo,
+        yearModelo: initialValues.yearModelo,
+        ordenRegistro: initialValues.ordenRegistro,
+        fechaCompra: initialValues.fechaCompra,
+        numeroPlacas: initialValues.numeroPlacas,
+        numeroSerie: initialValues.numeroSerie,
+        numeroPoliza: initialValues.numeroPoliza,
+        vencimientoPoliza: initialValues.vencimientoPoliza,
+      });
+      setLoading(false);
+    } else {
+      // Si estamos creando un auto, no es necesario cargar datos
+      setLoading(false);
+    }
+  }, [initialValues]);
+
+  const handleSubmit = async (values: AutoFormValues) => {
+    try {
+      if (initialValues) {
+        // Si hay initialValues, actualizamos el auto
+        await autoService.update(initialValues.idAuto, values);
+        await showSuccessAlert("El auto fue actualizado correctamente.", prefersDarkMode);
+      } else {
+        // Si no existe, creamos un nuevo auto
+        await autoService.create(values);
+        await showSuccessAlert("El auto fue registrado correctamente.", prefersDarkMode);
+      }
+      navigate("/admin/autos");
+    } catch (error) {
+      await showErrorAlert("Hubo un problema al procesar la solicitud. Inténtalo de nuevo.", prefersDarkMode);
+      console.error("Error en el registro/actualización de auto:", error);
+    }
+  };
+
+  if (loading) {
+    return <div>Cargando...</div>; // Mostrar cargando mientras los datos se obtienen
+  }
+
+  return (
+    <GenericForm<AutoFormValues>
+      title={initialValues ? "Editar Auto" : "Registrar Auto"}
+      fields={[
+        { name: "nombreModelo", label: "Nombre Modelo", required: true },
+        { name: "yearModelo", label: "Año Modelo", type: "number", required: true },
+        { name: "ordenRegistro", label: "Orden Registro", required: true },
+        { name: "fechaCompra", label: "Fecha de Compra", type: "date", required: true },
+        { name: "numeroPlacas", label: "Número de Placas", required: true },
+        { name: "numeroSerie", label: "Número de Serie", required: true },
+        { name: "numeroPoliza", label: "Número de Póliza", required: true },
+        { name: "vencimientoPoliza", label: "Vencimiento Póliza", type: "date", required: true },
+      ]}
+      initialValues={formValues} // Pasar los valores obtenidos al formulario
+      onSubmit={handleSubmit}
+    />
+  );
+}

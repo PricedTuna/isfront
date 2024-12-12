@@ -48,4 +48,15 @@ export class AutoService {
       return {message: "hubo un error pai"};
     }
   }
+  public getById = async (idAuto: number) => {
+    try {
+      const response = await _autosClient.get<Auto>(`/${idAuto}`);
+      return response.data; // Retorna los datos del auto
+    } catch (error) {
+      console.log(error);
+      return { message: "Hubo un error al obtener el auto." };
+    }
+  };
+
 }
+
