@@ -21,12 +21,12 @@ import {
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useGetUserContext } from "../../common/context/AuthContext";
+import { useGetTipoAsistenciaName } from "../../common/hooks/asistencia/getTiposAsistenciaName";
 import useCreateAsistencia from "../../common/hooks/asistencia/useCreateAsistencia";
 import useGetAsistencias from "../../common/hooks/asistencia/useGetAsistencias";
 import useGetTiposAsistencia from "../../common/hooks/asistencia/useGetTiposAsistencia";
 import getSesionTrabajoByToken from "../../common/hooks/sesionesTarbajo/getSesionTrabajoByToken";
 import useGetEmpleado from "../../common/hooks/useGetEmpleado";
-import { GetAsistenciaDto } from "../../dtos/asistencia/GetAsistenciaDto";
 
 function HomePage() {
   const user = useGetUserContext();
@@ -79,17 +79,6 @@ function HomePage() {
 
   const handleSelectChange = (event: SelectChangeEvent<number>) => {
     setSelectedTipoAsistencia(Number(event.target.value));
-  };
-
-  const getTipoAsistenciaName = (asistencia: GetAsistenciaDto) => {
-    if (!tiposAsistencia) return;
-
-    const tipoAsistencia = tiposAsistencia.find(
-      (tipoAsistencia) =>
-        asistencia.idTipoAsistencia == tipoAsistencia.idTipoAsistencia
-    );
-
-    return tipoAsistencia ? tipoAsistencia.nombreAsistencia : "error";
   };
 
   return !user ? (
@@ -151,7 +140,7 @@ function HomePage() {
                   {asistencias.map((asistencia) => (
                     <TableRow key={asistencia.idAsistencia}>
                       <TableCell>{asistencia.idAsistencia}</TableCell>
-                      <TableCell>{getTipoAsistenciaName(asistencia)}</TableCell>
+                      <TableCell>{useGetTipoAsistenciaName(asistencia, tiposAsistencia)}</TableCell>
                       <TableCell>
                         {new Date(asistencia.asistenciaInicio).toLocaleString()}
                       </TableCell>

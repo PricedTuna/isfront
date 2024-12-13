@@ -7,11 +7,20 @@ import { getHttpClient } from "./HttpClient";
 const _sesionTrabajoClient = getHttpClient("/sesion-trabajo");
 
 export class SesionTrabajoService {
-  async getSesionesTrabajo(id: number) {
+  async getSesionesTrabajo(idUsuario: number) {
     const {
       data: { result },
     } = await _sesionTrabajoClient.get<Wrapper<GetSesionTrabajoDto>>(
-      `/usuario/${id}`
+      `/usuario/${idUsuario}`
+    );
+    return result;
+  }
+
+  async getSesionTrabajoById(idSesionTrabajo: number) {
+    const {
+      data: { result },
+    } = await _sesionTrabajoClient.get<SingleWrapper<GetSesionTrabajoDto>>(
+      `/${idSesionTrabajo}`
     );
     return result;
   }

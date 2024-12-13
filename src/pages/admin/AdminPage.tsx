@@ -2,10 +2,10 @@ import { Backdrop, Box, Button, Fade, Modal, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetUserContext } from "../../common/context/AuthContext";
-import useGetSesionesTrabajo from "../../common/hooks/sesionesTarbajo/useGetSesionesTrabajo";
-import useFinalizarSesionTrabajo from "../../common/hooks/sesionesTarbajo/useFinalizarSesionTrabajo";
 import useCreateSesionTrabajo from "../../common/hooks/sesionesTarbajo/useCreateSesionTrabajo";
+import useFinalizarSesionTrabajo from "../../common/hooks/sesionesTarbajo/useFinalizarSesionTrabajo";
 import useGenerateSesionTrabajoToken from "../../common/hooks/sesionesTarbajo/useGenerateSesionTrabajoToken";
+import useGetSesionesTrabajo from "../../common/hooks/sesionesTarbajo/useGetSesionesTrabajo";
 import { GetSesionTrabajoDto } from "../../dtos/sesionTrabajo/GetSesionTrabajoDto";
 
 function AdminPage() {
@@ -35,8 +35,8 @@ function AdminPage() {
     const sesionToken = useGenerateSesionTrabajoToken();
     const sesionTrabajo = await createSesionTrabajo({ idUsuario, sesionToken });
     setSesionTrabajo(sesionTrabajo);
-    handleOpen()
-    fetchSesionesTrabajo(idUsuario)
+    handleOpen();
+    fetchSesionesTrabajo(idUsuario);
   };
 
   const handleOpen = () => setOpen(true);
@@ -139,28 +139,24 @@ function AdminPage() {
         }}
       >
         <Fade in={open}>
-          <Box sx={style} textAlign={'center'}>
+          <Box sx={style} textAlign={"center"}>
             {!sesionTrabajo ? (
               <></>
             ) : (
               <>
-              <Typography
-                  id="transition-modal-description"
-                >
+                <Typography id="transition-modal-description">
                   {`Sesion de trabajo: ${sesionTrabajo.idSesionTrabajo}`}
                 </Typography>
                 <Typography
                   id="transition-modal-title"
                   variant="h4"
                   component="h2"
-                  textAlign={'center'}
+                  textAlign={"center"}
                   my={3}
                 >
                   {`${sesionTrabajo.sesionToken}`}
                 </Typography>
-                <Typography
-                  id="transition-modal-description"
-                >
+                <Typography id="transition-modal-description">
                   {`Sesion started: ${sesionTrabajo.createDate}`}
                 </Typography>
               </>
