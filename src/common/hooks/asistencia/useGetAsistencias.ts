@@ -8,8 +8,8 @@ function useGetAsistencias() {
     null
   );
 
-  const fetchAsistencias = async (id: number) => {
-    const asistencias = await asistenciasService.getAsistenciasByUser(id);
+  const fetchAsistencias = async (idEmpleado: number) => {
+    const asistencias = await asistenciasService.getAsistenciasByEmpleado(idEmpleado);
     setAsistencias(asistencias);
     return asistencias;
   };

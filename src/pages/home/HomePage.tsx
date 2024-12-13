@@ -3,64 +3,174 @@ import {
   Box,
   Button,
   Fade,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Modal,
+  Paper,
+  Select,
+  SelectChangeEvent,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
   Typography,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useGetUserContext } from "../../common/context/AuthContext";
+import useCreateAsistencia from "../../common/hooks/asistencia/useCreateAsistencia";
 import useGetAsistencias from "../../common/hooks/asistencia/useGetAsistencias";
+import useGetTiposAsistencia from "../../common/hooks/asistencia/useGetTiposAsistencia";
 import getSesionTrabajoByToken from "../../common/hooks/sesionesTarbajo/getSesionTrabajoByToken";
 import useGetEmpleado from "../../common/hooks/useGetEmpleado";
-import useCreateAsistencia from "../../common/hooks/asistencia/useCreateAsistencia";
+import { GetAsistenciaDto } from "../../dtos/asistencia/GetAsistenciaDto";
 
 function HomePage() {
   const user = useGetUserContext();
   const { fetchEmpleado, empleado } = useGetEmpleado();
   const { asistencias, fetchAsistencias } = useGetAsistencias();
-  const { createAsistencia } = useCreateAsistencia()
+  const { createAsistencia } = useCreateAsistencia();
+  const { fetchTiposAsistencia, tiposAsistencia } = useGetTiposAsistencia();
+  const [selectedTipoAsistencia, setSelectedTipoAsistencia] = useState<
+    number | ""
+  >("");
   const { fetchSesionTrabajoByToken } = getSesionTrabajoByToken();
   const inputRef = useRef<string>("");
 
-  const [open, setOpen] = useState(false); // Estado para controlar el modal
+  const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !user.idEmpleado) return;
 
-    fetchEmpleado(user.idEmpleado ?? 1);
-    fetchAsistencias(user.idUsuario);
+    fetchEmpleado(user.idEmpleado);
+    fetchAsistencias(user.idEmpleado);
+    fetchTiposAsistencia();
   }, [user]);
 
-  const handleAccederSesionTrabajo = () => {
-    console.log("acceder"); // !
-    const sesionTrabajo = fetchSesionTrabajoByToken(inputRef.current);
-    if (!sesionTrabajo)
-      // TODO HANDLE CON SWAL
-      return;
+  const handleAccederSesionTrabajo = async (
+    idEmpleado: number | null,
+    idTipoAsistencia: number
+  ) => {
+    if (!idEmpleado) return;
 
-    // const asistencia = createAsistencia({asistenciaInicio: new Date()})
+    const sesionTrabajo = await fetchSesionTrabajoByToken(inputRef.current);
+    if (!sesionTrabajo) return;
+
+    await createAsistencia({
+      idEmpleado,
+      asistenciaInicio: new Date(),
+      idTipoAsistencia,
+      idSesionTrabajo: sesionTrabajo.idSesionTrabajo,
+    });
+
+    fetchAsistencias(idEmpleado);
+    handleClose();
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    inputRef.current = event.target.value; // Actualizar el valor del ref
+    inputRef.current = event.target.value;
   };
 
-  return (
+  const handleSelectChange = (event: SelectChangeEvent<number>) => {
+    setSelectedTipoAsistencia(Number(event.target.value));
+  };
+
+  const getTipoAsistenciaName = (asistencia: GetAsistenciaDto) => {
+    if (!tiposAsistencia) return;
+
+    const tipoAsistencia = tiposAsistencia.find(
+      (tipoAsistencia) =>
+        asistencia.idTipoAsistencia == tipoAsistencia.idTipoAsistencia
+    );
+
+    return tipoAsistencia ? tipoAsistencia.nombreAsistencia : "error";
+  };
+
+  return !user ? (
+    <></>
+  ) : (
     <Box p={2}>
       <Typography textAlign="center" py={2} variant="h2" fontFamily={"Oswald"}>
         {`Hola ${empleado?.nombreEmpleado}`}
       </Typography>
-      <Box>
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
         <Typography textAlign="center" py={2} variant="h4" fontFamily={"Rubik"}>
-          total de asistencias: {asistencias?.length}
+          Total de asistencias: {asistencias ? asistencias.length : 0}
         </Typography>
 
         <Button variant="contained" onClick={handleOpen}>
-          Acceder a sesion de trabajo
+          Acceder a sesión de trabajo
         </Button>
+      </Box>
+
+      {/* Tabla de Asistencias */}
+      <Box mt={4}>
+        <Typography variant="h6" mb={2} textAlign="center">
+          Historial de Asistencias
+        </Typography>
+        {asistencias && asistencias.length > 0 ? (
+          <Box
+            sx={{
+              maxWidth: "800px", // Ancho máximo de la tabla
+              margin: "0 auto", // Centramos horizontalmente
+              borderRadius: "8px", // Opcional: bordes redondeados
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Sombra para darle un toque elegante
+              overflow: "hidden", // Para evitar que el contenido sobresalga
+            }}
+          >
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <strong>ID Asistencia</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Tipo</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Inicio</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Fin</strong>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {asistencias.map((asistencia) => (
+                    <TableRow key={asistencia.idAsistencia}>
+                      <TableCell>{asistencia.idAsistencia}</TableCell>
+                      <TableCell>{getTipoAsistenciaName(asistencia)}</TableCell>
+                      <TableCell>
+                        {new Date(asistencia.asistenciaInicio).toLocaleString()}
+                      </TableCell>
+                      <TableCell>
+                        {asistencia.asistenciaFin
+                          ? new Date(asistencia.asistenciaFin).toLocaleString()
+                          : "En curso"}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        ) : (
+          <Typography variant="body2" color="textSecondary" textAlign="center">
+            No hay asistencias registradas.
+          </Typography>
+        )}
       </Box>
 
       {/* Modal */}
@@ -78,19 +188,53 @@ function HomePage() {
         }}
       >
         <Fade in={open}>
-          <Box sx={style} textAlign={"center"}>
+          <Box
+            sx={style}
+            textAlign={"center"}
+            display={"flex"}
+            flexDirection={"column"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
             <TextField
-              value={inputRef.current} // Vinculamos el valor del input al useRef
-              onChange={handleChange} // Actualizamos el ref en cada cambio
+              onChange={handleChange}
               label="Token"
               variant="outlined"
+              fullWidth
               inputProps={{
                 maxLength: 12,
               }}
             />
+
+            {/* Select para tipos de asistencia */}
+            <FormControl fullWidth sx={{ marginTop: 2 }}>
+              <InputLabel id="tipo-asistencia-label">
+                Tipo de Asistencia
+              </InputLabel>
+              <Select
+                labelId="tipo-asistencia-label"
+                value={selectedTipoAsistencia}
+                onChange={handleSelectChange}
+              >
+                {tiposAsistencia?.map((tipo) => (
+                  <MenuItem
+                    key={tipo.idTipoAsistencia}
+                    value={tipo.idTipoAsistencia}
+                  >
+                    {tipo.nombreAsistencia}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
             <Button
               variant="contained"
-              onClick={handleAccederSesionTrabajo}
+              onClick={() =>
+                handleAccederSesionTrabajo(
+                  user.idEmpleado,
+                  +selectedTipoAsistencia
+                )
+              }
               sx={{ marginTop: 2 }}
             >
               Acceder

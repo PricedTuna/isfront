@@ -1,12 +1,22 @@
-import { Box, Divider, List, ListItem, Typography } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import { useEffect } from "react";
 import { useParams } from "react-router";
 import useGetAsistenciasBySesionTrabajo from "../../../common/hooks/asistencia/useGetAsistenciasBySesionTrabajo";
 
 function SesionTrabajoPage() {
   const { id } = useParams<{ id: string }>(); // Obtener el parámetro `id` de la URL
-  const { asistencias, fetchAsistenciasBySesionTrabajo } = useGetAsistenciasBySesionTrabajo();
   
+  const { asistencias, fetchAsistenciasBySesionTrabajo } = useGetAsistenciasBySesionTrabajo();
 
   useEffect(() => {
     if (id) {
@@ -14,8 +24,6 @@ function SesionTrabajoPage() {
       fetchAsistenciasBySesionTrabajo(numericId); // Pasar el id como parámetro
     }
   }, [id]);
-
-  
 
   return (
     <Box maxWidth="800px" margin="0 auto" mt={4} p={3} border="1px solid #ccc" borderRadius="8px">
@@ -29,60 +37,44 @@ function SesionTrabajoPage() {
         <Typography variant="body1">
           <strong>ID de Sesión:</strong> {id}
         </Typography>
-        {/* Aquí puedes incluir más detalles de la sesión si los tienes disponibles */}
       </Box>
 
-      {/* Botón Finalizar */}
-      
-
-      {/* Asistencias */}
+      {/* Tabla de asistencias */}
       <Box>
         <Typography variant="h6" mb={2}>
           Asistencias
         </Typography>
         {asistencias && asistencias.length > 0 ? (
-          <List>
-            {asistencias.map((asistencia) => (
-              <Box key={asistencia.idAsistencia} mb={2}>
-                <ListItem>
-                  <Typography variant="body1">
-                    <strong>ID de Asistencia:</strong> {asistencia.idAsistencia}
-                  </Typography>
-                </ListItem>
-                <ListItem>
-                  <Typography variant="body1">
-                    <strong>ID de Empleado:</strong> {asistencia.idEmpleado}
-                  </Typography>
-                </ListItem>
-                <ListItem>
-                  <Typography variant="body1">
-                    <strong>Tipo de Asistencia:</strong> {asistencia.idTipoAsistencia}
-                  </Typography>
-                </ListItem>
-                <ListItem>
-                  <Typography variant="body1">
-                    <strong>Inicio:</strong>{" "}
-                    {new Date(asistencia.asistenciaInicio).toLocaleString()}
-                  </Typography>
-                </ListItem>
-                <ListItem>
-                  <Typography variant="body1">
-                    <strong>Fin:</strong>{" "}
-                    {asistencia.asistenciaFin
-                      ? new Date(asistencia.asistenciaFin).toLocaleString()
-                      : "En curso"}
-                  </Typography>
-                </ListItem>
-                <ListItem>
-                  <Typography variant="body1">
-                    <strong>Día:</strong>{" "}
-                    {new Date(asistencia.diaAsistencia).toLocaleDateString()}
-                  </Typography>
-                </ListItem>
-                <Divider sx={{ my: 2 }} />
-              </Box>
-            ))}
-          </List>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell><strong>ID Asistencia</strong></TableCell>
+                  <TableCell><strong>ID Empleado</strong></TableCell>
+                  <TableCell><strong>Tipo de Asistencia</strong></TableCell>
+                  <TableCell><strong>Inicio</strong></TableCell>
+                  <TableCell><strong>Fin</strong></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {asistencias.map((asistencia) => (
+                  <TableRow key={asistencia.idAsistencia}>
+                    <TableCell>{asistencia.idAsistencia}</TableCell>
+                    <TableCell>{asistencia.idEmpleado}</TableCell>
+                    <TableCell>{asistencia.idTipoAsistencia}</TableCell>
+                    <TableCell>
+                      {new Date(asistencia.asistenciaInicio).toLocaleString()}
+                    </TableCell>
+                    <TableCell>
+                      {asistencia.asistenciaFin
+                        ? new Date(asistencia.asistenciaFin).toLocaleString()
+                        : "En curso"}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         ) : (
           <Typography variant="body2" color="textSecondary">
             No hay asistencias registradas para esta sesión.

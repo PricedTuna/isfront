@@ -1,6 +1,6 @@
 export interface CreateAsistenciaDto {
   idEmpleado: number;
-  idTipoAsistencia: number;
-  asistenciaInicio: Date | null;
-  diaAsistencia: Date | null;
+  idTipoAsistencia: number
+  idSesionTrabajo: number
+  asistenciaInicio: Date
 }
