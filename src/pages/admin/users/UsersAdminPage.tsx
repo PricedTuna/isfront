@@ -1,50 +1,49 @@
-import { Box, List, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import UsuariosList from "../../../components/UsuariosList";
+import { Box, CircularProgress } from "@mui/material";
+import { useNavigate } from "react-router";
 import { UserDto } from "../../../dtos/user/User";
+import { UserService } from "../../../services/UserService";
+import GenericList from "../../../components/List";
+import { useEffect } from "react";
 import useGetUsers from "./hooks/useGetUsers";
 
-function UsersAdminPage() {
-  const [usuarios, setUsuarios] = useState<UserDto[]>();
-  const { getUsers } = useGetUsers();
+const UsersListPage = () => {
+  const navigate = useNavigate(); // Hook para la navegación
+  const _userService = new UserService();
+
+  const { users, fetchUsers } = useGetUsers();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getUsers();
-        if (Array.isArray(response)) {
-          setUsuarios(response);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+    fetchUsers();
+  }, [fetchUsers]);
 
-    fetchData();
-  });
+  const handleEdit = (user: UserDto) => {
+    navigate("/admin/users/crear", { state: user }); // Navega a la página de creación y pasa el usuario como estado
+  };
+
+  const handleDelete = async (id: number) => {
+    await _userService.delete(id);
+    fetchUsers();
+  };
 
   return (
-    <Box p={2}>
-      <Typography textAlign="center" py={2} variant="h2" fontFamily={"Oswald"} fontSize={80}>
-        Listar Usuarios
-      </Typography>
-      <Box>
-        <List>
-          {usuarios == undefined ? (
-            <Typography fontFamily={"Rubik"} fontSize={20} textAlign="center">No se han encontrado ningun usuario</Typography>
-          ) : (
-            <UsuariosList
-              onDelete={() => console.log("delete user")}
-              onEdit={() => {
-                console.log("edit user");
-              }}
-              users={usuarios}
-            />
-          )}
-        </List>
-      </Box>
+    <Box mt={4} gap={2}>
+      {users == undefined ? (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress size={80} />
+        </Box>
+      ) : (
+        <GenericList<UserDto>
+          title="Listado de Usuarios"
+          items={users}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          filterKeys={["nombreUsuario", "correo", "idEmpleado"]}
+          getItemId={(user) => user.idUsuario}
+          getItemLabel={(user) => user.nombreUsuario}
+        />
+      )}
     </Box>
   );
-}
+};
 
-export default UsersAdminPage;
+export default UsersListPage;

@@ -3,7 +3,8 @@ export interface UserDto {
   nombreUsuario: string;
   isAdmin: boolean;
   correo: string;
-  idEmpleado?: string;
+  idEmpleado?: number;
+  idUsuarioPadre?:number;
   createdate: string;
   updatedate: string;
 }

@@ -8,27 +8,38 @@ import {
   Typography,
   TextField,
 } from "@mui/material";
-import { Auto } from "../dtos/autos/AutoDto";
 
-type AutoListProps = {
-  autos: Auto[];
-  onEdit: (auto: Auto) => void;
+interface GenericListProps<T> {
+  title: string;
+  items: T[];
+  onEdit: (item: T) => void;
   onDelete: (id: number) => void;
-};
+  filterKeys: (keyof T)[]; // Keys to filter on
+  getItemId: (item: T) => number; // Function to extract item ID
+  getItemLabel: (item: T) => string; // Function to extract item label
+}
 
-const AutoList = ({ autos, onEdit, onDelete }: AutoListProps) => {
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para la busqueda
+function GenericList<T>({
+  title,
+  items,
+  onEdit,
+  onDelete,
+  filterKeys,
+  getItemId,
+  getItemLabel,
+}: GenericListProps<T>) {
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // Filtro para buscar por cualquier dato menos por fecha
-  const filteredAutos = autos.filter((auto) => {
-    return (
-      auto.nombreModelo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      auto.yearModelo.toString().includes(searchTerm) ||
-      auto.numeroPlacas.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      auto.numeroSerie.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      auto.numeroPoliza.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  // Filter logic
+  const filteredItems = items.filter((item) =>
+    filterKeys.some((key) => {
+      const value = item[key];
+      return (
+        typeof value === "string" &&
+        value.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    })
+  );
 
   return (
     <Box>
@@ -39,13 +50,13 @@ const AutoList = ({ autos, onEdit, onDelete }: AutoListProps) => {
         fontSize={30}
         marginBottom={2}
       >
-        Listado de Autos
+        {title}
       </Typography>
 
-      {/* Field para buscar */}
+      {/* Search Field */}
       <Box textAlign="center" marginBottom={3}>
         <TextField
-          label="Buscar autos"
+          label={`Buscar ${title.toLowerCase()}`}
           variant="outlined"
           fullWidth
           sx={{ maxWidth: "80%", margin: "0 auto" }}
@@ -54,23 +65,23 @@ const AutoList = ({ autos, onEdit, onDelete }: AutoListProps) => {
         />
       </Box>
 
-      {filteredAutos.length > 0 ? (
+      {filteredItems.length > 0 ? (
         <List
           sx={{
-            maxWidth: "80%", 
+            maxWidth: "80%",
             margin: "0 auto",
-            bgcolor: "background.paper", 
+            bgcolor: "background.paper",
           }}
         >
-          {filteredAutos.map((auto) => (
+          {filteredItems.map((item) => (
             <ListItem
-              key={auto.idAuto}
+              key={getItemId(item)}
               secondaryAction={
                 <Box>
                   <Button
                     variant="outlined"
                     color="primary"
-                    onClick={() => onEdit(auto)}
+                    onClick={() => onEdit(item)}
                     sx={{ marginRight: 1 }}
                   >
                     Editar
@@ -78,26 +89,24 @@ const AutoList = ({ autos, onEdit, onDelete }: AutoListProps) => {
                   <Button
                     variant="outlined"
                     color="error"
-                    onClick={() => onDelete(auto.idAuto)}
+                    onClick={() => onDelete(getItemId(item))}
                   >
                     Eliminar
                   </Button>
                 </Box>
               }
             >
-              <Box>
-                <ListItemText primary={auto.nombreModelo} />
-              </Box>
+              <ListItemText primary={getItemLabel(item)} />
             </ListItem>
           ))}
         </List>
       ) : (
         <Typography textAlign="center" color="text.secondary">
-          No se encontraron autos.
+          No se encontraron resultados.
         </Typography>
       )}
     </Box>
   );
-};
+}
 
-export default AutoList;
+export default GenericList;

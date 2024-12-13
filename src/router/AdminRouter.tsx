@@ -4,7 +4,7 @@ import AutoCreatePage from "../pages/admin/autos/AutosCreatePage";
 import AdminPage from '../pages/admin/AdminPage';
 import MainLayout from "../layout/MainLayout";
 import UsersAdminPage from '../pages/admin/users/UsersAdminPage';
-import NacionalidadesPage from "../pages/catalogs/nacionalidadesPage";
+import NacionalidadesPage from '../pages/catalogs/nacionalidadesPage';
 import CiudadesPage from "../pages/catalogs/ciudadesPage";
 import TiposContratoPage from "../pages/catalogs/tiposContratoPage";
 import TiposAsistenciaPage from "../pages/catalogs/TiposAsistenciaPage";
@@ -13,6 +13,9 @@ import TiposLicenciaPage from "../pages/catalogs/TiposLicenciaPage";
 import TiposPermisosPage from "../pages/catalogs/TiposPermisosPage";
 import UsersCreatePage from '../pages/admin/users/UsersCreatePage';
 import HomePage from "../pages/home/HomePage";
+import NacionalidadesForm from '../pages/catalogs/components/nacionalidadesForm';
+import NacionalidadList from "../components/NacionalidadList";
+
 
 const baseUrl: string = 'admin'
 
@@ -72,7 +75,25 @@ export const AdminRouter = [
       },
       {
         path: `${baseUrl}/nacionalidades`,
-        element: <NacionalidadesPage />
+        element: <NacionalidadesPage />,
+        errorElement: <NacionalidadesPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <NacionalidadList/>,
+            errorElement: <NacionalidadList/>,
+          },
+          {
+            path: "crear",
+            element: <NacionalidadesForm/>,
+            errorElement: <NacionalidadesForm/>,
+          },
+          {
+            path: "editar",
+            element: <NacionalidadesForm/>,
+            errorElement: <NacionalidadesForm/>,
+          },
+        ],
       },
       {
         path: `${baseUrl}/ciudades`,
