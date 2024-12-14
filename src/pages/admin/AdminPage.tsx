@@ -7,6 +7,7 @@ import useFinalizarSesionTrabajo from "../../common/hooks/sesionesTarbajo/useFin
 import useGenerateSesionTrabajoToken from "../../common/hooks/sesionesTarbajo/useGenerateSesionTrabajoToken";
 import useGetSesionesTrabajo from "../../common/hooks/sesionesTarbajo/useGetSesionesTrabajo";
 import { GetSesionTrabajoDto } from "../../dtos/sesionTrabajo/GetSesionTrabajoDto";
+import { QRCodeCanvas } from "qrcode.react";
 
 function AdminPage() {
   const [open, setOpen] = useState(false); // Estado para controlar el modal
@@ -77,6 +78,9 @@ function AdminPage() {
               mb={2}
               border="1px solid #ccc"
               borderRadius="4px"
+              display={"flex"}
+              flexDirection={"column"}
+              alignItems={"center"}
             >
               <Typography variant="body1">
                 <strong>Token:</strong> {sesion.sesionToken}
@@ -96,6 +100,7 @@ function AdminPage() {
                 display={"flex"}
                 flexDirection={"row"}
                 justifyContent={"space-between"}
+                gap={2} // Añadimos esta propiedad
               >
                 <Button
                   component={Link}
@@ -147,6 +152,7 @@ function AdminPage() {
                 <Typography id="transition-modal-description">
                   {`Sesion de trabajo: ${sesionTrabajo.idSesionTrabajo}`}
                 </Typography>
+                <QRCodeCanvas value={sesionTrabajo.sesionToken} size={200} />
                 <Typography
                   id="transition-modal-title"
                   variant="h4"

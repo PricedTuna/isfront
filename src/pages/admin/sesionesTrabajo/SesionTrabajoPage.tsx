@@ -16,6 +16,7 @@ import useGetAsistenciasBySesionTrabajo from "../../../common/hooks/asistencia/u
 import useGetTiposAsistencia from "../../../common/hooks/asistencia/useGetTiposAsistencia";
 import useGetSesionTrabajoById from "../../../common/hooks/sesionesTarbajo/useGetSesionTrabajoById";
 import { formatDate } from "../../../utils/formatDate";
+import { QRCodeCanvas } from "qrcode.react";
 
 function SesionTrabajoPage() {
   const { id: idSesionTrabajo } = useParams<{ id: string }>(); // Obtener el parámetro `id` de la URL
@@ -47,6 +48,10 @@ function SesionTrabajoPage() {
       <Typography variant="h4" textAlign="center" mb={3}>
         Detalles de la Sesión de Trabajo
       </Typography>
+
+      <Box display={"flex"} justifyContent={"center"}>
+        <QRCodeCanvas value={sesionTrabajo.sesionToken} size={300} />
+      </Box>
 
       {/* Información General */}
       <Box mb={4}>
