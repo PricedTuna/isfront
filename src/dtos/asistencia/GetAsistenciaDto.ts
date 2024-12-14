@@ -4,7 +4,6 @@ export interface GetAsistenciaDto {
   idTipoAsistencia: number;
   asistenciaInicio: Date;
   asistenciaFin:    Date | null;
-  diaAsistencia:    Date;
   createDate:       Date;
   updateDate:       Date;
 }
