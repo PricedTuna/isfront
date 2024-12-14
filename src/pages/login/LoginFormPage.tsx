@@ -9,6 +9,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+
 import { useNavigate } from "react-router";
 import { useAuth } from "../../common/context/AuthContext";
 import { AuthService } from "../../services/AuthService";
@@ -25,10 +26,14 @@ function LoginForm() {
   const { login } = useAuth();
   const _userService = new AuthService();
 
+
+  //Tonos para boton
+
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const loginResponse = await _userService.login({
-      email: email,
+      correo: email,
       password: password,
     });
 

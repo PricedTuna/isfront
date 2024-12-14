@@ -1,14 +1,15 @@
 export interface GetLoginUserDto {
   accessToken: string;
-  user: loginUserDto;
+  user: LoginUserDto;
 }
 
-export interface loginUserDto {
-  idUsuario: number;
-  nombreUsuario: string;
-  isAdmin: boolean;
-  correo: string;
-  idEmpleado?: string;
-  createdate: string;
-  updatedate: string;
+export interface LoginUserDto {
+  idUsuario:      number;
+  nombreUsuario:  string;
+  correo:         string;
+  idUsuarioPadre: number;
+  isAdmin:        boolean;
+  createdate:     Date;
+  updatedate:     Date;
+  idEmpleado:     number | null;
 }
