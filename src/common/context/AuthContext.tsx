@@ -5,14 +5,14 @@ import {
   useEffect,
   useState,
 } from "react";
-import { loginUserDto } from "../../dtos/auth/GetLoginUserDto";
+import { LoginUserDto } from "../../dtos/auth/GetLoginUserDto";
 
 // Definimos el tipo de los valores del contexto
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: loginUserDto | undefined;
+  user: LoginUserDto | undefined;
   isAdmin: boolean;
-  login: (user: loginUserDto) => void;
+  login: (user: LoginUserDto) => void;
   logout: () => void;
 }
 
@@ -22,7 +22,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // Proveedor del contexto
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<loginUserDto>();
+  const [user, setUser] = useState<LoginUserDto>();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   const isTokenExpired = (token: string) => {
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  const login = (user: loginUserDto) => {
+  const login = (user: LoginUserDto) => {
     setIsAuthenticated(true);
     setIsAdmin(user.isAdmin);
     setUser(user);
@@ -80,7 +80,7 @@ export const useAuth = () => {
   return context;
 };
 
-export const useAuthUser = () => {
+export const useGetUserContext = () => {
   const { user } = useAuth();
   return user;
 };
