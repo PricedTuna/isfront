@@ -1,26 +1,31 @@
+import { useState, useCallback,useMemo } from "react";
+import { UserDto } from "../../../../dtos/user/User";
+import { UserService } from "../../../../services/UserService";
 
-import { UserService } from '../../../../services/UserService'
-import { UserDto } from '../../../../dtos/user/User';
-import { useState } from 'react';
+const useGetUsers = () => {
+  const [users, setUsers] = useState<UserDto[] | undefined>(undefined);
 
-function useGetUsers() {
-  const _userService = new UserService();
-  const [users,setUsers] = useState<UserDto[]>([])
 
- 
-  const fetchUsers = async () => {
+  const _userService = useMemo(() => new UserService(), []);
+  
+
+  // Memoriza fetchUsers para evitar que cambie entre renders
+  const fetchUsers = useCallback(async () => {
     try {
-      const response = await _userService.getAll();
-      if (Array.isArray(response)) {
-        setUsers(response);
+      const result = await _userService.getAll();
+      if (result && Array.isArray(result)) {
+        setUsers(result as UserDto[]); // Aseguramos que el tipo sea UserDto[]
+      } else {
+        setUsers(undefined); // En caso de error o datos inválidos
       }
     } catch (error) {
       console.error("Error fetching users:", error);
+      setUsers(undefined); // Limpia el estado en caso de error
     }
-  };
+  }, [_userService]);
+  
 
-  return {users, fetchUsers}
-}
+  return { users, fetchUsers };
+};
 
-
-export default useGetUsers
+export default useGetUsers;

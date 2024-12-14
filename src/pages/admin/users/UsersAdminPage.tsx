@@ -1,49 +1,48 @@
-import { Box, CircularProgress } from "@mui/material";
-import { useNavigate } from "react-router";
-import { UserDto } from "../../../dtos/user/User";
-import { UserService } from "../../../services/UserService";
-import GenericList from "../../../components/List";
-import { useEffect } from "react";
-import useGetUsers from "./hooks/useGetUsers";
+import { Box, Button, Typography} from "@mui/material";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
-const UsersListPage = () => {
-  const navigate = useNavigate(); // Hook para la navegación
-  const _userService = new UserService();
 
-  const { users, fetchUsers } = useGetUsers();
 
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+function UsersAdminPage() {
+  const location = useLocation(); // Obtener la ubicación actuals
 
-  const handleEdit = (user: UserDto) => {
-    navigate("/admin/users/crear", { state: user }); // Navega a la página de creación y pasa el usuario como estado
-  };
-
-  const handleDelete = async (id: number) => {
-    await _userService.delete(id);
-    fetchUsers();
-  };
 
   return (
-    <Box mt={4} gap={2}>
-      {users == undefined ? (
-        <Box display="flex" justifyContent="center">
-          <CircularProgress size={80} />
+   
+    <Box>
+      <Typography variant="h3" textAlign="center" fontFamily={"Oswald"} fontSize={50}>
+        Administracion de Usuarios 
+      </Typography>
+      <Box display="flex" justifyContent="center" gap={3} mt={4}>
+        <Box>
+          <Link to="crear">
+            <Button
+              variant={
+                location.pathname === "/admin/users/create" ? "contained" : "outlined"
+              }
+            >
+              Crear Usuario
+            </Button>
+          </Link>
         </Box>
-      ) : (
-        <GenericList<UserDto>
-          title="Listado de Usuarios"
-          items={users}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          filterKeys={["nombreUsuario", "correo", "idEmpleado"]}
-          getItemId={(user) => user.idUsuario}
-          getItemLabel={(user) => user.nombreUsuario}
-        />
-      )}
+        <Box>
+          <Link to="">
+            <Button
+              variant={
+                location.pathname === "/admin/users" ? "contained" : "outlined"
+              }
+            >
+              Listar Usuarios
+            </Button>
+          </Link>
+        </Box>
+      </Box>
+      <Box>
+        <Outlet />
+      </Box>
     </Box>
+   
   );
-};
+}
 
-export default UsersListPage;
+export default UsersAdminPage;
