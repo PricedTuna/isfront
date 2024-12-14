@@ -14,7 +14,7 @@ function useGetAsistencias() {
     return asistencias;
   };
 
-  return { asistencias, fetchAsistencias };
+  return { asistencias, fetchAsistencias, setAsistencias };
 }
 
 export default useGetAsistencias;

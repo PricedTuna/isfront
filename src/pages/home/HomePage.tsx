@@ -23,6 +23,7 @@ import { useEffect, useRef, useState } from "react";
 import { useGetUserContext } from "../../common/context/AuthContext";
 import { useGetTipoAsistenciaName } from "../../common/hooks/asistencia/getTiposAsistenciaName";
 import useCreateAsistencia from "../../common/hooks/asistencia/useCreateAsistencia";
+import useFinalizarAsistencia from "../../common/hooks/asistencia/useFinalizarAsistencia";
 import useGetAsistencias from "../../common/hooks/asistencia/useGetAsistencias";
 import useGetTiposAsistencia from "../../common/hooks/asistencia/useGetTiposAsistencia";
 import getSesionTrabajoByToken from "../../common/hooks/sesionesTarbajo/getSesionTrabajoByToken";
@@ -31,9 +32,10 @@ import useGetEmpleado from "../../common/hooks/useGetEmpleado";
 function HomePage() {
   const user = useGetUserContext();
   const { fetchEmpleado, empleado } = useGetEmpleado();
-  const { asistencias, fetchAsistencias } = useGetAsistencias();
+  const { asistencias, fetchAsistencias, setAsistencias } = useGetAsistencias();
   const { createAsistencia } = useCreateAsistencia();
   const { fetchTiposAsistencia, tiposAsistencia } = useGetTiposAsistencia();
+  const { finalizarAsistencia } = useFinalizarAsistencia();
   const [selectedTipoAsistencia, setSelectedTipoAsistencia] = useState<
     number | ""
   >("");
@@ -44,6 +46,25 @@ function HomePage() {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleFinalizar = async (idAsistencia: number) => {
+    if (!asistencias) return;
+
+    const asistenciaFinalizada = await finalizarAsistencia(idAsistencia, {
+      asistenciaFin: new Date(),
+    });
+
+    const asistenciasActualizadas = asistencias.map((asistencia) =>
+      asistencia.idAsistencia === idAsistencia
+        ? asistenciaFinalizada
+        : asistencia
+    );
+    const asistenciasFiltradas = asistenciasActualizadas.filter(
+      (asistencia) => asistencia !== null
+    );
+
+    setAsistencias(asistenciasFiltradas);
+  };
 
   useEffect(() => {
     if (!user || !user.idEmpleado) return;
@@ -134,13 +155,18 @@ function HomePage() {
                     <TableCell>
                       <strong>Fin</strong>
                     </TableCell>
+                    <TableCell>
+                      <strong>Acciones</strong>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {asistencias.map((asistencia) => (
                     <TableRow key={asistencia.idAsistencia}>
                       <TableCell>{asistencia.idAsistencia}</TableCell>
-                      <TableCell>{useGetTipoAsistenciaName(asistencia, tiposAsistencia)}</TableCell>
+                      <TableCell>
+                        {useGetTipoAsistenciaName(asistencia, tiposAsistencia)}
+                      </TableCell>
                       <TableCell>
                         {new Date(asistencia.asistenciaInicio).toLocaleString()}
                       </TableCell>
@@ -148,6 +174,19 @@ function HomePage() {
                         {asistencia.asistenciaFin
                           ? new Date(asistencia.asistenciaFin).toLocaleString()
                           : "En curso"}
+                      </TableCell>
+                      <TableCell>
+                        {!asistencia.asistenciaFin && ( // Oculta el botón si ya está finalizado
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() =>
+                              handleFinalizar(asistencia.idAsistencia)
+                            }
+                          >
+                            Finalizar
+                          </Button>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
