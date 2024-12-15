@@ -1,22 +1,26 @@
 import { Backdrop, Box, Button, Fade, Modal, Typography } from "@mui/material";
+import { QRCodeCanvas } from "qrcode.react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import * as XLSX from "xlsx";
 import { useGetUserContext } from "../../common/context/AuthContext";
 import useCreateSesionTrabajo from "../../common/hooks/sesionesTarbajo/useCreateSesionTrabajo";
 import useFinalizarSesionTrabajo from "../../common/hooks/sesionesTarbajo/useFinalizarSesionTrabajo";
 import useGenerateSesionTrabajoToken from "../../common/hooks/sesionesTarbajo/useGenerateSesionTrabajoToken";
+import useGetFullSesionesTrabajoByUser from "../../common/hooks/sesionesTarbajo/useGetFullSesionesTrabajoByUser";
 import useGetSesionesTrabajo from "../../common/hooks/sesionesTarbajo/useGetSesionesTrabajo";
+import { GetFullSesionTrabajoDto } from "../../dtos/sesionTrabajo/GetFullSesionTrabajoDto";
 import { GetSesionTrabajoDto } from "../../dtos/sesionTrabajo/GetSesionTrabajoDto";
-import { QRCodeCanvas } from "qrcode.react";
 
 function AdminPage() {
-  const [open, setOpen] = useState(false); // Estado para controlar el modal
+  const [open, setOpen] = useState(false);
   const [sesionTrabajo, setSesionTrabajo] =
     useState<GetSesionTrabajoDto | null>();
   const user = useGetUserContext();
   const { fetchSesionesTrabajo, sesionesTrabajo } = useGetSesionesTrabajo();
   const { finalizarSesionTrabajo } = useFinalizarSesionTrabajo();
   const { createSesionTrabajo } = useCreateSesionTrabajo();
+  const { fetchFullSesionesTrabajoByUser } = useGetFullSesionesTrabajoByUser();
 
   useEffect(() => {
     if (!user) return;
@@ -28,7 +32,7 @@ function AdminPage() {
     sesionTrabajoId: number,
     idUsuario: number
   ) => {
-    await finalizarSesionTrabajo(sesionTrabajoId); // Llamar a la función con el id
+    await finalizarSesionTrabajo(sesionTrabajoId);
     fetchSesionesTrabajo(idUsuario);
   };
 
@@ -38,6 +42,69 @@ function AdminPage() {
     setSesionTrabajo(sesionTrabajo);
     handleOpen();
     fetchSesionesTrabajo(idUsuario);
+  };
+
+  const handleExportSesionesTrabajo = async (idUsuario: number) => {
+    const sesiones = await getFullSesionesTrabajo(idUsuario);
+
+    const formattedData: any[] = [];
+
+    sesiones.forEach((sesion) => {
+      formattedData.push({
+        idSesionTrabajo: sesion.idSesionTrabajo,
+        sesionToken: sesion.sesionToken,
+        createDate: new Date(sesion.createDate).toISOString(),
+        finalizedDate: sesion.finalizedDate
+          ? new Date(sesion.finalizedDate).toISOString()
+          : "No finalizado",
+        idUsuario: sesion.idUsuario,
+        asistenciaId: "",
+        idEmpleado: "",
+        idTipoAsistencia: "",
+        asistenciaInicio: "",
+        asistenciaFin: "",
+        asistenciaCreateDate: "",
+        asistenciaUpdateDate: "",
+      });
+
+      sesion.asistencias.forEach((asistencia) => {
+        formattedData.push({
+          idSesionTrabajo: "",
+          sesionToken: "",
+          createDate: "",
+          finalizedDate: "",
+          idUsuario: "",
+          asistenciaId: asistencia.idAsistencia,
+          idEmpleado: asistencia.idEmpleado,
+          idTipoAsistencia: asistencia.idTipoAsistencia,
+          asistenciaInicio: new Date(asistencia.asistenciaInicio).toISOString(),
+          asistenciaFin: asistencia.asistenciaFin
+            ? new Date(asistencia.asistenciaFin).toISOString()
+            : "Sin finalizar",
+          asistenciaCreateDate: new Date(asistencia.createDate).toISOString(),
+          asistenciaUpdateDate: new Date(asistencia.updateDate).toISOString(),
+        });
+      });
+
+      formattedData.push({});
+    });
+
+    exportToExcel(formattedData, "SesionesTrabajo");
+  };
+
+  const exportToExcel = (data: any[], fileName: string) => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
+
+    XLSX.writeFile(workbook, `${fileName}.xlsx`);
+  };
+
+  const getFullSesionesTrabajo = async (
+    idUsuario: number
+  ): Promise<GetFullSesionTrabajoDto[]> => {
+    const sesiones = await fetchFullSesionesTrabajoByUser(idUsuario);
+    return sesiones ?? [];
   };
 
   const handleOpen = () => setOpen(true);
@@ -56,12 +123,18 @@ function AdminPage() {
         Bienvenido
       </Typography>
       <Box display="flex" justifyContent="center" gap={3} mt={4} mb={5}>
-        <Box>
+        <Box display="flex" flexDirection={"column"} gap={1}>
           <Button
             variant="outlined"
             onClick={() => handleIniciarSesionTrabajo(user.idUsuario)}
           >
             iniciar una sesion de trabajo
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => handleExportSesionesTrabajo(user.idUsuario)}
+          >
+            Exportar sesiones a Excel
           </Button>
         </Box>
       </Box>
@@ -100,7 +173,7 @@ function AdminPage() {
                 display={"flex"}
                 flexDirection={"row"}
                 justifyContent={"space-between"}
-                gap={2} // Añadimos esta propiedad
+                gap={2}
               >
                 <Button
                   component={Link}
