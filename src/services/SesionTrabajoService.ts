@@ -1,6 +1,7 @@
 import { SingleWrapper } from "../common/wrappers/SingleWrapper";
 import { Wrapper } from "../common/wrappers/Wrapper";
 import { CreateSesionTrabajoDto } from "../dtos/sesionTrabajo/CreateSesionTrabajoDto";
+import { GetFullSesionTrabajoDto } from "../dtos/sesionTrabajo/GetFullSesionTrabajoDto";
 import { GetSesionTrabajoDto } from "../dtos/sesionTrabajo/GetSesionTrabajoDto";
 import { getHttpClient } from "./HttpClient";
 
@@ -12,6 +13,15 @@ export class SesionTrabajoService {
       data: { result },
     } = await _sesionTrabajoClient.get<Wrapper<GetSesionTrabajoDto>>(
       `/usuario/${idUsuario}`
+    );
+    return result;
+  }
+
+  async getFullSesionesTrabajo(idUsuario: number) {
+    const {
+      data: { result },
+    } = await _sesionTrabajoClient.get<Wrapper<GetFullSesionTrabajoDto>>(
+      `/findFullByUser/${idUsuario}`
     );
     return result;
   }
