@@ -11,6 +11,7 @@ import useGetFullSesionesTrabajoByUser from "../../common/hooks/sesionesTarbajo/
 import useGetSesionesTrabajo from "../../common/hooks/sesionesTarbajo/useGetSesionesTrabajo";
 import { GetFullSesionTrabajoDto } from "../../dtos/sesionTrabajo/GetFullSesionTrabajoDto";
 import { GetSesionTrabajoDto } from "../../dtos/sesionTrabajo/GetSesionTrabajoDto";
+import useGetEmpleado from "../../common/hooks/useGetEmpleado";
 
 function AdminPage() {
   const [open, setOpen] = useState(false);
@@ -21,6 +22,7 @@ function AdminPage() {
   const { finalizarSesionTrabajo } = useFinalizarSesionTrabajo();
   const { createSesionTrabajo } = useCreateSesionTrabajo();
   const { fetchFullSesionesTrabajoByUser } = useGetFullSesionesTrabajoByUser();
+  const { fetchEmpleado } = useGetEmpleado();
 
   useEffect(() => {
     if (!user) return;
@@ -47,9 +49,11 @@ function AdminPage() {
   const handleExportSesionesTrabajo = async (idUsuario: number) => {
     const sesiones = await getFullSesionesTrabajo(idUsuario);
 
+    // Estructurar los datos para el Excel
     const formattedData: any[] = [];
 
-    sesiones.forEach((sesion) => {
+    for (const sesion of sesiones) {
+      // Agregar encabezado para la sesión de trabajo
       formattedData.push({
         idSesionTrabajo: sesion.idSesionTrabajo,
         sesionToken: sesion.sesionToken,
@@ -58,8 +62,9 @@ function AdminPage() {
           ? new Date(sesion.finalizedDate).toISOString()
           : "No finalizado",
         idUsuario: sesion.idUsuario,
+        // Celdas vacías para mantener el formato visual
         asistenciaId: "",
-        idEmpleado: "",
+        nombreEmpleado: "",
         idTipoAsistencia: "",
         asistenciaInicio: "",
         asistenciaFin: "",
@@ -67,28 +72,36 @@ function AdminPage() {
         asistenciaUpdateDate: "",
       });
 
-      sesion.asistencias.forEach((asistencia) => {
-        formattedData.push({
-          idSesionTrabajo: "",
-          sesionToken: "",
-          createDate: "",
-          finalizedDate: "",
-          idUsuario: "",
-          asistenciaId: asistencia.idAsistencia,
-          idEmpleado: asistencia.idEmpleado,
-          idTipoAsistencia: asistencia.idTipoAsistencia,
-          asistenciaInicio: new Date(asistencia.asistenciaInicio).toISOString(),
-          asistenciaFin: asistencia.asistenciaFin
-            ? new Date(asistencia.asistenciaFin).toISOString()
-            : "Sin finalizar",
-          asistenciaCreateDate: new Date(asistencia.createDate).toISOString(),
-          asistenciaUpdateDate: new Date(asistencia.updateDate).toISOString(),
-        });
-      });
+      // Procesar todas las asistencias de la sesión
+      for (const asistencia of sesion.asistencias) {
+        const empleado = await fetchEmpleado(asistencia.idEmpleado); // Obtener el empleado
+        if (!empleado) formattedData.push({});
+        else
+          formattedData.push({
+            idSesionTrabajo: "",
+            sesionToken: "",
+            createDate: "",
+            finalizedDate: "",
+            idUsuario: "",
+            asistenciaId: asistencia.idAsistencia,
+            nombreEmpleado: empleado.nombreEmpleado, // Reemplazar idEmpleado por nombreEmpleado
+            idTipoAsistencia: asistencia.idTipoAsistencia,
+            asistenciaInicio: new Date(
+              asistencia.asistenciaInicio
+            ).toISOString(),
+            asistenciaFin: asistencia.asistenciaFin
+              ? new Date(asistencia.asistenciaFin).toISOString()
+              : "Sin finalizar",
+            asistenciaCreateDate: new Date(asistencia.createDate).toISOString(),
+            asistenciaUpdateDate: new Date(asistencia.updateDate).toISOString(),
+          });
+      }
 
+      // Agregar una fila vacía entre sesiones para mejorar legibilidad
       formattedData.push({});
-    });
+    }
 
+    // Exportar a Excel
     exportToExcel(formattedData, "SesionesTrabajo");
   };
 
