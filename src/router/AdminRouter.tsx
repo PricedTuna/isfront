@@ -19,6 +19,9 @@ import UsersListPage from "../pages/admin/users/UsersListPage";
 import DomicilioPage from "../pages/admin/domicilios/DomicilioPage";
 import DomiciliosListPage from "../components/domicilio/DomicilioList";
 import DomicilioCreatePage from "../pages/admin/domicilios/DomicilioCreatePage";
+import SucursalPage from "../pages/admin/sucursales/SucursalPage";
+import SucursalListPage from '../pages/admin/sucursales/SucursalListPage';
+import SucursalCreatePage from '../pages/admin/sucursales/SucursalCreatePage';
 
 
 
@@ -124,6 +127,31 @@ export const AdminRouter = [
             element:<DomicilioCreatePage/>,
             errorElement: <DomicilioCreatePage/>,
           },
+          
+        ],
+      },
+      
+      {
+        path: `${baseUrl}/sucursal`,
+        element: <SucursalPage/>,
+        errorElement: <SucursalPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <SucursalListPage/>,
+            errorElement: <SucursalListPage/>,
+          },
+          {
+            path: "crear",
+            element: <SucursalCreatePage/>,
+            errorElement: <SucursalCreatePage/>,
+          },
+          {
+            path: "editar",
+            element:<SucursalCreatePage/>,
+            errorElement: <SucursalCreatePage/>,
+          },
+          
         ],
       },
       {

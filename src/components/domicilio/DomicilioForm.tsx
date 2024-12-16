@@ -133,7 +133,7 @@ export default function DomicilioForm() {
       }
   
       await showSuccessAlert(`El domicilio fue ${action}.`, prefersDarkMode);
-      navigate("/admin/domicilio");
+      navigate("/admin/domicilio/crear");
     } catch (error) {
       await showErrorAlert(
         "Hubo un problema al procesar la solicitud. Inténtalo de nuevo.",
