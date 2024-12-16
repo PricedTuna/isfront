@@ -11,6 +11,7 @@ interface FieldConfig<T> {
   options?: { value: string; label: string }[];
   fullWidth?: boolean;
   margin?: "normal" | "dense" | "none";
+  render?: React.ReactNode;
 }
 
 interface GenericFormProps<T> {

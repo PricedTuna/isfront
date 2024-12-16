@@ -16,6 +16,9 @@ import UsersCreatePage from '../pages/admin/users/UsersCreatePage';
 import NacionalidadesForm from '../pages/catalogs/components/nacionalidadesForm';
 import NacionalidadList from "../components/NacionalidadList";
 import UsersListPage from "../pages/admin/users/UsersListPage";
+import DomicilioPage from "../pages/admin/domicilios/DomicilioPage";
+import DomiciliosListPage from "../components/domicilio/DomicilioList";
+import DomicilioCreatePage from "../pages/admin/domicilios/DomicilioCreatePage";
 
 
 
@@ -98,6 +101,28 @@ export const AdminRouter = [
             path: "editar",
             element: <NacionalidadesForm/>,
             errorElement: <NacionalidadesForm/>,
+          },
+        ],
+      },
+      {
+        path: `${baseUrl}/domicilio`,
+        element: <DomicilioPage />,
+        errorElement: <DomicilioPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <DomiciliosListPage/>,
+            errorElement: <DomiciliosListPage/>,
+          },
+          {
+            path: "crear",
+            element: <DomicilioCreatePage/>,
+            errorElement: <DomicilioCreatePage/>,
+          },
+          {
+            path: "editar",
+            element:<DomicilioCreatePage/>,
+            errorElement: <DomicilioCreatePage/>,
           },
         ],
       },
