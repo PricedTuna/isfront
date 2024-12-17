@@ -41,13 +41,20 @@ function HomePage() {
   const [selectedTipoAsistencia, setSelectedTipoAsistencia] = useState<
     number | ""
   >("");
+  const [selectedTipoPermiso, setSelectedTipoPermiso] = useState<number | "">(
+    ""
+  );
   const { fetchSesionTrabajoByToken } = getSesionTrabajoByToken();
   const inputRef = useRef<string>("");
 
-  const [open, setOpen] = useState(false);
+  const [isAsistenciaModalOpen, setIsAsistenciaModalOpen] = useState(false);
+  const [isPermisoModalOpen, setIsPermisoModalOpen] = useState(false);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpenAsistenciaModal = () => setIsAsistenciaModalOpen(true);
+  const handleCloseAsistenciaModal = () => setIsAsistenciaModalOpen(false);
+
+  const handleOpenPermisoModal = () => setIsPermisoModalOpen(true);
+  const handleClosePermisoModal = () => setIsPermisoModalOpen(false);
 
   const handleFinalizar = async (idAsistencia: number) => {
     if (!asistencias) return;
@@ -93,15 +100,19 @@ function HomePage() {
     });
 
     fetchAsistencias(idEmpleado);
-    handleClose();
+    handleCloseAsistenciaModal();
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     inputRef.current = event.target.value;
   };
 
-  const handleSelectChange = (event: SelectChangeEvent<number>) => {
+  const handleSelectTipoAsistenciaChange = (event: SelectChangeEvent<number>) => {
     setSelectedTipoAsistencia(Number(event.target.value));
+  };
+
+  const handleSelectTipoPermisoChange = (event: SelectChangeEvent<number>) => {
+    setSelectedTipoPermiso(Number(event.target.value));
   };
 
   function calcularHorasTrabajadas(asistencias: GetAsistenciaDto[]): string {
@@ -181,10 +192,13 @@ function HomePage() {
           {asistencias ? calcularHorasSemana(asistencias) : 0}
         </Typography>
         <Box>
-          <GraficaHorasPorTipo asistencias={asistencias??[]} />
+          <GraficaHorasPorTipo asistencias={asistencias ?? []} />
         </Box>
-        <Button variant="contained" onClick={handleOpen}>
+        <Button variant="contained" onClick={handleOpenAsistenciaModal}>
           Acceder a sesión de trabajo
+        </Button>
+        <Button variant="contained" onClick={handleOpenPermisoModal}>
+          Solicitar permiso a sesion de trabajo
         </Button>
       </Box>
 
@@ -269,8 +283,8 @@ function HomePage() {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
+        open={isAsistenciaModalOpen}
+        onClose={handleCloseAsistenciaModal}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{
@@ -279,7 +293,7 @@ function HomePage() {
           },
         }}
       >
-        <Fade in={open}>
+        <Fade in={isAsistenciaModalOpen}>
           <Box
             sx={style}
             textAlign={"center"}
@@ -306,7 +320,7 @@ function HomePage() {
               <Select
                 labelId="tipo-asistencia-label"
                 value={selectedTipoAsistencia}
-                onChange={handleSelectChange}
+                onChange={handleSelectTipoAsistenciaChange}
               >
                 {tiposAsistencia?.map((tipo) => (
                   <MenuItem
@@ -331,6 +345,49 @@ function HomePage() {
             >
               Acceder
             </Button>
+          </Box>
+        </Fade>
+      </Modal>
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={isPermisoModalOpen}
+        onClose={handleClosePermisoModal}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
+      >
+        <Fade in={isPermisoModalOpen}>
+          <Box
+            sx={style}
+            textAlign={"center"}
+            display={"flex"}
+            flexDirection={"column"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            <FormControl fullWidth sx={{ marginTop: 2 }}>
+              <InputLabel id="tipo-permiso-label">Tipo de Permiso</InputLabel>
+              <Select
+                labelId="tipo-permiso-label"
+                value={selectedTipoPermiso}
+                onChange={handleSelectTipoPermisoChange}
+              >
+                {tiposAsistencia?.map((tipo) => (
+                  <MenuItem
+                    key={tipo.idTipoAsistencia}
+                    value={tipo.idTipoAsistencia}
+                  >
+                    {tipo.nombreAsistencia}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
         </Fade>
       </Modal>
