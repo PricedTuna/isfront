@@ -110,7 +110,7 @@ function HomePage() {
             Solicitar permiso a sesión de trabajo
           </Button>
           <Button variant="contained" onClick={handleOpenPermisosModal}>
-            Ver permisos registrados
+            Ver permisos solicitados
           </Button>
         </Box>
         <Box mt={4}>

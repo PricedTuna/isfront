@@ -53,7 +53,6 @@ const PermisosModal: React.FC<PermisosModalProps> = ({
                 <TableCell>Tipo de Permiso</TableCell>
                 <TableCell>Descripción</TableCell>
                 <TableCell>Aprobado</TableCell>
-                <TableCell>Estatus</TableCell>
                 <TableCell>Fecha de Creación</TableCell>
                 <TableCell>Última Actualización</TableCell>
               </TableRow>
@@ -67,7 +66,6 @@ const PermisosModal: React.FC<PermisosModalProps> = ({
                   <TableCell>
                     {permiso.aprobado ? "Sí" : "No"}
                   </TableCell>
-                  <TableCell>{permiso.estatus}</TableCell>
                   <TableCell>
                     {new Date(permiso.createDate).toLocaleDateString()}
                   </TableCell>

@@ -25,7 +25,7 @@ function SesionTrabajoModal({ open, onClose, sesionTrabajo }: any) {
               <Typography id="transition-modal-description">
                 {`Sesion de trabajo: ${sesionTrabajo.idSesionTrabajo}`}
               </Typography>
-              <QRCodeCanvas value={sesionTrabajo.sesionToken} size={200} />
+              <QRCodeCanvas value={sesionTrabajo.sesionToken} size={200} style={{padding: 10, backgroundColor: 'white'}} />
               <Typography
                 id="transition-modal-title"
                 variant="h4"
