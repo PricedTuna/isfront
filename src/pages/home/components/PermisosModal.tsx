@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import useGetPermisosByEmpleado from "../../../common/hooks/permiso/useGetPermisosByEmpleado";
+import useGetTiposPermiso from "../../../common/hooks/permiso/useGetTiposPermiso";
 
 interface PermisosModalProps {
   isOpen: boolean;
@@ -26,10 +27,12 @@ const PermisosModal: React.FC<PermisosModalProps> = ({
   idEmpleado,
 }) => {
   const { permisos, fetchPermisosByEmpleado } = useGetPermisosByEmpleado();
+  const { fetchTiposPermiso, tiposPermiso } = useGetTiposPermiso();
 
   useEffect(() => {
     if (isOpen && idEmpleado) {
       fetchPermisosByEmpleado(idEmpleado);
+      fetchTiposPermiso();
     }
   }, [isOpen, idEmpleado]);
 
@@ -61,11 +64,16 @@ const PermisosModal: React.FC<PermisosModalProps> = ({
               {permisos.map((permiso) => (
                 <TableRow key={permiso.idPermiso}>
                   <TableCell>{permiso.idPermiso}</TableCell>
-                  <TableCell>{permiso.idTipoPermiso}</TableCell>
-                  <TableCell>{permiso.descripcion}</TableCell>
                   <TableCell>
-                    {permiso.aprobado ? "Sí" : "No"}
+                    {
+                      tiposPermiso?.find(
+                        (tiposPermiso) =>
+                          tiposPermiso.idTipoPermiso == permiso.idTipoPermiso
+                      )?.nombrePermiso
+                    }
                   </TableCell>
+                  <TableCell>{permiso.descripcion}</TableCell>
+                  <TableCell>{permiso.aprobado ? "Sí" : "No"}</TableCell>
                   <TableCell>
                     {new Date(permiso.createDate).toLocaleDateString()}
                   </TableCell>
