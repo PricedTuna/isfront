@@ -9,26 +9,15 @@ const _tipoPermisoClient = getHttpClient("/tipopermiso");
 
 export class PermisoService {
   public getAllTiposPermiso = async () => {
-    try {
-      const response = await _tipoPermisoClient.get<Wrapper<TipoPermisoDto>>(
-        ""
-      );
-      return response.data.result;
-    } catch (error) {
-      console.log(error);
-      return { message: "hubo un error pai" };
-    }
+    const response = await _tipoPermisoClient.get<Wrapper<TipoPermisoDto>>("");
+    return response.data.result;
   };
 
   public createPermiso = async (createPermisoDto: CreatePermisoDto) => {
-    try {
-      const response = await _permisoClient.post<Wrapper<PermisoDto>>(
-        "", createPermisoDto
-      );
-      return response.data.result;
-    } catch (error) {
-      console.log(error);
-      return { message: "hubo un error pai" };
-    }
-  }
+    const response = await _permisoClient.post<Wrapper<PermisoDto>>(
+      "",
+      createPermisoDto
+    );
+    return response.data.result;
+  };
 }
