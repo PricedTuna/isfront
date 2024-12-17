@@ -5,7 +5,7 @@ export interface PermisoDto {
   descripcion:         string;
   aprobado:            boolean;
   idSesionTrabajo:     number;
-  idUsuarioAprobacion: number;
+  idUsuarioAprobacion: number | null;
   estatus:             string;
   createDate:          Date;
   updateDate:          Date;

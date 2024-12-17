@@ -1,4 +1,6 @@
+import { SingleWrapper } from "../common/wrappers/SingleWrapper";
 import { Wrapper } from "../common/wrappers/Wrapper";
+import { AprobarPermisoDto } from "../dtos/permiso/AprobarPermisoDto";
 import { CreatePermisoDto } from "../dtos/permiso/CreatePermisoDto";
 import { PermisoDto } from "../dtos/permiso/PermisoDto";
 import { TipoPermisoDto } from "../dtos/permiso/TipoPermisoDto";
@@ -18,6 +20,11 @@ export class PermisoService {
     return result
   }
 
+  public getPermisosBySesionTrabajo = async (idSesionTrabajo: number) => {
+    const {data: {result}} = await _permisoClient.get<Wrapper<PermisoDto>>(`sesion-trabajo/${idSesionTrabajo}`);
+    return result
+  }
+
   public createPermiso = async (createPermisoDto: CreatePermisoDto) => {
     const response = await _permisoClient.post<Wrapper<PermisoDto>>(
       "",
@@ -25,4 +32,10 @@ export class PermisoService {
     );
     return response.data.result;
   };
+
+  public aprobarPermiso = async (idPermiso: number, aprobarPermisoDto: AprobarPermisoDto) => {
+    const {data: {result}} = await _permisoClient.patch<SingleWrapper<PermisoDto>>(`aprobar/${idPermiso}`, aprobarPermisoDto)
+    return result
+  }
+
 }

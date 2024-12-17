@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -9,7 +10,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useGetTipoAsistenciaName } from "../../../common/hooks/asistencia/getTiposAsistenciaName";
 import useGetAsistenciasBySesionTrabajo from "../../../common/hooks/asistencia/useGetAsistenciasBySesionTrabajo";
@@ -17,14 +18,29 @@ import useGetTiposAsistencia from "../../../common/hooks/asistencia/useGetTiposA
 import useGetSesionTrabajoById from "../../../common/hooks/sesionesTarbajo/useGetSesionTrabajoById";
 import { formatDate } from "../../../utils/formatDate";
 import { QRCodeCanvas } from "qrcode.react";
+import AdminPermisosModal from "../components/AdminPermisosModal";
+import { useGetUserContext } from "../../../common/context/AuthContext";
+import useAprobarPermiso from "../../../common/hooks/permiso/useAprobarPermiso";
 
 function SesionTrabajoPage() {
   const { id: idSesionTrabajo } = useParams<{ id: string }>(); // Obtener el parámetro `id` de la URL
+  const user = useGetUserContext()
 
   const { asistencias, fetchAsistenciasBySesionTrabajo } =
     useGetAsistenciasBySesionTrabajo();
   const { fetchSesionTrabajoById, sesionTrabajo } = useGetSesionTrabajoById();
   const { fetchTiposAsistencia, tiposAsistencia } = useGetTiposAsistencia();
+  const { aprobarPermiso } = useAprobarPermiso()
+
+  const [isPermisosModalOpen, setIsPermisosModalOpen] = useState(false)
+
+  const handleAprobarPermiso = async (idPermiso: number) => {
+    if(!user)
+      return
+
+    await aprobarPermiso(idPermiso, {idUsuarioAprobacion: user.idUsuario})
+    setIsPermisosModalOpen(false)
+  }
 
   useEffect(() => {
     if (!idSesionTrabajo) return;
@@ -50,7 +66,7 @@ function SesionTrabajoPage() {
       </Typography>
 
       <Box display={"flex"} justifyContent={"center"}>
-        <QRCodeCanvas value={sesionTrabajo.sesionToken} size={300} />
+        <QRCodeCanvas value={sesionTrabajo.sesionToken} size={300} style={{padding: '25px', backgroundColor: 'white'}} />
       </Box>
 
       {/* Información General */}
@@ -69,8 +85,11 @@ function SesionTrabajoPage() {
         <Typography variant="body1">
           <strong>Fecha cierre:</strong> {idSesionTrabajo}
         </Typography>
+        <Button variant="contained" onClick={() => setIsPermisosModalOpen(true)}>
+          Ver permisos solicitado
+        </Button>
       </Box>
-
+      <AdminPermisosModal onAprobar={handleAprobarPermiso} idSesionTrabajo={sesionTrabajo.idSesionTrabajo} isOpen={isPermisosModalOpen} onClose={() => setIsPermisosModalOpen(false)} />
       {/* Tabla de asistencias */}
       <Box>
         <Typography variant="h6" mb={2}>
