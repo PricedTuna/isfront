@@ -55,7 +55,8 @@ export default function SucursalForm() {
     setFormValues((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); 
     if (!formValues.nombreSucursal || !formValues.idDomicilio || !formValues.numTelefono) {
       await showErrorAlert(
         "Por favor, completa todos los campos requeridos.",
@@ -82,7 +83,7 @@ export default function SucursalForm() {
       }
 
       await showSuccessAlert(`La sucursal fue ${action}.`, prefersDarkMode);
-      navigate("/admin/sucursal/crear");
+      navigate("/admin/sucursal");
     } catch (error) {
       await showErrorAlert(
         "Hubo un problema al procesar la solicitud. Inténtalo de nuevo.",

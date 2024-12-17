@@ -112,7 +112,9 @@ export default function DomicilioForm() {
     setFormValues(updatedFormValues);
   };
   
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Evita el comportamiento por defecto del formulario
+  
     if (!formValues.idPais || !formValues.idEstado || !formValues.idMunicipio || !formValues.idCiudad) {
       await showErrorAlert(
         "Por favor, completa todos los campos requeridos.",
@@ -127,13 +129,13 @@ export default function DomicilioForm() {
         : "registrado correctamente";
   
       if (initialValues) {
-        await _domicilioService.update(initialValues.idDomicilio, formValues); // IDs enviados
+        await _domicilioService.update(initialValues.idDomicilio, formValues);
       } else {
-        await _domicilioService.create(formValues); // IDs enviados
+        await _domicilioService.create(formValues);
       }
   
       await showSuccessAlert(`El domicilio fue ${action}.`, prefersDarkMode);
-      navigate("/admin/domicilio/crear");
+      navigate("/admin/domicilio");
     } catch (error) {
       await showErrorAlert(
         "Hubo un problema al procesar la solicitud. Inténtalo de nuevo.",
@@ -142,6 +144,7 @@ export default function DomicilioForm() {
       console.error("Error en el registro/actualización de domicilio:", error);
     }
   };
+  
   
   if (loading || paisOptions.length === 0) {
     return (
