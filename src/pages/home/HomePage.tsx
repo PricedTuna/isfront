@@ -12,6 +12,8 @@ import AsistenciaModal from "./components/AsistenciaModal";
 import AsistenciaSummary from "./components/AsistenciaSummary";
 import HistorialAsistenciasTable from "./components/HistorialAsistenciasTable";
 import PermisoModal from "./components/PermisoModal";
+import PermisosModal from "./components/PermisosModal";
+import GraficaHorasPorTipo from "./components/GraficaHorasPorTipo";
 
 function HomePage() {
   const user = useGetUserContext();
@@ -25,6 +27,10 @@ function HomePage() {
 
   const [isAsistenciaModalOpen, setIsAsistenciaModalOpen] = useState(false);
   const [isPermisoModalOpen, setIsPermisoModalOpen] = useState(false);
+  const [isPermisosModalOpen, setIsPermisosModalOpen] = useState(false);
+
+  const handleOpenPermisosModal = () => setIsPermisosModalOpen(true);
+  const handleClosePermisosModal = () => setIsPermisosModalOpen(false);
 
   const handleOpenAsistenciaModal = () => setIsAsistenciaModalOpen(true);
   const handleCloseAsistenciaModal = () => setIsAsistenciaModalOpen(false);
@@ -82,41 +88,57 @@ function HomePage() {
   if (!user) return <></>;
 
   return (
-    <Box p={2}>
-      <Typography textAlign="center" py={2} variant="h2" fontFamily={"Oswald"}>
-        {`Hola ${empleado?.nombreEmpleado}`}
-      </Typography>
-      <AsistenciaSummary asistencias={asistencias} />
-      <Box mt={3} display={"flex"} flexDirection={"column"} gap={2}>
-        <Button
-          variant="contained"
-          onClick={handleOpenAsistenciaModal}
+    <Box p={2} sx={{ display: "flex", justifyContent: "center" }}>
+      <Box sx={{ maxWidth: "800px", width: "100%" }}>
+        <Typography
+          textAlign="center"
+          py={2}
+          variant="h2"
+          fontFamily={"Oswald"}
         >
-          Acceder a sesión de trabajo
-        </Button>
-        <Button variant="contained" onClick={handleOpenPermisoModal}>
-          Solicitar permiso a sesión de trabajo
-        </Button>
-      </Box>
-      <Box mt={4}>
-        <HistorialAsistenciasTable
-          asistencias={asistencias}
+          {`Hola ${empleado?.nombreEmpleado}`}
+        </Typography>
+        <AsistenciaSummary asistencias={asistencias} />
+        <Box maxHeight={'300px'} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+          <GraficaHorasPorTipo asistencias={asistencias??[]} />
+        </Box>
+        <Box mt={3} display={"flex"} flexDirection={"column"} gap={2}>
+          <Button variant="contained" onClick={handleOpenAsistenciaModal}>
+            Acceder a sesión de trabajo
+          </Button>
+          <Button variant="contained" onClick={handleOpenPermisoModal}>
+            Solicitar permiso a sesión de trabajo
+          </Button>
+          <Button variant="contained" onClick={handleOpenPermisosModal}>
+            Ver permisos registrados
+          </Button>
+        </Box>
+        <Box mt={4}>
+          <HistorialAsistenciasTable
+            asistencias={asistencias}
+            tiposAsistencia={tiposAsistencia ?? []}
+          />
+        </Box>
+        <AsistenciaModal
+          isOpen={isAsistenciaModalOpen}
+          onClose={handleCloseAsistenciaModal}
           tiposAsistencia={tiposAsistencia ?? []}
+          onAccederSesionTrabajo={handleAccederSesionTrabajo}
+        />
+
+        <PermisoModal
+          isOpen={isPermisoModalOpen}
+          onClose={handleClosePermisoModal}
+          tiposPermiso={tiposPermiso ?? []}
+          onSolicitarPermiso={handleSolicitarPermiso}
+        />
+
+        <PermisosModal
+          isOpen={isPermisosModalOpen}
+          onClose={handleClosePermisosModal}
+          idEmpleado={user.idEmpleado ?? 0}
         />
       </Box>
-      <AsistenciaModal
-        isOpen={isAsistenciaModalOpen}
-        onClose={handleCloseAsistenciaModal}
-        tiposAsistencia={tiposAsistencia ?? []}
-        onAccederSesionTrabajo={handleAccederSesionTrabajo}
-      />
-
-      <PermisoModal
-        isOpen={isPermisoModalOpen}
-        onClose={handleClosePermisoModal}
-        tiposPermiso={tiposPermiso ?? []}
-        onSolicitarPermiso={handleSolicitarPermiso}
-      />
     </Box>
   );
 }

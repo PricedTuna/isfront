@@ -9,9 +9,14 @@ const _tipoPermisoClient = getHttpClient("/tipopermiso");
 
 export class PermisoService {
   public getAllTiposPermiso = async () => {
-    const response = await _tipoPermisoClient.get<Wrapper<TipoPermisoDto>>("");
-    return response.data.result;
+    const {data: {result}} = await _tipoPermisoClient.get<Wrapper<TipoPermisoDto>>("");
+    return result;
   };
+
+  public getPermisosByEmpleado = async (idEmpleado: number) => {
+    const {data: {result}} = await _permisoClient.get<Wrapper<PermisoDto>>(`empleado/${idEmpleado}`);
+    return result
+  }
 
   public createPermiso = async (createPermisoDto: CreatePermisoDto) => {
     const response = await _permisoClient.post<Wrapper<PermisoDto>>(
