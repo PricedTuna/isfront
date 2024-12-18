@@ -10,7 +10,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Collapse from "@mui/material/Collapse";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ExpandLess, ExpandMore, Home, DirectionsCar, Group, Category,Logout, Work, Map, LocationOn} from "@mui/icons-material";
+import { ExpandLess, ExpandMore, Home, DirectionsCar, Group, Category,Logout, Work, Map, LocationOn, Person} from "@mui/icons-material";
 import { useAuth } from "../common/context/AuthContext";
 
 // Menu con su submenu
@@ -18,9 +18,10 @@ const menuItems = [
   { text: "Home", path: "/home", icon: <Home /> },
   {text:"Sesion de trabajo",path:"/admin",icon:<Work/>},
   { text: "Autos", path: "/admin/autos", icon: <DirectionsCar /> },
-  { text: "Usuarios", path: "/admin/users", icon: <Group /> },
+  { text: "Usuarios", path: "/admin/users", icon: <Person/> },
   {text:"Domicilios",path:"/admin/domicilio",icon:<Map/>},
   {text:"Sucursales",path:"/admin/sucursal",icon:<LocationOn/>},
+  {text:"Empleados",path:"/admin/empleados",icon:<Group/>},
   {
     text: "Catálogos",
     icon: <Category />,

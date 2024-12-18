@@ -1,4 +1,4 @@
-export interface GetEmpleadoDto {
+export interface EmpleadoDto {
   idEmpleado:       number;
   nombreEmpleado:   string;
   curp:             string;
