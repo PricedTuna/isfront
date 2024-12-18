@@ -22,20 +22,21 @@ import {
   Map,
   LocationOn,
   Person,
-  Person2,
+  AccountCircle,
 } from "@mui/icons-material";
 import { useAuth } from "../common/context/AuthContext";
 
 // Menú con opciones específicas por rol
 const menuItems = [
   { text: "Home", path: "/home", icon: <Home />, roles: ["admin", "user"] },
+  {text:"Perfil",path:"/profile",icon:<AccountCircle/>,roles:["user","admin"]},
   { text: "Sesión de trabajo", path: "/admin", icon: <Work />, roles: ["admin"] },
   { text: "Autos", path: "/admin/autos", icon: <DirectionsCar />, roles: ["admin"] },
   { text: "Usuarios", path: "/admin/users", icon: <Person />, roles: ["admin"] },
   { text: "Domicilios", path: "/admin/domicilio", icon: <Map />, roles: ["admin"] },
   { text: "Sucursales", path: "/admin/sucursal", icon: <LocationOn />, roles: ["admin"] },
   { text: "Empleados", path: "/admin/empleados", icon: <Group />, roles: ["admin"] },
-  {text:"Perfil",path:"/profile",icon:<Person2/>,roles:["user","admin"]},
+  
   {
     text: "Catálogos",
     icon: <Category />,
