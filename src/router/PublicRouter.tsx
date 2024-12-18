@@ -1,6 +1,7 @@
 import MainLayout from "../layout/MainLayout";
 import HomePage from "../pages/home/HomePage";
-
+import ProfilePage from '../pages/user/ProfilePage';
+const baseUrl: string = '/'
 // Rutas para no administradores
 export const PublicRouter = [
   {
@@ -10,6 +11,10 @@ export const PublicRouter = [
       {
         path: "home",
         element: <HomePage />,
+      },
+      {
+        path: `${baseUrl}/profile/`,
+        element: <ProfilePage/>
       },
     ],
   },

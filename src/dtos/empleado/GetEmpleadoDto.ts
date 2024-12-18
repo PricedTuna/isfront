@@ -1,4 +1,4 @@
-export interface GetEmpleadoDto {
+export interface EmpleadoDto {
   idEmpleado:       number;
   nombreEmpleado:   string;
   curp:             string;
@@ -9,7 +9,7 @@ export interface GetEmpleadoDto {
   numCelLaboral:    string;
   numCelPersonal:   string;
   registroPatronal: string;
-  fechaNacimiento:  Date;
+  fechaNacimiento: Date | null; 
   lugarNacimiento:  string;
   idNacionalidad:   number;
   idDomicilio:      number;

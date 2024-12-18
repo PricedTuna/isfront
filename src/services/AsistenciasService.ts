@@ -23,6 +23,7 @@ export class AsistenciasService {
 
   async getTiposAsistencias() {
     const {data: {result}} = await _tipoAsistencias.get<Wrapper<GetTipoAsistenciaDto>>('')
+    console.log(result)
     return result
   }
 
