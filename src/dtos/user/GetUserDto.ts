@@ -4,6 +4,6 @@ export interface GetUserDto {
   isAdmin: boolean;
   correo: string;
   password:string;
-  idEmpleado?: number;
+  idEmpleado?: number | null;
   idUsuarioPadre?:number;
 }

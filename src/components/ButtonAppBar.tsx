@@ -22,6 +22,7 @@ import {
   Map,
   LocationOn,
   Person,
+  Person2,
 } from "@mui/icons-material";
 import { useAuth } from "../common/context/AuthContext";
 
@@ -34,6 +35,7 @@ const menuItems = [
   { text: "Domicilios", path: "/admin/domicilio", icon: <Map />, roles: ["admin"] },
   { text: "Sucursales", path: "/admin/sucursal", icon: <LocationOn />, roles: ["admin"] },
   { text: "Empleados", path: "/admin/empleados", icon: <Group />, roles: ["admin"] },
+  {text:"Perfil",path:"/profile",icon:<Person2/>,roles:["user","admin"]},
   {
     text: "Catálogos",
     icon: <Category />,
