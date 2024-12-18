@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, TextField, Button, Typography, Divider, Alert } from "@mui/material";
+import { Box, TextField, Button, Typography, Divider, Alert, Card, CardContent } from "@mui/material";
 import { useGetUserContext } from "../../common/context/AuthContext";
 import { UserService } from "../../services/UserService";
 
@@ -42,11 +42,10 @@ const EditProfile: React.FC = () => {
 
     try {
       if (userContext?.idUsuario) {
-        // Usamos el mismo servicio de `update` para cambiar la contraseña
         await userService.update(userContext.idUsuario, {
-          nombreUsuario: userContext.nombreUsuario, // Mantenemos otros campos existentes
+          nombreUsuario: userContext.nombreUsuario, // Mantener otros campos existentes
           correo: userContext.correo,
-          password: newPassword, // Enviamos solo la nueva contraseña
+          password: newPassword,
         });
         setPasswordMessage("Contraseña actualizada con éxito.");
         setNewPassword("");
@@ -59,59 +58,69 @@ const EditProfile: React.FC = () => {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box sx={{ p: 3, display: "flex", flexDirection: "column", alignItems: "center" }}>
       <Typography variant="h4" gutterBottom>
         Editar Perfil
       </Typography>
-      <Divider sx={{ mb: 3 }} />
+      <Divider sx={{ width: "100%", mb: 3 }} />
 
       {/* Mensaje de éxito o error */}
-      {mensaje && <Alert severity="success">{mensaje}</Alert>}
+      {mensaje && <Alert severity="success" sx={{ mb: 3, maxWidth: 600 }}>{mensaje}</Alert>}
 
       {/* Formulario de edición de perfil */}
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 400 }}>
-        <TextField
-          label="Nombre de Usuario"
-          value={nombreUsuario}
-          onChange={(e) => setNombreUsuario(e.target.value)}
-          fullWidth
-        />
-        <TextField
-          label="Correo Electrónico"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-          fullWidth
-        />
-        <Button variant="contained" color="primary" onClick={handleSaveProfile}>
-          Guardar Cambios
-        </Button>
-      </Box>
+      <Card sx={{ width: "100%", maxWidth: 600, mb: 4 }}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            Información del Usuario
+          </Typography>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <TextField
+              label="Nombre de Usuario"
+              value={nombreUsuario}
+              onChange={(e) => setNombreUsuario(e.target.value)}
+              fullWidth
+            />
+            <TextField
+              label="Correo Electrónico"
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
+              fullWidth
+            />
+            <Button variant="contained" color="primary" onClick={handleSaveProfile}>
+              Guardar Cambios
+            </Button>
+          </Box>
+        </CardContent>
+      </Card>
 
       {/* Sección de cambio de contraseña */}
-      <Divider sx={{ my: 4 }} />
-      <Typography variant="h5" gutterBottom>
-        Cambiar Contraseña
-      </Typography>
-      {passwordMessage && <Alert severity="info">{passwordMessage}</Alert>}
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 400 }}>
-        <TextField
-          label="Nueva Contraseña"
-          type="password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          fullWidth
-        />
-        <TextField
-          label="Confirmar Nueva Contraseña"
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          fullWidth
-        />
-        <Button variant="contained" color="secondary" onClick={handleChangePassword}>
-          Actualizar Contraseña
-        </Button>
-      </Box>
+      <Card sx={{ width: "100%", maxWidth: 600 }}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            Cambiar Contraseña
+          </Typography>
+          {passwordMessage && <Alert severity="info" sx={{ mb: 2 }}>{passwordMessage}</Alert>}
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <TextField
+              label="Nueva Contraseña"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              fullWidth
+            />
+            <TextField
+              label="Confirmar Nueva Contraseña"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              fullWidth
+            />
+            <Button variant="contained" color="secondary" onClick={handleChangePassword}>
+              Actualizar Contraseña
+            </Button>
+          </Box>
+        </CardContent>
+      </Card>
     </Box>
   );
 };
