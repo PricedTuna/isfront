@@ -1,6 +1,6 @@
 import { Wrapper } from "../common/wrappers/Wrapper";
 import { GetUserDto } from "../dtos/user/GetUserDto";
-import { CreateUserDto } from "../dtos/user/CreateUserDto";
+import { CreateUserDto } from '../dtos/user/CreateUserDto';
 import { getHttpClient } from "./HttpClient";
 import { UserDto } from "../dtos/user/User";
 
@@ -56,4 +56,7 @@ export class UserService {
       return { message: "Hubo un error al obtener el usuario" };
     }
   };
-}
+
+
+  
+};
