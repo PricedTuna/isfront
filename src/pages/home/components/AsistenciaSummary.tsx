@@ -9,13 +9,13 @@ interface AsistenciaSummaryProps {
 function AsistenciaSummary({ asistencias }: AsistenciaSummaryProps) {
   return (
     <Box textAlign="center">
-      <Typography py={2} variant="h4" fontFamily={"Rubik"}>
+      <Typography py={1} variant="h5" fontFamily={"Rubik"}>
         Total de asistencias: {asistencias ? asistencias.length : 0}
       </Typography>
-      <Typography py={2} variant="h4" fontFamily={"Rubik"}>
+      <Typography py={1} variant="h5" fontFamily={"Rubik"}>
         Total de horas trabajadas: {asistencias ? calcularHorasTrabajadas(asistencias) : 0}
       </Typography>
-      <Typography py={2} variant="h4" fontFamily={"Rubik"}>
+      <Typography py={1} variant="h5" fontFamily={"Rubik"}>
         Horas trabajadas esta semana: {asistencias ? calcularHorasSemana(asistencias) : 0}
       </Typography>
     </Box>

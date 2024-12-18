@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { loginUserDto } from "../../dtos/auth/GetLoginUserDto";
+import { LoginUserDto } from "../../dtos/auth/GetLoginUserDto";
 
 // Definimos el tipo de los valores del contexto
 interface AuthContextType {

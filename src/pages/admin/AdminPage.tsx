@@ -1,10 +1,10 @@
 import { Box, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGetUserContext } from "../../common/context/AuthContext";
-import useGetSesionesTrabajo from "../../common/hooks/sesionesTarbajo/useGetSesionesTrabajo";
 import useCreateSesionTrabajo from "../../common/hooks/sesionesTarbajo/useCreateSesionTrabajo";
 import useFinalizarSesionTrabajo from "../../common/hooks/sesionesTarbajo/useFinalizarSesionTrabajo";
 import useGenerateSesionTrabajoToken from "../../common/hooks/sesionesTarbajo/useGenerateSesionTrabajoToken";
+import useGetSesionesTrabajo from "../../common/hooks/sesionesTarbajo/useGetSesionesTrabajo";
 import { GetSesionTrabajoDto } from "../../dtos/sesionTrabajo/GetSesionTrabajoDto";
 import { exportToExcel } from "../../utils/Reports";
 import AdminPageActions from "./components/AdminPageActions";
@@ -64,11 +64,21 @@ function AdminPage() {
         onIniciarSesion={handleIniciarSesionTrabajo}
         onExportarSesion={handleExportSesionesTrabajo}
       />
-      <SesionesTrabajoList
-        sesiones={sesionesTrabajo}
-        onFinalizar={handleFinalizarSesion}
-        userId={user.idUsuario}
-      />
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        my={6}
+      >
+        <Typography variant="h5" gutterBottom textAlign={"center"}>
+          Ultima sesion de trabajo
+        </Typography>
+        <SesionesTrabajoList
+          sesiones={sesionesTrabajo ? [sesionesTrabajo[0]] : null}
+          onFinalizar={handleFinalizarSesion}
+          userId={user.idUsuario}
+        />
+      </Box>
       <SesionTrabajoModal
         open={open}
         onClose={() => setOpen(false)}
