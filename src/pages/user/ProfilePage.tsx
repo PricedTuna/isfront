@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { Box, Typography, Button, Grid, Divider } from "@mui/material";
+import { Box, Typography, Button, Grid, Divider, Card, CardContent, Skeleton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useGetUserContext } from "../../common/context/AuthContext"
+import { useGetUserContext } from "../../common/context/AuthContext";
 import useGetEmpleado from "../admin/empleado/hooks/use-get-empleado"; // Hook para datos de empleados
 import useGetUsers from "../admin/users/hooks/useGetUsers"; // Hook para datos de usuarios
 
@@ -16,7 +16,6 @@ const ProfilePage: React.FC = () => {
     fetchEmpleados(); // Cargar empleados
   }, [fetchUsers, fetchEmpleados]);
 
-  // Obtener información del usuario actual
   const currentUser = users?.find((u) => u.idUsuario === userContext?.idUsuario);
   const currentEmpleado = empleados?.find((e) => e.idEmpleado === currentUser?.idEmpleado);
 
@@ -24,58 +23,94 @@ const ProfilePage: React.FC = () => {
     navigate("/editarperfil");
   };
 
-
+  const renderLoading = () => (
+    <Box sx={{ width: "100%", maxWidth: 600, mt: 4 }}>
+      <Skeleton variant="rectangular" height={50} sx={{ mb: 2 }} />
+      <Skeleton variant="text" width="80%" />
+      <Skeleton variant="text" width="60%" />
+    </Box>
+  );
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box sx={{ p: 3, display: "flex", flexDirection: "column", alignItems: "center" }}>
       <Typography variant="h4" gutterBottom>
         Perfil de Usuario
       </Typography>
-      <Divider sx={{ mb: 2 }} />
+      <Divider sx={{ width: "100%", mb: 3 }} />
 
       {currentUser ? (
-        <Box>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="h6">Información del Usuario</Typography>
-              <Typography><strong>Nombre:</strong> {currentUser.nombreUsuario}</Typography>
-              <Typography><strong>Correo:</strong> {currentUser.correo}</Typography>
-              <Typography><strong>Administrador:</strong> {currentUser.isAdmin ? "Sí" : "No"}</Typography>
-              {currentUser.idUsuarioPadre && (
-                <Typography><strong>ID Usuario Padre:</strong> {currentUser.idUsuarioPadre}</Typography>
-              )}
-            </Grid>
-
-            {currentEmpleado && (
-              <>
-                <Grid item xs={12}>
-                  <Divider sx={{ my: 2 }} />
-                  <Typography variant="h6">Información del Empleado</Typography>
-                  <Typography><strong>Nombre:</strong> {currentEmpleado.nombreEmpleado}</Typography>
-                  <Typography><strong>CURP:</strong> {currentEmpleado.curp}</Typography>
-                  <Typography><strong>RFC:</strong> {currentEmpleado.rfc}</Typography>
-                  <Typography><strong>NSS:</strong> {currentEmpleado.nss}</Typography>
-                  <Typography><strong>Correo Laboral:</strong> {currentEmpleado.emailLaboral}</Typography>
-                  <Typography><strong>Correo Personal:</strong> {currentEmpleado.emailPersonal}</Typography>
-                  <Typography><strong>Teléfono Laboral:</strong> {currentEmpleado.numCelLaboral}</Typography>
-                  <Typography><strong>Teléfono Personal:</strong> {currentEmpleado.numCelPersonal}</Typography>
-                  <Typography><strong>Estatus:</strong> {currentEmpleado.estatus}</Typography>
+        <Box sx={{ width: "100%", maxWidth: 800 }}>
+          <Card sx={{ mb: 3 }}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Información del Usuario
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Typography><strong>Nombre:</strong> {currentUser.nombreUsuario}</Typography>
                 </Grid>
-              </>
-            )}
-          </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography><strong>Correo:</strong> {currentUser.correo}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography><strong>Administrador:</strong> {currentUser.isAdmin ? "Sí" : "No"}</Typography>
+                </Grid>
+                {currentUser.idUsuarioPadre && (
+                  <Grid item xs={12} sm={6}>
+                    <Typography><strong>ID Usuario Padre:</strong> {currentUser.idUsuarioPadre}</Typography>
+                  </Grid>
+                )}
+              </Grid>
+            </CardContent>
+          </Card>
 
-          <Divider sx={{ my: 3 }} />
+          {currentEmpleado && (
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Información del Empleado
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <Typography><strong>Nombre:</strong> {currentEmpleado.nombreEmpleado}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography><strong>CURP:</strong> {currentEmpleado.curp}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography><strong>RFC:</strong> {currentEmpleado.rfc}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography><strong>NSS:</strong> {currentEmpleado.nss}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography><strong>Correo Laboral:</strong> {currentEmpleado.emailLaboral}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography><strong>Correo Personal:</strong> {currentEmpleado.emailPersonal}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography><strong>Teléfono Laboral:</strong> {currentEmpleado.numCelLaboral}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography><strong>Teléfono Personal:</strong> {currentEmpleado.numCelPersonal}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography><strong>Estatus:</strong> {currentEmpleado.estatus}</Typography>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          )}
 
-          <Box sx={{ display: "flex", gap: 2 }}>
+          <Box sx={{ mt: 4, display: "flex", justifyContent: "center", gap: 2 }}>
             <Button variant="contained" color="primary" onClick={handleEditProfile}>
               Editar Perfil
             </Button>
-
           </Box>
         </Box>
       ) : (
-        <Typography>Cargando información del perfil...</Typography>
+        renderLoading()
       )}
     </Box>
   );
