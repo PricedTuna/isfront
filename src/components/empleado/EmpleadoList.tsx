@@ -27,7 +27,7 @@ const EmpleadosList = () => {
   }, []);
 
   const handleEdit = (empleado: EmpleadoDto) => {
-    navigate("/admin/empleado/crear", { state: empleado }); // Navega a la página de creación/edición
+    navigate("/admin/empleados/crear", { state: empleado }); // Navega a la página de creación/edición
   };
 
   const handleDelete = async (id: number) => {
