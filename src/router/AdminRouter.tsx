@@ -5,7 +5,6 @@ import AutosListPage from "../pages/admin/autos/AutosListPage";
 import AutosPage from "../pages/admin/autos/AutosPage";
 import SesionTrabajoPage from "../pages/admin/sesionesTrabajo/SesionTrabajoPage";
 import UsersAdminPage from '../pages/admin/users/UsersAdminPage';
-import UsersCreatePage from '../pages/admin/users/UsersCreatePage';
 import CiudadesPage from "../pages/catalogs/ciudadesPage";
 import NacionalidadesPage from "../pages/catalogs/nacionalidadesPage";
 import TiposAsistenciaPage from "../pages/catalogs/TiposAsistenciaPage";
@@ -13,6 +12,21 @@ import TiposContratoPage from "../pages/catalogs/tiposContratoPage";
 import TiposEmpleadosPage from "../pages/catalogs/TiposEmpleadosPage";
 import TiposLicenciaPage from "../pages/catalogs/TiposLicenciaPage";
 import TiposPermisosPage from "../pages/catalogs/TiposPermisosPage";
+import UsersCreatePage from '../pages/admin/users/UsersCreatePage';
+import NacionalidadesForm from '../pages/catalogs/components/nacionalidadesForm';
+import NacionalidadList from "../components/NacionalidadList";
+import UsersListPage from "../pages/admin/users/UsersListPage";
+import DomicilioPage from "../pages/admin/domicilios/DomicilioPage";
+import DomiciliosListPage from "../components/domicilio/DomicilioList";
+import DomicilioCreatePage from "../pages/admin/domicilios/DomicilioCreatePage";
+import SucursalPage from "../pages/admin/sucursales/SucursalPage";
+import SucursalListPage from '../pages/admin/sucursales/SucursalListPage';
+import SucursalCreatePage from '../pages/admin/sucursales/SucursalCreatePage';
+import EmpleadoPage from '../pages/admin/empleado/EmpleadoPage';
+import EmpleadoCreatePage from '../pages/admin/empleado/EmpleadoCreatePage';
+import EmpleadoListPage from '../pages/admin/empleado/EmpleadoListPage';
+
+
 
 const baseUrl: string = 'admin'
 
@@ -54,13 +68,13 @@ export const AdminRouter = [
       },
       {
         path: `${baseUrl}/users`,
-        element:<AdminPage/>,
-        errorElement: <AdminPage/>, // todo: refactor name (add admin)
+        element:<UsersAdminPage/>,
+        errorElement: <UsersAdminPage/>, // todo: refactor name (add admin)
         children: [
           {
             path: "",
-            element: <UsersAdminPage/>,
-            errorElement: <UsersAdminPage/>,
+            element: <UsersListPage/>,
+            errorElement: <UsersListPage/>,
           },
           {
             path: "crear",
@@ -76,7 +90,95 @@ export const AdminRouter = [
       },
       {
         path: `${baseUrl}/nacionalidades`,
-        element: <NacionalidadesPage />
+        element: <NacionalidadesPage />,
+        errorElement: <NacionalidadesPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <NacionalidadList/>,
+            errorElement: <NacionalidadList/>,
+          },
+          {
+            path: "crear",
+            element: <NacionalidadesForm/>,
+            errorElement: <NacionalidadesForm/>,
+          },
+          {
+            path: "editar",
+            element: <NacionalidadesForm/>,
+            errorElement: <NacionalidadesForm/>,
+          },
+        ],
+      },
+      {
+        path: `${baseUrl}/domicilio`,
+        element: <DomicilioPage />,
+        errorElement: <DomicilioPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <DomiciliosListPage/>,
+            errorElement: <DomiciliosListPage/>,
+          },
+          {
+            path: "crear",
+            element: <DomicilioCreatePage/>,
+            errorElement: <DomicilioCreatePage/>,
+          },
+          {
+            path: "editar",
+            element:<DomicilioCreatePage/>,
+            errorElement: <DomicilioCreatePage/>,
+          },
+          
+        ],
+      },
+      
+      {
+        path: `${baseUrl}/sucursal`,
+        element: <SucursalPage/>,
+        errorElement: <SucursalPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <SucursalListPage/>,
+            errorElement: <SucursalListPage/>,
+          },
+          {
+            path: "crear",
+            element: <SucursalCreatePage/>,
+            errorElement: <SucursalCreatePage/>,
+          },
+          {
+            path: "editar",
+            element:<SucursalCreatePage/>,
+            errorElement: <SucursalCreatePage/>,
+          },
+          
+        ],
+      },
+      {
+        path: `${baseUrl}/empleados`,
+        element: <EmpleadoPage/>,
+        errorElement: <EmpleadoPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <EmpleadoListPage/>,
+            errorElement: <EmpleadoListPage/>,
+          },
+          {
+            path: "crear",
+            element: <EmpleadoCreatePage/>,
+            errorElement: <EmpleadoCreatePage/>,
+          },
+          {
+            path: "editar",
+            element:<EmpleadoCreatePage/>,
+            errorElement: <EmpleadoCreatePage/>,
+          },
+          
+        ],
       },
       {
         path: `${baseUrl}/ciudades`,

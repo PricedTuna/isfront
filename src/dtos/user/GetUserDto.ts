@@ -1,5 +1,9 @@
 export interface GetUserDto {
-  // todo: sync with backend (this is an example)
-  username: string
-  email: string
+  idUsuario: number;
+  nombreUsuario: string;
+  isAdmin: boolean;
+  correo: string;
+  password:string;
+  idEmpleado?: number | null;
+  idUsuarioPadre?:number;
 }

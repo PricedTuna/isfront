@@ -2,7 +2,7 @@ import { Box, CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router";
 import { Auto } from "../../../dtos/autos/AutoDto";
 import { AutoService } from "../../../services/AutoService";
-import AutoList from "../../../components/AutosList";
+import GenericList from "../../../components/List";
 import useGetAutos from "./hooks/use-get-autos";
 import { useEffect } from "react";
 
@@ -14,7 +14,7 @@ const AutosListPage = () => {
 
   useEffect(() => {
     fetchAutos();
-  }, [fetchAutos])
+  }, [fetchAutos]);
 
   const handleEdit = (auto: Auto) => {
     navigate("/admin/autos/crear", { state: auto }); // Navega a la página de creación y pasa el auto como estado
@@ -32,7 +32,21 @@ const AutosListPage = () => {
           <CircularProgress size={80} />
         </Box>
       ) : (
-        <AutoList autos={autos} onDelete={handleDelete} onEdit={handleEdit} />
+        <GenericList<Auto>
+          title="Listado de Autos"
+          items={autos}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          filterKeys={[
+            "nombreModelo",
+            "yearModelo",
+            "numeroPlacas",
+            "numeroSerie",
+            "numeroPoliza",
+          ]}
+          getItemId={(auto) => auto.idAuto}
+          getItemLabel={(auto) => auto.nombreModelo}
+        />
       )}
     </Box>
   );

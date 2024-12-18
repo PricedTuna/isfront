@@ -1,49 +1,47 @@
-import { Box, List, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import UsuariosList from "../../../components/UsuariosList";
-import { UserDto } from "../../../dtos/user/User";
-import useGetUsers from "./hooks/useGetUsers";
+import { Box, Button, Typography} from "@mui/material";
+import { Link, Outlet, useLocation } from "react-router-dom";
+
+
 
 function UsersAdminPage() {
-  const [usuarios, setUsuarios] = useState<UserDto[]>();
-  const { getUsers } = useGetUsers();
+  const location = useLocation(); // Obtener la ubicación actuals
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getUsers();
-        if (Array.isArray(response)) {
-          setUsuarios(response);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  });
 
   return (
-    <Box p={2}>
-      <Typography textAlign="center" py={2} variant="h2" fontFamily={"Oswald"} fontSize={80}>
-        Listar Usuarios
+   
+    <Box>
+      <Typography variant="h3" textAlign="center" fontFamily={"Oswald"} fontSize={50}>
+        Administracion de Usuarios 
       </Typography>
+      <Box display="flex" justifyContent="center" gap={3} mt={4}>
+        <Box>
+          <Link to="crear">
+            <Button
+              variant={
+                location.pathname === "/admin/users/create" ? "contained" : "outlined"
+              }
+            >
+              Crear Usuario
+            </Button>
+          </Link>
+        </Box>
+        <Box>
+          <Link to="">
+            <Button
+              variant={
+                location.pathname === "/admin/users" ? "contained" : "outlined"
+              }
+            >
+              Listar Usuarios
+            </Button>
+          </Link>
+        </Box>
+      </Box>
       <Box>
-        <List>
-          {usuarios == undefined ? (
-            <Typography fontFamily={"Rubik"} fontSize={20} textAlign="center">No se han encontrado ningun usuario</Typography>
-          ) : (
-            <UsuariosList
-              onDelete={() => console.log("delete user")}
-              onEdit={() => {
-                console.log("edit user");
-              }}
-              users={usuarios}
-            />
-          )}
-        </List>
+        <Outlet />
       </Box>
     </Box>
+   
   );
 }
 
