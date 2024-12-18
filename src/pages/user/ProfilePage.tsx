@@ -24,9 +24,7 @@ const ProfilePage: React.FC = () => {
     navigate("/editarperfil");
   };
 
-  const handleChangePassword = () => {
-    navigate("/cambiarcontraseña");
-  };
+
 
   return (
     <Box sx={{ p: 3 }}>
@@ -73,9 +71,7 @@ const ProfilePage: React.FC = () => {
             <Button variant="contained" color="primary" onClick={handleEditProfile}>
               Editar Perfil
             </Button>
-            <Button variant="outlined" color="secondary" onClick={handleChangePassword}>
-              Cambiar Contraseña
-            </Button>
+
           </Box>
         </Box>
       ) : (

@@ -11,10 +11,10 @@ function GraficaHorasPorTipo({ asistencias }: { asistencias: GetAsistenciaDto[] 
   const datosAgrupados = asistencias.reduce((acc, { idTipoAsistencia, asistenciaInicio, asistenciaFin }) => {
     if (asistenciaInicio && asistenciaFin) {
       const horas = (new Date(asistenciaFin).getTime() - new Date(asistenciaInicio).getTime()) / (1000 * 60 * 60);
-      acc[idTipoAsistencia] = (acc[idTipoAsistencia] || 0) + horas;
+      acc[idTipoAsistencia == 1 ? 'Presencial' : "En linea"] = (acc[idTipoAsistencia] || 0) + horas;
     }
     return acc;
-  }, {} as Record<number, number>);
+  }, {} as Record<string, number>);
 
   // Configuración para la gráfica
   const data = {

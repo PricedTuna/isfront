@@ -1,9 +1,8 @@
 export interface CreateUserDto {
     nombreUsuario: string;
     correo: string;
-    password: string;
+    password?: string;
     idEmpleado?: number;
     idUsuarioPadre?:number;
-    isAdmin:boolean;
+    isAdmin?:boolean;
   }
-  
