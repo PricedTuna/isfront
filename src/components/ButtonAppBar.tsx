@@ -1,42 +1,84 @@
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
+import {
+  AccountCircle,
+  Category,
+  DirectionsCar,
+  ExpandLess,
+  ExpandMore,
+  Group,
+  Home,
+  LocationOn,
+  Logout,
+  Map,
+  Person,
+  Work,
+} from "@mui/icons-material";
+import ChecklistIcon from "@mui/icons-material/Checklist";
 import MenuIcon from "@mui/icons-material/Menu";
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
 import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Collapse from "@mui/material/Collapse";
+import ListItemText from "@mui/material/ListItemText";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  ExpandLess,
-  ExpandMore,
-  Home,
-  DirectionsCar,
-  Group,
-  Category,
-  Logout,
-  Work,
-  Map,
-  LocationOn,
-  Person,
-  AccountCircle,
-} from "@mui/icons-material";
 import { useAuth } from "../common/context/AuthContext";
 
 // Menú con opciones específicas por rol
 const menuItems = [
   { text: "Home", path: "/home", icon: <Home />, roles: ["admin", "user"] },
-  {text:"Perfil",path:"/profile",icon:<AccountCircle/>,roles:["user","admin"]},
-  { text: "Sesión de trabajo", path: "/admin", icon: <Work />, roles: ["admin"] },
-  { text: "Autos", path: "/admin/autos", icon: <DirectionsCar />, roles: ["admin"] },
-  { text: "Usuarios", path: "/admin/users", icon: <Person />, roles: ["admin"] },
-  { text: "Domicilios", path: "/admin/domicilio", icon: <Map />, roles: ["admin"] },
-  { text: "Sucursales", path: "/admin/sucursal", icon: <LocationOn />, roles: ["admin"] },
-  { text: "Empleados", path: "/admin/empleados", icon: <Group />, roles: ["admin"] },
-  
+  {
+    text: "Perfil",
+    path: "/profile",
+    icon: <AccountCircle />,
+    roles: ["user", "admin"],
+  },
+  {
+    text: "Sesión de trabajo",
+    path: "/admin",
+    icon: <Work />,
+    roles: ["admin"],
+  },
+  {
+    text: "Autos",
+    path: "/admin/autos",
+    icon: <DirectionsCar />,
+    roles: ["admin"],
+  },
+  {
+    text: "Usuarios",
+    path: "/admin/users",
+    icon: <Person />,
+    roles: ["admin"],
+  },
+  {
+    text: "Domicilios",
+    path: "/admin/domicilio",
+    icon: <Map />,
+    roles: ["admin"],
+  },
+  {
+    text: "Sucursales",
+    path: "/admin/sucursal",
+    icon: <LocationOn />,
+    roles: ["admin"],
+  },
+  {
+    text: "Empleados",
+    path: "/admin/empleados",
+    icon: <Group />,
+    roles: ["admin"],
+  },
+  {
+    text: "Asistencias",
+    path: "/asistencias",
+    icon: <ChecklistIcon />,
+    roles: ["user"],
+  },
+
   {
     text: "Catálogos",
     icon: <Category />,
@@ -78,7 +120,6 @@ export default function ButtonAppBar() {
   const filteredMenuItems = menuItems.filter((item) =>
     item.roles.includes(user?.isAdmin ? "admin" : "user")
   );
-  
 
   return (
     <Box sx={{ flexGrow: 4 }}>
@@ -153,7 +194,11 @@ export default function ButtonAppBar() {
               </div>
             ))}
             <ListItem disablePadding>
-              <ListItemButton component={Link} to={"/login"} onClick={handleLogout}>
+              <ListItemButton
+                component={Link}
+                to={"/login"}
+                onClick={handleLogout}
+              >
                 <ListItemIcon>
                   <Logout />
                 </ListItemIcon>
