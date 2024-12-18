@@ -29,7 +29,8 @@ import { useAuth } from "../common/context/AuthContext";
 
 // Menú con opciones específicas por rol
 const menuItems = [
-  { text: "Home", path: "/home", icon: <Home />, roles: ["admin", "user"] },
+  { text: "Home", path: "/home", icon: <Home />, roles: ["user"] },
+  { text: "Home", path: "/admin", icon: <Home />, roles: ["admin"] },
   {
     text: "Perfil",
     path: "/profile",
@@ -37,8 +38,8 @@ const menuItems = [
     roles: ["user", "admin"],
   },
   {
-    text: "Sesión de trabajo",
-    path: "/admin",
+    text: "Sesiónes de trabajo",
+    path: "/admin/sesionestrabajo",
     icon: <Work />,
     roles: ["admin"],
   },

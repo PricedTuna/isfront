@@ -33,7 +33,7 @@ function AsistenciasPage() {
   return (
     <Box p={2} sx={{ display: "flex", justifyContent: "center" }}>
       <Box sx={{ maxWidth: "800px", width: "100%" }}>
-      <Typography
+        <Typography
           textAlign="center"
           py={2}
           variant="h2"

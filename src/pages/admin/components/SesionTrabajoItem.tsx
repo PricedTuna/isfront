@@ -5,8 +5,8 @@ function SesionTrabajoItem({ sesion, onFinalizar, userId }: any) {
   return (
     <Box
       key={sesion.idSesionTrabajo}
-      p={2}
-      mb={2}
+      p={6}
+      mb={3}
       border="1px solid #ccc"
       borderRadius="4px"
       display={"flex"}
