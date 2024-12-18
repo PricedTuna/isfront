@@ -10,21 +10,34 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Collapse from "@mui/material/Collapse";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ExpandLess, ExpandMore, Home, DirectionsCar, Group, Category,Logout, Work, Map, LocationOn, Person} from "@mui/icons-material";
+import {
+  ExpandLess,
+  ExpandMore,
+  Home,
+  DirectionsCar,
+  Group,
+  Category,
+  Logout,
+  Work,
+  Map,
+  LocationOn,
+  Person,
+} from "@mui/icons-material";
 import { useAuth } from "../common/context/AuthContext";
 
-// Menu con su submenu
+// Menú con opciones específicas por rol
 const menuItems = [
-  { text: "Home", path: "/home", icon: <Home /> },
-  {text:"Sesion de trabajo",path:"/admin",icon:<Work/>},
-  { text: "Autos", path: "/admin/autos", icon: <DirectionsCar /> },
-  { text: "Usuarios", path: "/admin/users", icon: <Person/> },
-  {text:"Domicilios",path:"/admin/domicilio",icon:<Map/>},
-  {text:"Sucursales",path:"/admin/sucursal",icon:<LocationOn/>},
-  {text:"Empleados",path:"/admin/empleados",icon:<Group/>},
+  { text: "Home", path: "/home", icon: <Home />, roles: ["admin", "user"] },
+  { text: "Sesión de trabajo", path: "/admin", icon: <Work />, roles: ["admin"] },
+  { text: "Autos", path: "/admin/autos", icon: <DirectionsCar />, roles: ["admin"] },
+  { text: "Usuarios", path: "/admin/users", icon: <Person />, roles: ["admin"] },
+  { text: "Domicilios", path: "/admin/domicilio", icon: <Map />, roles: ["admin"] },
+  { text: "Sucursales", path: "/admin/sucursal", icon: <LocationOn />, roles: ["admin"] },
+  { text: "Empleados", path: "/admin/empleados", icon: <Group />, roles: ["admin"] },
   {
     text: "Catálogos",
     icon: <Category />,
+    roles: ["admin"],
     subItems: [
       { text: "Nacionalidades", path: "/admin/nacionalidades" },
       { text: "Ciudades", path: "/admin/ciudades" },
@@ -40,7 +53,7 @@ const menuItems = [
 export default function ButtonAppBar() {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
-  const { logout } = useAuth();
+  const { logout, user } = useAuth(); // Obtén el rol del usuario desde el contexto
 
   const toggleDrawer = (open: boolean) => () => {
     setOpen(open);
@@ -57,6 +70,12 @@ export default function ButtonAppBar() {
   const handleLogout = () => {
     logout();
   };
+
+  // Filtrar opciones según el rol del usuario
+  const filteredMenuItems = menuItems.filter((item) =>
+    item.roles.includes(user?.isAdmin ? "admin" : "user")
+  );
+  
 
   return (
     <Box sx={{ flexGrow: 4 }}>
@@ -81,7 +100,7 @@ export default function ButtonAppBar() {
           onKeyDown={toggleDrawer(false)}
         >
           <List>
-            {menuItems.map((item, index) => (
+            {filteredMenuItems.map((item, index) => (
               <div key={index}>
                 {/* Si el elemento tiene subItems, se muestra el botón de expansión */}
                 {item.subItems ? (
@@ -130,14 +149,14 @@ export default function ButtonAppBar() {
                 )}
               </div>
             ))}
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to={"/login"} onClick={handleLogout}>
-              <ListItemIcon>
-                <Logout />
-              </ListItemIcon>
-              <ListItemText primary={`Cerrar sesión`} />
-            </ListItemButton>
-          </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton component={Link} to={"/login"} onClick={handleLogout}>
+                <ListItemIcon>
+                  <Logout />
+                </ListItemIcon>
+                <ListItemText primary={`Cerrar sesión`} />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       </Drawer>

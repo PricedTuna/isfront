@@ -50,7 +50,7 @@ const SucursalesList = () => {
           display="flex" 
           flexDirection="column" 
           gap={2} 
-          maxWidth="800px" // Ancho máximo de la caja
+          maxWidth="100%" // Ancho máximo de la caja
           margin="0 auto" // Centrar el contenido horizontalmente
           padding="16px" // Espaciado interno
         >
@@ -62,7 +62,8 @@ const SucursalesList = () => {
             filterKeys={["nombreSucursal", "numTelefono"]} // Campos para búsqueda
             getItemId={(sucursal) => sucursal.idSucursal} // ID único
             getItemLabel={(sucursal) =>
-              `Nombre Sucursal: ${sucursal.nombreSucursal} Tel: ${sucursal.numTelefono}`
+              `Nombre Sucursal: ${sucursal.nombreSucursal} 
+              Tel: ${sucursal.numTelefono}`
             } // Etiqueta del ítem
           />
         </Box>

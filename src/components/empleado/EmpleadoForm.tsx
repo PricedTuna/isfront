@@ -11,6 +11,11 @@ import {
   Button,
   Box,
 } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
+
 import { useLocation, useNavigate } from "react-router-dom";
 import { CreateEmpleadoDto, UpdateEmpleadoDto } from "../../dtos/empleado/CreateEmpleadodto";
 import useGetDomicilio from "../../pages/admin/domicilios/hooks/use-get-domicilios";
@@ -112,7 +117,7 @@ export default function EmpleadoForm() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+  
     const requiredFields: (keyof CreateEmpleadoDto)[] = [
       "nombreEmpleado",
       "curp",
@@ -120,22 +125,30 @@ export default function EmpleadoForm() {
       "idDomicilio",
     ];
     const missingField = requiredFields.find((field) => !formValues[field]);
-
+  
     if (missingField) {
       await showErrorAlert("Por favor, completa todos los campos requeridos.", prefersDarkMode);
       return;
     }
-
+  
     try {
+      // Convertir fechaNacimiento al formato deseado
+      const formattedValues = {
+        ...formValues,
+        fechaNacimiento: formValues.fechaNacimiento
+          ? dayjs(formValues.fechaNacimiento).format("YYYY-MM-DD")
+          : null,
+      };
+  
       if (initialValues && "idEmpleado" in initialValues) {
         await _empleadoService.updateEmpleado(initialValues.idEmpleado, {
-          ...formValues,
+          ...formattedValues,
           idEmpleado: initialValues.idEmpleado,
         } as UpdateEmpleadoDto);
       } else {
-        await _empleadoService.createEmpleado(formValues as EmpleadoDto);
+        await _empleadoService.createEmpleado(formattedValues as EmpleadoDto);
       }
-
+  
       await showSuccessAlert(
         `El empleado fue ${initialValues ? "actualizado" : "registrado"} correctamente.`,
         prefersDarkMode
@@ -146,6 +159,7 @@ export default function EmpleadoForm() {
       console.error("Error:", error);
     }
   };
+  
 
   if (loading || !domicilios || !sucursales) {
     return (
@@ -170,7 +184,7 @@ export default function EmpleadoForm() {
       <TextField
         label="CURP"
         value={formValues.curp}
-        onChange={(e) => handleFieldChange("curp", e.target.value)}
+        onChange={(e) => handleFieldChange("curp", e.target.value.toUpperCase())}
         fullWidth
         required
         sx={{ marginBottom: 2 }}
@@ -178,7 +192,7 @@ export default function EmpleadoForm() {
       <TextField
         label="RFC"
         value={formValues.rfc}
-        onChange={(e) => handleFieldChange("rfc", e.target.value)}
+        onChange={(e) => handleFieldChange("rfc", e.target.value.toUpperCase())}
         fullWidth
         sx={{ marginBottom: 2 }}
       />
@@ -219,6 +233,65 @@ export default function EmpleadoForm() {
         fullWidth
         sx={{ marginBottom: 2 }}
       />
+        <TextField
+        label="Registro Patronal"
+        value={formValues.registroPatronal}
+        onChange={(e) => handleFieldChange("registroPatronal", e.target.value)}
+        fullWidth
+        sx={{ marginBottom: 2 }}
+      />
+
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          label="Fecha de Nacimiento"
+          value={formValues.fechaNacimiento ? dayjs(formValues.fechaNacimiento) : null}
+          onChange={(newValue: Dayjs | null) => {
+            handleFieldChange("fechaNacimiento", newValue ? newValue.toDate() : null);
+          }}
+          slotProps={{ textField: { fullWidth: true, required: true, sx: { marginBottom: 2 } } }}
+        />
+      </LocalizationProvider>
+      <TextField
+        label="Lugar de Nacimiento"
+        value={formValues.lugarNacimiento}
+        onChange={(e) => handleFieldChange("lugarNacimiento", e.target.value)}
+        fullWidth
+        sx={{ marginBottom: 2 }}
+      />
+        <TextField
+          select
+          label="Domicilio"
+          value={formValues.idDomicilio}
+          onChange={(e) => handleFieldChange("idDomicilio", Number(e.target.value))}
+          fullWidth
+          required
+          sx={{ marginBottom: 2 }}
+        >
+          {domicilios.map((domicilio) => (
+            <MenuItem key={domicilio.idDomicilio} value={domicilio.idDomicilio}>
+              {`${domicilio.colonia}, ${domicilio.numero}, CP ${domicilio.cp}`}
+            </MenuItem>
+          ))}
+        </TextField>
+
+          <TextField
+          select
+          label="Sucursal"
+          value={formValues.idSucursal}
+          onChange={(e) => handleFieldChange("idSucursal", Number(e.target.value))}
+          fullWidth
+          required
+          sx={{ marginBottom: 2 }}
+          >
+          {sucursales.map((sucursal) => (
+            <MenuItem key={sucursal.idSucursal} value={sucursal.idSucursal}>
+              {sucursal.nombreSucursal}
+            </MenuItem>
+          ))}
+          </TextField>
+
+
+
       <TextField
         select
         label="Nacionalidad"
@@ -309,6 +382,21 @@ export default function EmpleadoForm() {
           </MenuItem>
         ))}
       </TextField>
+      <TextField
+        select
+        label="Estatus"
+        value={formValues.estatus}
+        onChange={(e) => handleFieldChange("estatus", e.target.value)}
+        fullWidth
+        required
+        sx={{ marginBottom: 2 }}
+      >
+        <MenuItem value="A">Activo</MenuItem>
+        <MenuItem value="I">Inactivo</MenuItem>
+        <MenuItem value="S">Suspendido</MenuItem>
+        <MenuItem value="B">Baja</MenuItem>
+      </TextField>
+
 
       <Button type="submit" variant="contained" color="primary" fullWidth>
         {initialValues ? "Actualizar Empleado" : "Registrar Empleado"}

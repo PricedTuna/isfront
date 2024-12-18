@@ -8,6 +8,7 @@ import { GetDepartamentoDto } from "../dtos/empleado/GetDepartamentoDto";
 import { GetPuestoDto } from "../dtos/empleado/GetPuestoDto";
 import { GetTipoEmpleadoDto } from "../dtos/empleado/GetTipoEmpleado";
 import { GetDiasVacacionesDto } from "../dtos/empleado/GetDiasVacaciones";
+import { CreateEmpleadoDto } from "../dtos/empleado/CreateEmpleadodto";
 
 const _authClient = getHttpClient("/empleado");
 const _estadoCivilClient = getHttpClient("/estadocivil");
@@ -31,7 +32,7 @@ export class EmpleadoService {
 
   // Crear un nuevo empleado
   public createEmpleado = async (empleado: EmpleadoDto) => {
-    const { data: { result } } = await _authClient.post<SingleWrapper<EmpleadoDto>>(`/`, empleado);
+    const { data: { result } } = await _authClient.post<SingleWrapper<CreateEmpleadoDto>>(`/`, empleado);
     return result;
   };
 

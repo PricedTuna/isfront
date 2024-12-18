@@ -1,10 +1,12 @@
-import React from 'react'
+import EmpleadosList from "../../../components/empleado/EmpleadoList"
 
 function EmpleadoListPage() {
   return (
-    <div>
-      
-    </div>
+
+
+    <EmpleadosList/>
+
+
   )
 }
 

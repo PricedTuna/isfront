@@ -8,7 +8,7 @@ export interface CreateEmpleadoDto {
   numCelLaboral: string;
   numCelPersonal: string;
   registroPatronal: string;
-  fechaNacimiento: Date;
+  fechaNacimiento: Date | null; 
   lugarNacimiento: string;
   idNacionalidad: number;
   idDomicilio: number;

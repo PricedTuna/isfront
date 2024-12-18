@@ -68,7 +68,7 @@ function GenericList<T>({
       {filteredItems.length > 0 ? (
         <List
           sx={{
-            maxWidth: "80vh",
+            maxWidth: "80%",
             margin: "0 auto",
             bgcolor: "background.paper",
           }}
