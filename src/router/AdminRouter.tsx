@@ -11,7 +11,7 @@ import TiposAsistenciaPage from "../pages/catalogs/TiposAsistenciaPage";
 import TiposContratoPage from "../pages/catalogs/tiposContratoPage";
 import TiposEmpleadosPage from "../pages/catalogs/TiposEmpleadosPage";
 import TiposLicenciaPage from "../pages/catalogs/TiposLicenciaPage";
-import TiposPermisosPage from "../pages/catalogs/TiposPermisosPage";
+import TiposPermisosPage from "../pages/admin/tipospermisos/TiposPermisosPage";
 import UsersCreatePage from '../pages/admin/users/UsersCreatePage';
 import NacionalidadesForm from '../pages/catalogs/components/nacionalidadesForm';
 import NacionalidadList from "../components/NacionalidadList";
@@ -25,6 +25,8 @@ import SucursalCreatePage from '../pages/admin/sucursales/SucursalCreatePage';
 import EmpleadoPage from '../pages/admin/empleado/EmpleadoPage';
 import EmpleadoCreatePage from '../pages/admin/empleado/EmpleadoCreatePage';
 import EmpleadoListPage from '../pages/admin/empleado/EmpleadoListPage';
+import TiposPermisosListPage from "../pages/admin/tipospermisos/TiposPermisosListPage";
+import TiposPermisosCreatePage from "../pages/admin/tipospermisos/TiposPermisosCreatePage";
 
 
 
@@ -202,7 +204,26 @@ export const AdminRouter = [
       },
       {
         path:`${baseUrl}/tipospermisos`,
-        element: <TiposPermisosPage/>
+        element: <TiposPermisosPage/>,
+        errorElement: <TiposPermisosPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <TiposPermisosListPage/>,
+            errorElement: <TiposPermisosListPage/>,
+          },
+          {
+            path: "crear",
+            element: <TiposPermisosCreatePage/>,
+            errorElement: <TiposPermisosCreatePage/>,
+          },
+          {
+            path: "editar",
+            element:<TiposPermisosCreatePage/>,
+            errorElement: <TiposPermisosCreatePage/>,
+          },
+          
+        ],
       }
 
     ],

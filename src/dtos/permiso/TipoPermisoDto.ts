@@ -4,3 +4,7 @@ export interface TipoPermisoDto {
   createDate:    Date;
   updateDate:    Date;
 }
+export interface CreateTipoPermisoDto extends Partial<TipoPermisoDto> {
+  nombrePermiso: string;
+
+}
