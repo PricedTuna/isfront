@@ -13,15 +13,12 @@ import {
   Work,
   Checklist,
   Public,
-  LocationCity,
 } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import PeopleIcon from "@mui/icons-material/People";
-import DrivingIcon from "@mui/icons-material/DirectionsCarFilled";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import Drawer from "@mui/material/Drawer";
@@ -92,11 +89,9 @@ const menuItems = [
     roles: ["admin"],
     subItems: [
       { text: "Nacionalidades", path: "/admin/nacionalidades", icon: <Public/> },
-      { text: "Ciudades", path: "/admin/ciudades", icon: <LocationCity/> },
       { text: "Tipos de Contrato", path: "/admin/tipocontrato", icon: <AssignmentIcon /> },
       { text: "Tipos de Asistencias", path: "/admin/tipoasistencia", icon: <EventAvailableIcon /> },
       { text: "Tipos de Empleados", path: "/admin/tipoempleado", icon: <PeopleIcon /> },
-      { text: "Tipos de Licencia de Manejo", path: "/admin/tiposlicencia", icon: <DrivingIcon /> },
       { text: "Tipos de Permisos", path: "/admin/tipospermisos", icon: <AssignmentTurnedInIcon /> },
     ],
   },

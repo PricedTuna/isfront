@@ -6,9 +6,7 @@ import AutosPage from "../pages/admin/autos/AutosPage";
 import SesionesTrabajoPage from "../pages/admin/sesionesTrabajo/SesionesTrabajoPage";
 import SesionTrabajoPage from "../pages/admin/sesionesTrabajo/SesionTrabajoPage";
 import UsersAdminPage from "../pages/admin/users/UsersAdminPage";
-import CiudadesPage from "../pages/catalogs/ciudadesPage";
 import NacionalidadesPage from "../pages/catalogs/nacionalidadesPage";
-import TiposLicenciaPage from "../pages/catalogs/TiposLicenciaPage";
 import TiposPermisosPage from "../pages/admin/tipospermisos/TiposPermisosPage";
 import UsersCreatePage from '../pages/admin/users/UsersCreatePage';
 import NacionalidadesForm from '../pages/catalogs/components/nacionalidadesForm';
@@ -188,10 +186,6 @@ export const AdminRouter = [
         element: <SesionesTrabajoPage />,
       },
       {
-        path: `${baseUrl}/ciudades`,
-        element: <CiudadesPage />,
-      },
-      {
 
         path:`${baseUrl}/tipocontrato`,
         element: <TipoContratoPage/>,
@@ -260,10 +254,6 @@ export const AdminRouter = [
           },
           
         ],
-      },
-      {
-        path: `${baseUrl}/tiposlicencia`,
-        element: <TiposLicenciaPage />,
       },
       {
 
