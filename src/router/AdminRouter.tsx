@@ -8,7 +8,6 @@ import SesionTrabajoPage from "../pages/admin/sesionesTrabajo/SesionTrabajoPage"
 import UsersAdminPage from "../pages/admin/users/UsersAdminPage";
 import CiudadesPage from "../pages/catalogs/ciudadesPage";
 import NacionalidadesPage from "../pages/catalogs/nacionalidadesPage";
-import TiposAsistenciaPage from "../pages/catalogs/TiposAsistenciaPage";
 import TiposEmpleadosPage from "../pages/catalogs/TiposEmpleadosPage";
 import TiposLicenciaPage from "../pages/catalogs/TiposLicenciaPage";
 import TiposPermisosPage from "../pages/admin/tipospermisos/TiposPermisosPage";
@@ -30,6 +29,9 @@ import TiposPermisosCreatePage from "../pages/admin/tipospermisos/TiposPermisosC
 import TipoContratoPage from '../pages/admin/tipocontrato/TipoContratoPage';
 import TipoContratoCreatePage from '../pages/admin/tipocontrato/TipoContratoCreatePage';
 import TipoContratoListPage from '../pages/admin/tipocontrato/TipoContratoListPage';
+import TipoAsistenciaListPage from '../pages/admin/tipoasistencia/TipoAsistenciaListPage';
+import TipoAsistenciaCreatePage from '../pages/admin/tipoasistencia/TipoAsistenciaCreatePage';
+import TipoAsistenciaPage from '../pages/admin/tipoasistencia/TipoAsistenciaPage';
 const baseUrl: string = "admin";
 
 // Rutas para administradores
@@ -212,8 +214,27 @@ export const AdminRouter = [
         ],
       },
       {
-        path: `${baseUrl}/tiposasistencias`,
-        element: <TiposAsistenciaPage />,
+        path: `${baseUrl}/tipoasistencia`,
+        element: <TipoAsistenciaPage/>,
+        errorElement: <TipoAsistenciaPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <TipoAsistenciaListPage/>,
+            errorElement: <TipoAsistenciaListPage/>,
+          },
+          {
+            path: "crear",
+            element: <TipoAsistenciaCreatePage/>,
+            errorElement: <TipoAsistenciaCreatePage/>,
+          },
+          {
+            path: "editar",
+            element:<TipoAsistenciaCreatePage/>,
+            errorElement: <TipoAsistenciaCreatePage/>,
+          },
+          
+        ],
       },
       {
         path: `${baseUrl}/tiposempleados`,

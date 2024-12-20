@@ -94,7 +94,7 @@ const menuItems = [
       { text: "Nacionalidades", path: "/admin/nacionalidades", icon: <Public/> },
       { text: "Ciudades", path: "/admin/ciudades", icon: <LocationCity/> },
       { text: "Tipos de Contrato", path: "/admin/tipocontrato", icon: <AssignmentIcon /> },
-      { text: "Tipos de Asistencias", path: "/admin/tiposasistencias", icon: <EventAvailableIcon /> },
+      { text: "Tipos de Asistencias", path: "/admin/tipoasistencia", icon: <EventAvailableIcon /> },
       { text: "Tipos de Empleados", path: "/admin/tiposempleados", icon: <PeopleIcon /> },
       { text: "Tipos de Licencia de Manejo", path: "/admin/tiposlicencia", icon: <DrivingIcon /> },
       { text: "Tipos de Permisos", path: "/admin/tipospermisos", icon: <AssignmentTurnedInIcon /> },
