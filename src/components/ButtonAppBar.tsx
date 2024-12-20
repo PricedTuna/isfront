@@ -11,9 +11,17 @@ import {
   Map,
   Person,
   Work,
+  Checklist,
+  Public,
+  LocationCity,
 } from "@mui/icons-material";
-import ChecklistIcon from "@mui/icons-material/Checklist";
 import MenuIcon from "@mui/icons-material/Menu";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import PeopleIcon from "@mui/icons-material/People";
+import DrivingIcon from "@mui/icons-material/DirectionsCarFilled";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import Drawer from "@mui/material/Drawer";
@@ -27,7 +35,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../common/context/AuthContext";
 
-// Menú con opciones específicas por rol
 const menuItems = [
   { text: "Home", path: "/home", icon: <Home />, roles: ["user"] },
   { text: "Home", path: "/admin", icon: <Home />, roles: ["admin"] },
@@ -76,22 +83,21 @@ const menuItems = [
   {
     text: "Asistencias",
     path: "/asistencias",
-    icon: <ChecklistIcon />,
+    icon: <Checklist/>,
     roles: ["user"],
   },
-
   {
     text: "Catálogos",
     icon: <Category />,
     roles: ["admin"],
     subItems: [
-      { text: "Nacionalidades", path: "/admin/nacionalidades" },
-      { text: "Ciudades", path: "/admin/ciudades" },
-      { text: "Tipos de Contrato", path: "/admin/tipocontrato" },
-      { text: "Tipos de Asistencias", path: "/admin/tiposasistencias" },
-      { text: "Tipos de Empleados", path: "/admin/tiposempleados" },
-      { text: "Tipos de Licencia de Manejo", path: "/admin/tiposlicencia" },
-      { text: "Tipos de Permisos", path: "/admin/tipospermisos" },
+      { text: "Nacionalidades", path: "/admin/nacionalidades", icon: <Public/> },
+      { text: "Ciudades", path: "/admin/ciudades", icon: <LocationCity/> },
+      { text: "Tipos de Contrato", path: "/admin/tipocontrato", icon: <AssignmentIcon /> },
+      { text: "Tipos de Asistencias", path: "/admin/tiposasistencias", icon: <EventAvailableIcon /> },
+      { text: "Tipos de Empleados", path: "/admin/tiposempleados", icon: <PeopleIcon /> },
+      { text: "Tipos de Licencia de Manejo", path: "/admin/tiposlicencia", icon: <DrivingIcon /> },
+      { text: "Tipos de Permisos", path: "/admin/tipospermisos", icon: <AssignmentTurnedInIcon /> },
     ],
   },
 ];
@@ -117,14 +123,12 @@ export default function ButtonAppBar() {
     logout();
   };
 
-  // Filtrar opciones según el rol del usuario
   const filteredMenuItems = menuItems.filter((item) =>
     item.roles.includes(user?.isAdmin ? "admin" : "user")
   );
 
   return (
     <Box sx={{ flexGrow: 4 }}>
-      {/* Botón para abrir la barra lateral */}
       <IconButton
         size="large"
         edge="start"
@@ -136,7 +140,6 @@ export default function ButtonAppBar() {
         <MenuIcon sx={{ fontSize: "2.5rem" }} />
       </IconButton>
 
-      {/* Drawer que se abre desde el lateral izquierdo */}
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
         <Box
           sx={{ width: 250 }}
@@ -147,7 +150,6 @@ export default function ButtonAppBar() {
           <List>
             {filteredMenuItems.map((item, index) => (
               <div key={index}>
-                {/* Si el elemento tiene subItems, se muestra el botón de expansión */}
                 {item.subItems ? (
                   <>
                     <ListItemButton
@@ -174,6 +176,7 @@ export default function ButtonAppBar() {
                             sx={{ pl: 4 }}
                             onClick={stopPropagation}
                           >
+                            <ListItemIcon>{subItem.icon}</ListItemIcon>
                             <ListItemText primary={subItem.text} />
                           </ListItemButton>
                         ))}
