@@ -1,5 +1,5 @@
 import { Wrapper } from "../common/wrappers/Wrapper";
-import { GetTiposContratosDto } from "../dtos/tiposcontratos/GetTiposContratosDto";
+import { CreateTipoContrato, GetTiposContratosDto } from "../dtos/tiposcontratos/GetTiposContratosDto";
 import { getHttpClient } from "./HttpClient";
 
 const _tipoContratoClient = getHttpClient("/tipocontrato");
@@ -17,7 +17,7 @@ export class TipoContratoService {
   };
 
   // Crear un nuevo tipo de contrato
-  public create = async (createTipoContratoDto: GetTiposContratosDto) => {
+  public create = async (createTipoContratoDto: CreateTipoContrato) => {
     try {
       const response = await _tipoContratoClient.post("", createTipoContratoDto);
       return response.data; // Retorna la respuesta del servidor

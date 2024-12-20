@@ -87,7 +87,7 @@ const menuItems = [
     subItems: [
       { text: "Nacionalidades", path: "/admin/nacionalidades" },
       { text: "Ciudades", path: "/admin/ciudades" },
-      { text: "Tipos de Contrato", path: "/admin/tiposcontrato" },
+      { text: "Tipos de Contrato", path: "/admin/tipocontrato" },
       { text: "Tipos de Asistencias", path: "/admin/tiposasistencias" },
       { text: "Tipos de Empleados", path: "/admin/tiposempleados" },
       { text: "Tipos de Licencia de Manejo", path: "/admin/tiposlicencia" },

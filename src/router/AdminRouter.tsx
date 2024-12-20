@@ -9,7 +9,6 @@ import UsersAdminPage from "../pages/admin/users/UsersAdminPage";
 import CiudadesPage from "../pages/catalogs/ciudadesPage";
 import NacionalidadesPage from "../pages/catalogs/nacionalidadesPage";
 import TiposAsistenciaPage from "../pages/catalogs/TiposAsistenciaPage";
-import TiposContratoPage from "../pages/catalogs/tiposContratoPage";
 import TiposEmpleadosPage from "../pages/catalogs/TiposEmpleadosPage";
 import TiposLicenciaPage from "../pages/catalogs/TiposLicenciaPage";
 import TiposPermisosPage from "../pages/admin/tipospermisos/TiposPermisosPage";
@@ -28,6 +27,9 @@ import EmpleadoCreatePage from '../pages/admin/empleado/EmpleadoCreatePage';
 import EmpleadoListPage from '../pages/admin/empleado/EmpleadoListPage';
 import TiposPermisosListPage from "../pages/admin/tipospermisos/TiposPermisosListPage";
 import TiposPermisosCreatePage from "../pages/admin/tipospermisos/TiposPermisosCreatePage";
+import TipoContratoPage from '../pages/admin/tipocontrato/TipoContratoPage';
+import TipoContratoCreatePage from '../pages/admin/tipocontrato/TipoContratoCreatePage';
+import TipoContratoListPage from '../pages/admin/tipocontrato/TipoContratoListPage';
 const baseUrl: string = "admin";
 
 // Rutas para administradores
@@ -186,8 +188,28 @@ export const AdminRouter = [
         element: <CiudadesPage />,
       },
       {
-        path: `${baseUrl}/tiposcontrato`,
-        element: <TiposContratoPage />,
+
+        path:`${baseUrl}/tipocontrato`,
+        element: <TipoContratoPage/>,
+        errorElement: <TipoContratoPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <TipoContratoListPage/>,
+            errorElement: <TipoContratoListPage/>,
+          },
+          {
+            path: "crear",
+            element: <TipoContratoCreatePage/>,
+            errorElement: <TipoContratoCreatePage/>,
+          },
+          {
+            path: "editar",
+            element:<TipoContratoCreatePage/>,
+            errorElement: <TipoContratoCreatePage/>,
+          },
+          
+        ],
       },
       {
         path: `${baseUrl}/tiposasistencias`,

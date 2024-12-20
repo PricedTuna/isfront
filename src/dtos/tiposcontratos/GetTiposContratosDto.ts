@@ -5,3 +5,7 @@ export interface GetTiposContratosDto {
 
 
 }
+export interface CreateTipoContrato extends Partial<GetTiposContratosDto> {
+        descripcionContrato:string;
+      
+      }
