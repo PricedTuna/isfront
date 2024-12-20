@@ -8,9 +8,6 @@ function SesionesTrabajoList({ sesiones, onFinalizar, userId }: any) {
 
   return (
     <Box mt={4} maxWidth="600px" margin="0 auto">
-      <Typography variant="h5" gutterBottom textAlign={"center"}>
-        Sesiones de Trabajo
-      </Typography>
       {sesiones.map((sesion: any) => (
         <SesionTrabajoItem
           key={sesion.idSesionTrabajo}

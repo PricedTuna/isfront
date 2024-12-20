@@ -1,10 +1,11 @@
 import MainLayout from "../layout/MainLayout";
-import AdminPage from '../pages/admin/AdminPage';
+import AdminPage from "../pages/admin/AdminPage";
 import AutoCreatePage from "../pages/admin/autos/AutosCreatePage";
 import AutosListPage from "../pages/admin/autos/AutosListPage";
 import AutosPage from "../pages/admin/autos/AutosPage";
+import SesionesTrabajoPage from "../pages/admin/sesionesTrabajo/SesionesTrabajoPage";
 import SesionTrabajoPage from "../pages/admin/sesionesTrabajo/SesionTrabajoPage";
-import UsersAdminPage from '../pages/admin/users/UsersAdminPage';
+import UsersAdminPage from "../pages/admin/users/UsersAdminPage";
 import CiudadesPage from "../pages/catalogs/ciudadesPage";
 import NacionalidadesPage from "../pages/catalogs/nacionalidadesPage";
 import TiposAsistenciaPage from "../pages/catalogs/TiposAsistenciaPage";
@@ -27,10 +28,7 @@ import EmpleadoCreatePage from '../pages/admin/empleado/EmpleadoCreatePage';
 import EmpleadoListPage from '../pages/admin/empleado/EmpleadoListPage';
 import TiposPermisosListPage from "../pages/admin/tipospermisos/TiposPermisosListPage";
 import TiposPermisosCreatePage from "../pages/admin/tipospermisos/TiposPermisosCreatePage";
-
-
-
-const baseUrl: string = 'admin'
+const baseUrl: string = "admin";
 
 // Rutas para administradores
 export const AdminRouter = [
@@ -40,11 +38,11 @@ export const AdminRouter = [
     children: [
       {
         path: "admin",
-        element: <AdminPage/>
+        element: <AdminPage />,
       },
       {
         path: `${baseUrl}/sesionTrabajo/:id`,
-        element: <SesionTrabajoPage />
+        element: <SesionTrabajoPage />,
       },
       {
         path: `${baseUrl}/autos`,
@@ -70,139 +68,141 @@ export const AdminRouter = [
       },
       {
         path: `${baseUrl}/users`,
-        element:<UsersAdminPage/>,
-        errorElement: <UsersAdminPage/>, // todo: refactor name (add admin)
+        element: <UsersAdminPage />,
+        errorElement: <UsersAdminPage />, // todo: refactor name (add admin)
         children: [
           {
             path: "",
-            element: <UsersListPage/>,
-            errorElement: <UsersListPage/>,
+            element: <UsersListPage />,
+            errorElement: <UsersListPage />,
           },
           {
             path: "crear",
-            element: <UsersCreatePage/>,
-            errorElement: <UsersCreatePage/>,
+            element: <UsersCreatePage />,
+            errorElement: <UsersCreatePage />,
           },
           {
             path: "editar",
-            element: <UsersCreatePage/>,
-            errorElement: <UsersCreatePage/>,
+            element: <UsersCreatePage />,
+            errorElement: <UsersCreatePage />,
           },
         ],
       },
       {
         path: `${baseUrl}/nacionalidades`,
         element: <NacionalidadesPage />,
-        errorElement: <NacionalidadesPage/>, // todo: refactor name (add admin)
+        errorElement: <NacionalidadesPage />, // todo: refactor name (add admin)
         children: [
           {
             path: "",
-            element: <NacionalidadList/>,
-            errorElement: <NacionalidadList/>,
+            element: <NacionalidadList />,
+            errorElement: <NacionalidadList />,
           },
           {
             path: "crear",
-            element: <NacionalidadesForm/>,
-            errorElement: <NacionalidadesForm/>,
+            element: <NacionalidadesForm />,
+            errorElement: <NacionalidadesForm />,
           },
           {
             path: "editar",
-            element: <NacionalidadesForm/>,
-            errorElement: <NacionalidadesForm/>,
+            element: <NacionalidadesForm />,
+            errorElement: <NacionalidadesForm />,
           },
         ],
       },
       {
         path: `${baseUrl}/domicilio`,
         element: <DomicilioPage />,
-        errorElement: <DomicilioPage/>, // todo: refactor name (add admin)
+        errorElement: <DomicilioPage />, // todo: refactor name (add admin)
         children: [
           {
             path: "",
-            element: <DomiciliosListPage/>,
-            errorElement: <DomiciliosListPage/>,
+            element: <DomiciliosListPage />,
+            errorElement: <DomiciliosListPage />,
           },
           {
             path: "crear",
-            element: <DomicilioCreatePage/>,
-            errorElement: <DomicilioCreatePage/>,
+            element: <DomicilioCreatePage />,
+            errorElement: <DomicilioCreatePage />,
           },
           {
             path: "editar",
-            element:<DomicilioCreatePage/>,
-            errorElement: <DomicilioCreatePage/>,
+            element: <DomicilioCreatePage />,
+            errorElement: <DomicilioCreatePage />,
           },
-          
         ],
       },
-      
+
       {
         path: `${baseUrl}/sucursal`,
-        element: <SucursalPage/>,
-        errorElement: <SucursalPage/>, // todo: refactor name (add admin)
+        element: <SucursalPage />,
+        errorElement: <SucursalPage />, // todo: refactor name (add admin)
         children: [
           {
             path: "",
-            element: <SucursalListPage/>,
-            errorElement: <SucursalListPage/>,
+            element: <SucursalListPage />,
+            errorElement: <SucursalListPage />,
           },
           {
             path: "crear",
-            element: <SucursalCreatePage/>,
-            errorElement: <SucursalCreatePage/>,
+            element: <SucursalCreatePage />,
+            errorElement: <SucursalCreatePage />,
           },
           {
             path: "editar",
-            element:<SucursalCreatePage/>,
-            errorElement: <SucursalCreatePage/>,
+            element: <SucursalCreatePage />,
+            errorElement: <SucursalCreatePage />,
           },
-          
         ],
       },
       {
         path: `${baseUrl}/empleados`,
-        element: <EmpleadoPage/>,
-        errorElement: <EmpleadoPage/>, // todo: refactor name (add admin)
+        element: <EmpleadoPage />,
+        errorElement: <EmpleadoPage />, // todo: refactor name (add admin)
         children: [
           {
             path: "",
-            element: <EmpleadoListPage/>,
-            errorElement: <EmpleadoListPage/>,
+            element: <EmpleadoListPage />,
+            errorElement: <EmpleadoListPage />,
           },
           {
             path: "crear",
-            element: <EmpleadoCreatePage/>,
-            errorElement: <EmpleadoCreatePage/>,
+            element: <EmpleadoCreatePage />,
+            errorElement: <EmpleadoCreatePage />,
           },
           {
             path: "editar",
-            element:<EmpleadoCreatePage/>,
-            errorElement: <EmpleadoCreatePage/>,
+            element: <EmpleadoCreatePage />,
+            errorElement: <EmpleadoCreatePage />,
           },
-          
         ],
       },
       {
+        path: `${baseUrl}/sesionesTrabajo`,
+        element: <SesionesTrabajoPage />,
+      },
+      {
         path: `${baseUrl}/ciudades`,
-        element: <CiudadesPage/>
+        element: <CiudadesPage />,
       },
       {
-        path:`${baseUrl}/tiposcontrato`,
-        element: <TiposContratoPage/>
+        path: `${baseUrl}/tiposcontrato`,
+        element: <TiposContratoPage />,
       },
       {
-        path:`${baseUrl}/tiposasistencias`,
-        element: <TiposAsistenciaPage/>
+        path: `${baseUrl}/tiposasistencias`,
+        element: <TiposAsistenciaPage />,
       },
       {
-        path:`${baseUrl}/tiposempleados`,
-        element: <TiposEmpleadosPage/>
+        path: `${baseUrl}/tiposempleados`,
+        element: <TiposEmpleadosPage />,
       },
       {
-        path:`${baseUrl}/tiposlicencia`,
-        element: <TiposLicenciaPage/>
+        path: `${baseUrl}/tiposlicencia`,
+        element: <TiposLicenciaPage />,
       },
       {
+
         path:`${baseUrl}/tipospermisos`,
         element: <TiposPermisosPage/>,
         errorElement: <TiposPermisosPage/>, // todo: refactor name (add admin)
@@ -224,7 +224,7 @@ export const AdminRouter = [
           },
           
         ],
-      }
+      },
 
     ],
   },

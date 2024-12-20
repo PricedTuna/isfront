@@ -1,7 +1,11 @@
-import { Box, Button, Typography } from "@mui/material";
+import ListIcon from "@mui/icons-material/List";
+import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import WorkIcon from "@mui/icons-material/Work";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useGetUserContext } from "../../common/context/AuthContext";
 import useCreateAsistencia from "../../common/hooks/asistencia/useCreateAsistencia";
+import useFinalizarAsistencia from "../../common/hooks/asistencia/useFinalizarAsistencia";
 import useGetAsistencias from "../../common/hooks/asistencia/useGetAsistencias";
 import useGetTiposAsistencia from "../../common/hooks/asistencia/useGetTiposAsistencia";
 import useCreatePermiso from "../../common/hooks/permiso/useCreatePermiso";
@@ -9,17 +13,16 @@ import useGetTiposPermiso from "../../common/hooks/permiso/useGetTiposPermiso";
 import getSesionTrabajoByToken from "../../common/hooks/sesionesTarbajo/getSesionTrabajoByToken";
 import useGetEmpleado from "../../common/hooks/useGetEmpleado";
 import AsistenciaModal from "./components/AsistenciaModal";
-import AsistenciaSummary from "./components/AsistenciaSummary";
 import HistorialAsistenciasTable from "./components/HistorialAsistenciasTable";
 import PermisoModal from "./components/PermisoModal";
 import PermisosModal from "./components/PermisosModal";
-import GraficaHorasPorTipo from "./components/GraficaHorasPorTipo";
 
 function HomePage() {
   const user = useGetUserContext();
   const { fetchEmpleado, empleado } = useGetEmpleado();
   const { asistencias, fetchAsistencias } = useGetAsistencias();
   const { fetchTiposAsistencia, tiposAsistencia } = useGetTiposAsistencia();
+  const { finalizarAsistencia } = useFinalizarAsistencia();
   const { fetchTiposPermiso, tiposPermiso } = useGetTiposPermiso();
   const { fetchSesionTrabajoByToken } = getSesionTrabajoByToken();
   const { createPermiso } = useCreatePermiso();
@@ -77,6 +80,13 @@ function HomePage() {
     handleClosePermisoModal();
   };
 
+  const handleFinalizarAsistencia = async (idAsistencia: number) => {
+    if (!user || !user.idEmpleado) return;
+
+    finalizarAsistencia(idAsistencia, { asistenciaFin: new Date() });
+    fetchAsistencias(user.idEmpleado);
+  };
+
   useEffect(() => {
     if (!user || !user.idEmpleado) return;
     fetchEmpleado(user.idEmpleado);
@@ -88,57 +98,71 @@ function HomePage() {
   if (!user) return <></>;
 
   return (
-    <Box p={2} sx={{ display: "flex", justifyContent: "center" }}>
-      <Box sx={{ maxWidth: "800px", width: "100%" }}>
-        <Typography
-          textAlign="center"
-          py={2}
-          variant="h2"
-          fontFamily={"Oswald"}
-        >
+    <Box p={2}>
+      <Container maxWidth="sm">
+        <Typography textAlign="center" variant="h4" fontFamily="Roboto">
           {`Hola ${empleado?.nombreEmpleado}`}
         </Typography>
-        <AsistenciaSummary asistencias={asistencias} />
-        <Box maxHeight={'300px'} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
-          <GraficaHorasPorTipo asistencias={asistencias??[]} />
-        </Box>
-        <Box mt={3} display={"flex"} flexDirection={"column"} gap={2}>
-          <Button variant="contained" onClick={handleOpenAsistenciaModal}>
-            Acceder a sesión de trabajo
-          </Button>
-          <Button variant="contained" onClick={handleOpenPermisoModal}>
-            Solicitar permiso a sesión de trabajo
-          </Button>
-          <Button variant="contained" onClick={handleOpenPermisosModal}>
-            Ver permisos solicitados
-          </Button>
-        </Box>
-        <Box mt={4}>
+        <Grid container spacing={2} mt={3}>
+          <Grid item xs={12}>
+            <Button
+              fullWidth
+              variant="contained"
+              startIcon={<WorkIcon />}
+              onClick={handleOpenAsistenciaModal}
+            >
+              Acceder a sesión de trabajo
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              fullWidth
+              variant="contained"
+              startIcon={<PermIdentityIcon />}
+              onClick={handleOpenPermisoModal}
+            >
+              Solicitar permiso
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              fullWidth
+              variant="contained"
+              startIcon={<ListIcon />}
+              onClick={handleOpenPermisosModal}
+            >
+              Ver permisos solicitados
+            </Button>
+          </Grid>
+        </Grid>
+        <Box mt={4} textAlign="center">
+          <Typography variant="h5">Última asistencia</Typography>
           <HistorialAsistenciasTable
             asistencias={asistencias}
+            onFinalizar={handleFinalizarAsistencia}
             tiposAsistencia={tiposAsistencia ?? []}
           />
         </Box>
-        <AsistenciaModal
-          isOpen={isAsistenciaModalOpen}
-          onClose={handleCloseAsistenciaModal}
-          tiposAsistencia={tiposAsistencia ?? []}
-          onAccederSesionTrabajo={handleAccederSesionTrabajo}
-        />
+      </Container>
+      <AsistenciaModal
+        isOpen={isAsistenciaModalOpen}
+        onClose={handleCloseAsistenciaModal}
+        tiposAsistencia={tiposAsistencia ?? []}
+        onAccederSesionTrabajo={handleAccederSesionTrabajo}
+      />
 
-        <PermisoModal
-          isOpen={isPermisoModalOpen}
-          onClose={handleClosePermisoModal}
-          tiposPermiso={tiposPermiso ?? []}
-          onSolicitarPermiso={handleSolicitarPermiso}
-        />
+      <PermisoModal
+        isOpen={isPermisoModalOpen}
+        onClose={handleClosePermisoModal}
+        tiposPermiso={tiposPermiso ?? []}
+        onSolicitarPermiso={handleSolicitarPermiso}
+      />
 
-        <PermisosModal
-          isOpen={isPermisosModalOpen}
-          onClose={handleClosePermisosModal}
-          idEmpleado={user.idEmpleado ?? 0}
-        />
-      </Box>
+      <PermisosModal
+        isOpen={isPermisosModalOpen}
+        onClose={handleClosePermisosModal}
+        idEmpleado={user.idEmpleado ?? 0}
+      />
     </Box>
   );
 }

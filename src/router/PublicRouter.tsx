@@ -2,6 +2,7 @@ import MainLayout from "../layout/MainLayout";
 import HomePage from "../pages/home/HomePage";
 import ProfilePage from '../pages/user/ProfilePage';
 import EditProfile from '../components/profile/EditProfile';
+import AsistenciasPage from "../pages/home/asistencias/AsistenciasPage";
 
 const baseUrl: string = '/'
 // Rutas para no administradores
@@ -24,7 +25,11 @@ export const PublicRouter = [
         element: <EditProfile/>,
         errorElement: <EditProfile/>,
       },
-
+      {
+        path: "asistencias",
+        element: <AsistenciasPage/>,
+        errorElement: <AsistenciasPage/>,
+      }
     ],
   },
 ];
