@@ -8,7 +8,6 @@ import SesionTrabajoPage from "../pages/admin/sesionesTrabajo/SesionTrabajoPage"
 import UsersAdminPage from "../pages/admin/users/UsersAdminPage";
 import CiudadesPage from "../pages/catalogs/ciudadesPage";
 import NacionalidadesPage from "../pages/catalogs/nacionalidadesPage";
-import TiposEmpleadosPage from "../pages/catalogs/TiposEmpleadosPage";
 import TiposLicenciaPage from "../pages/catalogs/TiposLicenciaPage";
 import TiposPermisosPage from "../pages/admin/tipospermisos/TiposPermisosPage";
 import UsersCreatePage from '../pages/admin/users/UsersCreatePage';
@@ -32,6 +31,9 @@ import TipoContratoListPage from '../pages/admin/tipocontrato/TipoContratoListPa
 import TipoAsistenciaListPage from '../pages/admin/tipoasistencia/TipoAsistenciaListPage';
 import TipoAsistenciaCreatePage from '../pages/admin/tipoasistencia/TipoAsistenciaCreatePage';
 import TipoAsistenciaPage from '../pages/admin/tipoasistencia/TipoAsistenciaPage';
+import TipoEmpleadoPage from '../pages/admin/tipoempleado/TipoEmpleadoPage';
+import TipoEmpleadoListPage from '../pages/admin/tipoempleado/TipoEmpleadoListPage';
+import TipoEmpleadoCreatePage from '../pages/admin/tipoempleado/TipoEmpleadoCreatePage';
 const baseUrl: string = "admin";
 
 // Rutas para administradores
@@ -237,8 +239,27 @@ export const AdminRouter = [
         ],
       },
       {
-        path: `${baseUrl}/tiposempleados`,
-        element: <TiposEmpleadosPage />,
+        path: `${baseUrl}/tipoempleado`,
+        element: <TipoEmpleadoPage/>,
+        errorElement: <TipoEmpleadoPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <TipoEmpleadoListPage/>,
+            errorElement: <TipoEmpleadoListPage/>,
+          },
+          {
+            path: "crear",
+            element: <TipoEmpleadoCreatePage/>,
+            errorElement: <TipoEmpleadoCreatePage/>,
+          },
+          {
+            path: "editar",
+            element:<TipoEmpleadoCreatePage/>,
+            errorElement: <TipoEmpleadoCreatePage/>,
+          },
+          
+        ],
       },
       {
         path: `${baseUrl}/tiposlicencia`,

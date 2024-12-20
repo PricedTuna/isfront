@@ -16,7 +16,7 @@ const TipoPermisoList = () => {
   }, [fetchTiposPermiso]);
 
   const handleEdit = (tipoPermiso: TipoPermisoDto) => {
-    navigate("/admin/tipos-permiso", { state: tipoPermiso }); // Navega a la página de edición y pasa el tipo de permiso como estado
+    navigate("/admin/tipopermiso", { state: tipoPermiso }); // Navega a la página de edición y pasa el tipo de permiso como estado
   };
 
   const handleDelete = async (id: number) => {
