@@ -1,10 +1,11 @@
+import EditProfile from "../components/profile/EditProfile";
 import MainLayout from "../layout/MainLayout";
-import HomePage from "../pages/home/HomePage";
-import ProfilePage from '../pages/user/ProfilePage';
-import EditProfile from '../components/profile/EditProfile';
+import AsistenciaPage from "../pages/home/asistencias/AsistenciaPage";
 import AsistenciasPage from "../pages/home/asistencias/AsistenciasPage";
+import HomePage from "../pages/home/HomePage";
+import ProfilePage from "../pages/user/ProfilePage";
 
-const baseUrl: string = '/'
+const baseUrl: string = "/";
 // Rutas para no administradores
 export const PublicRouter = [
   {
@@ -17,19 +18,23 @@ export const PublicRouter = [
       },
       {
         path: `${baseUrl}profile`,
-        element: <ProfilePage/>,
-
+        element: <ProfilePage />,
       },
       {
         path: "editarperfil",
-        element: <EditProfile/>,
-        errorElement: <EditProfile/>,
+        element: <EditProfile />,
+        errorElement: <EditProfile />,
       },
       {
         path: "asistencias",
-        element: <AsistenciasPage/>,
-        errorElement: <AsistenciasPage/>,
-      }
+        element: <AsistenciasPage />,
+        errorElement: <AsistenciasPage />,
+      },
+      {
+        path: "asistenciaInfo/:id",
+        element: <AsistenciaPage />,
+        errorElement: <AsistenciaPage />,
+      },
     ],
   },
 ];

@@ -1,20 +1,23 @@
-import { useState } from "react";
-import {
-  Container,
-  Box,
-  TextField,
-  Button,
-  Typography,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Container,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import { useState } from "react";
 
 import { useNavigate } from "react-router";
 import { useAuth } from "../../common/context/AuthContext";
-import { AuthService } from "../../services/AuthService";
+import { AuthError, AuthService } from "../../services/AuthService";
+import { showErrorAlert } from "../../utils/AlertUtils";
 
 function LoginForm() {
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false); // Estado para controlar la visibilidad de la contraseña
@@ -26,37 +29,45 @@ function LoginForm() {
   const { login } = useAuth();
   const _userService = new AuthService();
 
-
-  //Tonos para boton
-
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const loginResponse = await _userService.login({
-      correo: email,
-      password: password,
-    });
+    try {
+      e.preventDefault();
+      const loginResponse = await _userService.login({
+        correo: email,
+        password: password,
+      });
 
-    if (loginResponse !== null) {
-      const { accessToken, user: userFound } = loginResponse;
+      if (loginResponse !== null) {
+        const { accessToken, user: userFound } = loginResponse;
 
-      // Guardar en localStorage
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("user", JSON.stringify(userFound));
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("user", JSON.stringify(userFound));
 
-      // Actualizar el contexto
-      login(userFound);
+        login(userFound);
 
-      if (userFound.isAdmin) {
-        navigate("/admin");
+        if (userFound.isAdmin) {
+          navigate("/admin");
+        } else {
+          navigate("/home");
+        }
       } else {
-        navigate("/home");
+        handleUserNotFound();
       }
-    } else {
-      console.error("USER NOT FOUND");
-      setEmailError(true);
-      setPasswordError(true);
+    } catch (error: any) {
+      if (error.message === AuthError.Unauthorized) {
+        handleUserNotFound();
+      } else {
+        console.error("Login error:", error);
+        alert("Ha ocurrido un error, por favor inténtalo nuevamente.");
+      }
     }
+  };
+
+  const handleUserNotFound = () => {
+    console.error("USER NOT FOUND");
+    setEmailError(true);
+    setPasswordError(true);
+    showErrorAlert("Usuario no encontrado, verifique su correo y contraseña", prefersDarkMode);
   };
 
   return (

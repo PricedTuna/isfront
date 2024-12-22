@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useEffect } from "react";
 import { useGetUserContext } from "../../../common/context/AuthContext";
 import useFinalizarAsistencia from "../../../common/hooks/asistencia/useFinalizarAsistencia";
@@ -8,9 +8,11 @@ import useGetEmpleado from "../../../common/hooks/useGetEmpleado";
 import AsistenciaSummary from "../components/AsistenciaSummary";
 import GraficaHorasPorTipo from "../components/GraficaHorasPorTipo";
 import HistorialAsistenciasTable from "../components/HistorialAsistenciasTable";
+import { showErrorAlert } from "../../../utils/AlertUtils";
 
 function AsistenciasPage() {
   const user = useGetUserContext();
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const { asistencias, fetchAsistencias } = useGetAsistencias();
   const { fetchTiposAsistencia, tiposAsistencia } = useGetTiposAsistencia();
   const { fetchEmpleado, empleado } = useGetEmpleado();
@@ -19,8 +21,14 @@ function AsistenciasPage() {
   const handleFinalizarAsistencia = async (idAsistencia: number) => {
     if (!user || !user.idEmpleado) return;
 
-    finalizarAsistencia(idAsistencia, { asistenciaFin: new Date() });
-    fetchAsistencias(user.idEmpleado);
+    try {
+      await finalizarAsistencia(idAsistencia, { asistenciaFin: new Date() });
+      fetchAsistencias(user.idEmpleado);
+      console.log("Asistencia finalizada");
+    } catch (error) {
+      console.error("Error finalizando la asistencia:", error);
+      showErrorAlert("Error finalizando la asistencia", prefersDarkMode);
+    }
   };
 
   useEffect(() => {
