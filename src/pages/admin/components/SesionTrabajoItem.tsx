@@ -1,7 +1,35 @@
 import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { showDecisionAlert } from "../../../utils/AlertUtils";
 
-function SesionTrabajoItem({ sesion, onFinalizar, userId }: any) {
+interface SesionTrabajoItemProps {
+  sesion: {
+    idSesionTrabajo: string;
+    sesionToken: string;
+    createDate: string;
+    finalizedDate?: string;
+  };
+  onFinalizar: (idSesionTrabajo: string, userId: string) => void;
+  userId: string;
+}
+
+function SesionTrabajoItem({
+  sesion,
+  onFinalizar,
+  userId,
+}: SesionTrabajoItemProps) {
+  const handleFinalizar = (idSesionTrabajo: string, userId: string) => {
+    showDecisionAlert({
+      title: "Finalizar Sesión de Trabajo",
+      message: "¿Está seguro que desea finalizar la sesión de trabajo?",
+      prefersDarkMode: true,
+      confirmButtonText: "Finalizar",
+      cancelButtonText: "Cancelar",
+      onConfirm: () => onFinalizar(idSesionTrabajo, userId),
+      onCancel: () => {},
+    });
+  };
+
   return (
     <Box
       key={sesion.idSesionTrabajo}
@@ -45,7 +73,7 @@ function SesionTrabajoItem({ sesion, onFinalizar, userId }: any) {
           <Button
             variant="contained"
             color="warning"
-            onClick={() => onFinalizar(sesion.idSesionTrabajo, userId)}
+            onClick={() => handleFinalizar(sesion.idSesionTrabajo, userId)}
           >
             Finalizar Sesión
           </Button>

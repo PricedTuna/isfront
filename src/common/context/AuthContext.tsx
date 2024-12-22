@@ -51,7 +51,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsAdmin(parsedUser.isAdmin);
         setUser(parsedUser);
       } else {
-        // Si el token expiró, limpiar la sesión
         console.warn("El token ha expirado. Se limpiará la sesión.");
         localStorage.removeItem("accessToken");
         localStorage.removeItem("user");

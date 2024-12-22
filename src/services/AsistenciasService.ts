@@ -32,6 +32,11 @@ export class AsistenciasService {
     return result
   }
 
+  async getAsistenciaById(id: number) {
+    const {data: {result}} = await _asistenciasClient.get<SingleWrapper<GetAsistenciaDto>>(`/${id}`)
+    return result
+  }
+
   async getAsistenciasBySesionTrabajo(id: number) {
     const {data: {result}} = await _asistenciasClient.get<Wrapper<GetAsistenciaDto>>(`/bySesionTrabajo/${id}`)
     return result

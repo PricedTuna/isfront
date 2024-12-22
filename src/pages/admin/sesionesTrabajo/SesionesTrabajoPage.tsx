@@ -1,5 +1,5 @@
-import { Box, Typography } from "@mui/material";
-import { useEffect } from "react";
+import { Box, Typography, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useGetUserContext } from "../../../common/context/AuthContext";
 import useFinalizarSesionTrabajo from "../../../common/hooks/sesionesTarbajo/useFinalizarSesionTrabajo";
 import useGetSesionesTrabajo from "../../../common/hooks/sesionesTarbajo/useGetSesionesTrabajo";
@@ -9,6 +9,8 @@ function SesionesTrabajoPage() {
   const user = useGetUserContext();
   const { fetchSesionesTrabajo, sesionesTrabajo } = useGetSesionesTrabajo();
   const { finalizarSesionTrabajo } = useFinalizarSesionTrabajo();
+
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     if (!user) return;
@@ -21,6 +23,15 @@ function SesionesTrabajoPage() {
     await finalizarSesionTrabajo(sesionId);
     fetchSesionesTrabajo(user.idUsuario);
   };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  // Filtrar las sesiones por sesionToken
+  const filteredSesiones = sesionesTrabajo?.filter((sesion) =>
+    sesion.sesionToken.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return !user ? (
     <></>
@@ -41,8 +52,20 @@ function SesionesTrabajoPage() {
         >
           Sesiónes De Trabajo
         </Typography>
+
+        {/* Buscador */}
+        <TextField
+          style={{ maxWidth: "300px" }}
+          label="Buscar por Token"
+          variant="outlined"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          fullWidth
+          sx={{ mb: 4 }}
+        />
+
         <SesionesTrabajoList
-          sesiones={sesionesTrabajo}
+          sesiones={filteredSesiones}
           onFinalizar={handleFinalizarSesion}
           userId={user.idUsuario}
         />

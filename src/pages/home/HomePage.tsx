@@ -1,7 +1,14 @@
 import ListIcon from "@mui/icons-material/List";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import WorkIcon from "@mui/icons-material/Work";
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useGetUserContext } from "../../common/context/AuthContext";
 import useCreateAsistencia from "../../common/hooks/asistencia/useCreateAsistencia";
@@ -16,8 +23,16 @@ import AsistenciaModal from "./components/AsistenciaModal";
 import HistorialAsistenciasTable from "./components/HistorialAsistenciasTable";
 import PermisoModal from "./components/PermisoModal";
 import PermisosModal from "./components/PermisosModal";
+import { showErrorAlert } from "../../utils/AlertUtils";
+import { useNavigate } from "react-router";
+
+export enum asistenciaErrors {
+  ASISTENCIA_ACTIVE_YET = "ASISTENCIA_ACTIVE_YET",
+  SESION_TRABAJO_NOT_FOUND = "SESION_TRABAJO_NOT_FOUND",
+}
 
 function HomePage() {
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const user = useGetUserContext();
   const { fetchEmpleado, empleado } = useGetEmpleado();
   const { asistencias, fetchAsistencias } = useGetAsistencias();
@@ -27,6 +42,7 @@ function HomePage() {
   const { fetchSesionTrabajoByToken } = getSesionTrabajoByToken();
   const { createPermiso } = useCreatePermiso();
   const { createAsistencia } = useCreateAsistencia();
+  const navigate = useNavigate();
 
   const [isAsistenciaModalOpen, setIsAsistenciaModalOpen] = useState(false);
   const [isPermisoModalOpen, setIsPermisoModalOpen] = useState(false);
@@ -47,18 +63,41 @@ function HomePage() {
   ) => {
     if (!user || !user.idEmpleado) return;
 
-    const sesionTrabajo = await fetchSesionTrabajoByToken(token);
-    if (!sesionTrabajo) return;
+    try {
+      if (asistencias && asistencias[0].asistenciaFin == undefined){
+        console.log(asistencias[0]);
+        console.log(asistencias[0].asistenciaFin);
+        throw new Error(asistenciaErrors.ASISTENCIA_ACTIVE_YET);
+      }
 
-    await createAsistencia({
-      idEmpleado: user.idEmpleado,
-      asistenciaInicio: new Date(),
-      idTipoAsistencia,
-      idSesionTrabajo: sesionTrabajo.idSesionTrabajo,
-    });
+      const sesionTrabajo = await fetchSesionTrabajoByToken(token);
+      if (!sesionTrabajo)
+        throw new Error(asistenciaErrors.SESION_TRABAJO_NOT_FOUND);
 
-    fetchAsistencias(user.idEmpleado);
-    handleCloseAsistenciaModal();
+      const asistencia = await createAsistencia({
+        idEmpleado: user.idEmpleado,
+        asistenciaInicio: new Date(),
+        idTipoAsistencia,
+        idSesionTrabajo: sesionTrabajo.idSesionTrabajo,
+      });
+
+      fetchAsistencias(user.idEmpleado);
+      navigate(`/asistenciaInfo/${asistencia?.idAsistencia}`);
+    } catch (error: any) {
+      if (error.message === asistenciaErrors.ASISTENCIA_ACTIVE_YET) {
+        showErrorAlert("Ya tienes una asistencia activa", prefersDarkMode);
+      } else if (error.message === asistenciaErrors.SESION_TRABAJO_NOT_FOUND) {
+        showErrorAlert("Sesión de trabajo no encontrada, verifique el token", prefersDarkMode);
+      } else {
+        showErrorAlert(
+          "Error accediendo a la sesión de trabajo",
+          prefersDarkMode
+        );
+      }
+      console.error("Error accediendo a la sesión de trabajo:", error);
+    } finally {
+      handleCloseAsistenciaModal();
+    }
   };
 
   const handleSolicitarPermiso = async (
@@ -83,8 +122,14 @@ function HomePage() {
   const handleFinalizarAsistencia = async (idAsistencia: number) => {
     if (!user || !user.idEmpleado) return;
 
-    finalizarAsistencia(idAsistencia, { asistenciaFin: new Date() });
-    fetchAsistencias(user.idEmpleado);
+    try {
+      await finalizarAsistencia(idAsistencia, { asistenciaFin: new Date() });
+      fetchAsistencias(user.idEmpleado);
+      console.log("Asistencia finalizada");
+    } catch (error) {
+      console.error("Error finalizando la asistencia:", error);
+      showErrorAlert("Error finalizando la asistencia", prefersDarkMode);
+    }
   };
 
   useEffect(() => {
@@ -136,12 +181,18 @@ function HomePage() {
           </Grid>
         </Grid>
         <Box mt={4} textAlign="center">
-          <Typography variant="h5">Última asistencia</Typography>
-          <HistorialAsistenciasTable
-            asistencias={asistencias}
-            onFinalizar={handleFinalizarAsistencia}
-            tiposAsistencia={tiposAsistencia ?? []}
-          />
+          {asistencias && asistencias?.length > 0 ? (
+            <>
+              <Typography variant="h5">Última asistencia</Typography>
+              <HistorialAsistenciasTable
+                asistencias={asistencias ? [asistencias[0]] : []}
+                onFinalizar={handleFinalizarAsistencia}
+                tiposAsistencia={tiposAsistencia ?? []}
+              />
+            </>
+          ) : (
+            <Typography>No hay asistencias registradas</Typography>
+          )}
         </Box>
       </Container>
       <AsistenciaModal

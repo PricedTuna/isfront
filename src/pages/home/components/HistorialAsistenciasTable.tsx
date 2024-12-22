@@ -8,9 +8,12 @@ import {
   Paper,
   Typography,
   Button,
+  Box,
 } from "@mui/material";
 import { useGetTipoAsistenciaName } from "../../../common/hooks/asistencia/getTiposAsistenciaName";
 import { GetAsistenciaDto } from "../../../dtos/asistencia/GetAsistenciaDto";
+import { showDecisionAlert } from "../../../utils/AlertUtils";
+import { useNavigate } from "react-router";
 
 interface HistorialAsistenciasTableProps {
   asistencias: GetAsistenciaDto[] | null;
@@ -23,6 +26,20 @@ function HistorialAsistenciasTable({
   tiposAsistencia,
   onFinalizar,
 }: HistorialAsistenciasTableProps) {
+  const navigate = useNavigate();
+
+  const handleFinalizar = (idAsistencia: number) => {
+    showDecisionAlert({
+      title: "Finalizar asistencia",
+      message: "¿Estás seguro que deseas finalizar la asistencia?",
+      prefersDarkMode: true,
+      confirmButtonText: "Finalizar",
+      cancelButtonText: "Cancelar",
+      onConfirm: () => onFinalizar(idAsistencia),
+      onCancel: () => {},
+    });
+  };
+
   if (!asistencias || asistencias.length === 0)
     return <Typography>No hay asistencias registradas.</Typography>;
 
@@ -54,15 +71,26 @@ function HistorialAsistenciasTable({
                   : "En progreso"}
               </TableCell>
               <TableCell>
-                {!asistencia.asistenciaFin && (
+                <Box display={"flex"} flexDirection={"column"} gap={2}>
+                  {!asistencia.asistenciaFin && (
+                    <Button
+                      variant="contained"
+                      color="warning"
+                      onClick={() => handleFinalizar(asistencia.idAsistencia)}
+                    >
+                      Finalizar
+                    </Button>
+                  )}
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => onFinalizar(asistencia.idAsistencia)}
+                    onClick={() =>
+                      navigate(`/asistenciaInfo/${asistencia.idAsistencia}`)
+                    }
                   >
-                    Finalizar
+                    Detalles
                   </Button>
-                )}
+                </Box>
               </TableCell>
             </TableRow>
           ))}
