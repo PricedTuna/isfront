@@ -3,3 +3,6 @@ export interface GetTipoEmpleadoDto {
     nombreTipoEmpleado:string;
        
 }
+export interface CreateTipoEmpleado extends Partial<GetTipoEmpleadoDto> {
+        nombreTipoEmpleado:string;
+}

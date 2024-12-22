@@ -4,3 +4,8 @@ export interface GetTipoAsistenciaDto {
   createDate:       Date;
   updateDate:       Date;
 }
+export interface CreateTipoAsistecnia extends Partial<GetTipoAsistenciaDto> {
+
+  nombreAsistencia: string;
+
+}

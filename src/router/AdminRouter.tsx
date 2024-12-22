@@ -1,32 +1,37 @@
-import DomiciliosListPage from "../components/domicilio/DomicilioList";
-import NacionalidadList from "../components/NacionalidadList";
 import MainLayout from "../layout/MainLayout";
 import AdminPage from "../pages/admin/AdminPage";
 import AutoCreatePage from "../pages/admin/autos/AutosCreatePage";
 import AutosListPage from "../pages/admin/autos/AutosListPage";
 import AutosPage from "../pages/admin/autos/AutosPage";
-import DomicilioCreatePage from "../pages/admin/domicilios/DomicilioCreatePage";
-import DomicilioPage from "../pages/admin/domicilios/DomicilioPage";
-import EmpleadoCreatePage from "../pages/admin/empleado/EmpleadoCreatePage";
-import EmpleadoListPage from "../pages/admin/empleado/EmpleadoListPage";
-import EmpleadoPage from "../pages/admin/empleado/EmpleadoPage";
 import SesionesTrabajoPage from "../pages/admin/sesionesTrabajo/SesionesTrabajoPage";
 import SesionTrabajoPage from "../pages/admin/sesionesTrabajo/SesionTrabajoPage";
-import SucursalCreatePage from "../pages/admin/sucursales/SucursalCreatePage";
-import SucursalListPage from "../pages/admin/sucursales/SucursalListPage";
-import SucursalPage from "../pages/admin/sucursales/SucursalPage";
 import UsersAdminPage from "../pages/admin/users/UsersAdminPage";
-import UsersCreatePage from "../pages/admin/users/UsersCreatePage";
-import UsersListPage from "../pages/admin/users/UsersListPage";
-import CiudadesPage from "../pages/catalogs/ciudadesPage";
-import NacionalidadesForm from "../pages/catalogs/components/nacionalidadesForm";
 import NacionalidadesPage from "../pages/catalogs/nacionalidadesPage";
-import TiposAsistenciaPage from "../pages/catalogs/TiposAsistenciaPage";
-import TiposContratoPage from "../pages/catalogs/tiposContratoPage";
-import TiposEmpleadosPage from "../pages/catalogs/TiposEmpleadosPage";
-import TiposLicenciaPage from "../pages/catalogs/TiposLicenciaPage";
-import TiposPermisosPage from "../pages/catalogs/TiposPermisosPage";
-
+import TiposPermisosPage from "../pages/admin/tipospermisos/TiposPermisosPage";
+import UsersCreatePage from '../pages/admin/users/UsersCreatePage';
+import NacionalidadesForm from '../pages/catalogs/components/nacionalidadesForm';
+import NacionalidadList from "../components/NacionalidadList";
+import UsersListPage from "../pages/admin/users/UsersListPage";
+import DomicilioPage from "../pages/admin/domicilios/DomicilioPage";
+import DomiciliosListPage from "../components/domicilio/DomicilioList";
+import DomicilioCreatePage from "../pages/admin/domicilios/DomicilioCreatePage";
+import SucursalPage from "../pages/admin/sucursales/SucursalPage";
+import SucursalListPage from '../pages/admin/sucursales/SucursalListPage';
+import SucursalCreatePage from '../pages/admin/sucursales/SucursalCreatePage';
+import EmpleadoPage from '../pages/admin/empleado/EmpleadoPage';
+import EmpleadoCreatePage from '../pages/admin/empleado/EmpleadoCreatePage';
+import EmpleadoListPage from '../pages/admin/empleado/EmpleadoListPage';
+import TiposPermisosListPage from "../pages/admin/tipospermisos/TiposPermisosListPage";
+import TiposPermisosCreatePage from "../pages/admin/tipospermisos/TiposPermisosCreatePage";
+import TipoContratoPage from '../pages/admin/tipocontrato/TipoContratoPage';
+import TipoContratoCreatePage from '../pages/admin/tipocontrato/TipoContratoCreatePage';
+import TipoContratoListPage from '../pages/admin/tipocontrato/TipoContratoListPage';
+import TipoAsistenciaListPage from '../pages/admin/tipoasistencia/TipoAsistenciaListPage';
+import TipoAsistenciaCreatePage from '../pages/admin/tipoasistencia/TipoAsistenciaCreatePage';
+import TipoAsistenciaPage from '../pages/admin/tipoasistencia/TipoAsistenciaPage';
+import TipoEmpleadoPage from '../pages/admin/tipoempleado/TipoEmpleadoPage';
+import TipoEmpleadoListPage from '../pages/admin/tipoempleado/TipoEmpleadoListPage';
+import TipoEmpleadoCreatePage from '../pages/admin/tipoempleado/TipoEmpleadoCreatePage';
 const baseUrl: string = "admin";
 
 // Rutas para administradores
@@ -181,29 +186,100 @@ export const AdminRouter = [
         element: <SesionesTrabajoPage />,
       },
       {
-        path: `${baseUrl}/ciudades`,
-        element: <CiudadesPage />,
+
+        path:`${baseUrl}/tipocontrato`,
+        element: <TipoContratoPage/>,
+        errorElement: <TipoContratoPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <TipoContratoListPage/>,
+            errorElement: <TipoContratoListPage/>,
+          },
+          {
+            path: "crear",
+            element: <TipoContratoCreatePage/>,
+            errorElement: <TipoContratoCreatePage/>,
+          },
+          {
+            path: "editar",
+            element:<TipoContratoCreatePage/>,
+            errorElement: <TipoContratoCreatePage/>,
+          },
+          
+        ],
       },
       {
-        path: `${baseUrl}/tiposcontrato`,
-        element: <TiposContratoPage />,
+        path: `${baseUrl}/tipoasistencia`,
+        element: <TipoAsistenciaPage/>,
+        errorElement: <TipoAsistenciaPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <TipoAsistenciaListPage/>,
+            errorElement: <TipoAsistenciaListPage/>,
+          },
+          {
+            path: "crear",
+            element: <TipoAsistenciaCreatePage/>,
+            errorElement: <TipoAsistenciaCreatePage/>,
+          },
+          {
+            path: "editar",
+            element:<TipoAsistenciaCreatePage/>,
+            errorElement: <TipoAsistenciaCreatePage/>,
+          },
+          
+        ],
       },
       {
-        path: `${baseUrl}/tiposasistencias`,
-        element: <TiposAsistenciaPage />,
+        path: `${baseUrl}/tipoempleado`,
+        element: <TipoEmpleadoPage/>,
+        errorElement: <TipoEmpleadoPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <TipoEmpleadoListPage/>,
+            errorElement: <TipoEmpleadoListPage/>,
+          },
+          {
+            path: "crear",
+            element: <TipoEmpleadoCreatePage/>,
+            errorElement: <TipoEmpleadoCreatePage/>,
+          },
+          {
+            path: "editar",
+            element:<TipoEmpleadoCreatePage/>,
+            errorElement: <TipoEmpleadoCreatePage/>,
+          },
+          
+        ],
       },
       {
-        path: `${baseUrl}/tiposempleados`,
-        element: <TiposEmpleadosPage />,
+
+        path:`${baseUrl}/tipospermisos`,
+        element: <TiposPermisosPage/>,
+        errorElement: <TiposPermisosPage/>, // todo: refactor name (add admin)
+        children: [
+          {
+            path: "",
+            element: <TiposPermisosListPage/>,
+            errorElement: <TiposPermisosListPage/>,
+          },
+          {
+            path: "crear",
+            element: <TiposPermisosCreatePage/>,
+            errorElement: <TiposPermisosCreatePage/>,
+          },
+          {
+            path: "editar",
+            element:<TiposPermisosCreatePage/>,
+            errorElement: <TiposPermisosCreatePage/>,
+          },
+          
+        ],
       },
-      {
-        path: `${baseUrl}/tiposlicencia`,
-        element: <TiposLicenciaPage />,
-      },
-      {
-        path: `${baseUrl}/tipospermisos`,
-        element: <TiposPermisosPage />,
-      },
+
     ],
   },
 ];
